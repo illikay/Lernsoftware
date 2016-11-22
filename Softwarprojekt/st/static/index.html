@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html ng-app="formlyApp">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script src="lib/angular.js"></script>
+
+<script src="FormController.js"></script>
+</head>
+
+<body >
+ <div  ng-controller="FormController">
+    <form name="form1" >
+    	<h1>User hinzufuegen oder Loeschen:</h1><br><br>
+    	Username:<input type="text" ng-model="user.Benutzername" /><br>
+       Email:<input type="text" ng-model="user.EMailAdresse" /><br>
+       
+       Password:<input type="text" ng-model="user.Passwort" /><br>
+       <button ng-click="hinzufuegen()">Add</button>
+       <button ng-click="loeschen()">Delete</button><br>
+       <hr/>
+       
+       <h2>Userlist : </h2><br>
+       <table>
+       <tr>
+       <th>Username</th>
+       <th>Email</th>
+       </tr>
+  		<tr ng-repeat="user in userlist">
+    		<td>{{ user.Benutzername }}</td>
+    		<td>{{ user.EMailAdresse}}</td>
+    		
+  		</tr>
+		</table>
+		
+    </form>
+     
+   </div>
+ 
+</body>
+ 
+</html>

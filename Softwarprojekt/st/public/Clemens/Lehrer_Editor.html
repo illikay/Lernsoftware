@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+<script type='text/javascript'>
+var it = 1;
+var ik = 1;
+
+function addThema() {
+	var newthema = document.createElement("input");
+		newthema.type = "text";
+		newthema.name = "thema" + it;
+		newthema.id = "thema" + it;
+	var c = document.getElementById("thema");
+	c.insertBefore(newthema, c.childNodes[3+it]);
+
+	it++;
+}
+function addKapitel() {
+	var newkapitel = document.createElement("input");
+		newkapitel.type = "text";
+		newkapitel.name = "kapitel" + ik;
+		newkapitel.id = "kapitel" + ik;
+	var c = document.getElementById("kapitel");
+	c.insertBefore(newkapitel, c.childNodes[3+ik]);
+	ik++;
+
+}
+// function auslesen() {
+// 	leseThema();
+	
+
+// }
+// function leseThema() {
+// 	var themaarray = [];
+// 	var thema;
+// 	var wert;
+// 	var o;
+// 	for(var i; i<it ; i++ ){
+// 		thema = "thema" + it;
+// 		wert= getElementById("thema"+it).value;
+// 		themaarray.push ( {thema : wert} );
+// 	}
+	
+	
+}
+
+</script>
+</head>
+<body>
+<form>
+	Fach: <br>
+	<input type="text" name="fach" id="fach"> <br>
+	<div id="thema">Thema: <br>
+	<input type="text" name="thema0" id="thema0">
+	<input type="button" value="+" id="themaadder" onclick="addThema()">
+	 <br>
+	</div>
+	<div id="kapitel">Kapitel: <br>
+	<input type="text" name="kapitel0" id="kapitel0"> 
+	<input type="button" value="+" id="kapiteladder" onclick="addKapitel()"> <br>
+	<input type="button" value="abschicken" id="abschicken" onclick="auslesen()">
+	</div>
+</form>
+
+
+
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
