@@ -46,12 +46,13 @@ function Topic(name){
 	this.solutions = [];
 }
 
-function Chapter(name, author,date){
+function Chapter(name){
 	
 	this.type = "chapter";
 	this.name = name;
-	this.author = author;
-	this.date = date;
+	this.author = null;
+	this.date = null;
+	this.id = null;
 	this.content = [];
 }
 

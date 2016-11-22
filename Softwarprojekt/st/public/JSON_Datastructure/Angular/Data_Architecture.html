@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script type="text/javascript" src="Data_Architecture.js"></script>
+</head>
+<body ng-app="myApplication" ng-controller="rootController">
+
+<div ng-repeat="s in schoolmaterial">
+<div class="schoolmaterial">
+	<div>
+		Schoolmaterial
+		<input type="button" value="create Lecture" ng-click="addLecture()"/>
+	</div>
+	<div ng-repeat="lecture in lectures">
+		<div>
+			<div>
+				{{lecture.name}}
+				<input type="button" value="create Topic" ng-click="addTopic()"/>
+				<input type="button" value="X" ng-click="removeLecture($index)"/>
+			</div>
+			<div ng-repeat="topic in topics">
+				<div>
+					<div>
+						{{topic.name}}
+						<input type="button" value="X" ng-click="removeTopic($index)"/>
+					</div>
+					<div>
+						<div>
+							<div>
+								Content
+								<input type="button" value="create Chapter" ng-click="addTopic()"/>
+							</div>
+							<div ng-repeat="contentChapter in contentChapters">
+							
+							</div>
+						</div>
+						<div>
+							<div>
+								Exercises
+								<input type="button" value="create Chapter" ng-click="addTopic()"/>
+							</div>
+							<div ng-repeat="exercisesChapter in exercisesChapters">
+							
+							</div>
+						</div>
+						<div>
+							<div>
+								Solutions
+								<input type="button" value="create Chapter" ng-click="addChapter()"/>
+							</div>
+							<div ng-repeat="solutionsChapter in solutionsChapters">
+							
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+</body>
+</html>
