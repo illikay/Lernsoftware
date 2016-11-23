@@ -3,6 +3,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Data_Architecture</title>
+<link type="text/css" rel="stylesheet" href="Data_Architecture.css"/>
 <script type="text/javascript" src="Helpers.js"></script>
 <script type="text/javascript" src="Schoolmaterial.js"></script>
 <script type="text/javascript" src="TestData.js"></script>
@@ -10,11 +11,19 @@
 <script type="text/javascript" src="Data_Architecture.js"></script>
 </head>
 <body>
-<input type="button" value="create" onclick="fillOutputContainer()">
-<div id="outputContainer"></div>
-<input type="button" value="convertToJSON" onclick="convertToJson()">
-<div id="dataStructure_JSON"></div>
-<input type="button" value="convertToDOM" onclick="convertToDom()">
-<div id="dataStructure_DOM"></div>
+<div>
+	<input type="button" value="create" onclick="fillOutputContainer()">
+	<div id="outputContainer"></div>
+</div>
+<div>
+	<input type="button" value="convertToJSON" onclick="convertToJson()">
+	<div id="dataStructure_JSON">
+		<textarea rows="10" cols="100"></textarea>
+	</div>
+</div>
+<div>
+	<input type="button" value="convertToDOM" onclick="convertToDom()">
+	<div id="dataStructure_DOM"></div>
+</div>
 </body>
 </html>

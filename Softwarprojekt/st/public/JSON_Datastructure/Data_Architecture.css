@@ -1,0 +1,60 @@
+
+.schoolmaterial,.lecture,.topic,.topicContent,.topicExercises,.topicSolutions,.chapter,.formattingContainer{
+    
+    position:relative;
+    left:40px;
+}
+
+.schoolmaterial > div:first-child,.lecture > div:first-child,.topic > div:first-child,.topicContent > div:first-child,.topicExercises > div:first-child,.topicSolutions > div:first-child,.chapter > div:first-child,.formattingContainer > div:first-child{
+    
+    height:30px;
+    
+    border-width:3px;
+    border-style:solid;
+}
+
+.schoolmaterial > div:first-child,.lecture > div:first-child,.topic > div:first-child,.chapter > div:first-child,.formattingContainer > div:first-child{
+    
+    width:500px;
+}
+
+.schoolmaterial > div:first-child{
+    
+    background-color:#ffffff;
+    border-color:#000000;
+}
+
+.lecture > div:first-child{
+    
+    background-color:#ff0000;
+    border-color:#770000;
+}
+
+.topic > div:first-child,.topicContent > div:first-child,.topicExercises > div:first-child,.topicSolutions > div:first-child{
+    
+    background-color:#00ff00;
+    border-color:#007700;
+}
+
+.topicContent > div:first-child,.topicExercises > div:first-child,.topicSolutions > div:first-child{
+    
+    width:200px;
+}
+
+.chapter > div:first-child{
+    
+    background-color:#0000ff;
+    border-color:#000077;
+}
+
+.formattingContainer > div:first-child{
+    
+    background-color:#ff00ff;
+    border-color:#770077;
+}
+
+.link > div:first-child{
+    
+    background-color:#00ffff;
+    border-color:#007777;
+}

@@ -1,24 +1,11 @@
 /**
- * Provides methods for converting:
- * 		- HTML-Structure to JSON-Objects
- * 		- JSON-Objects to HTML-Structure
+ * Provides methods for
+ * 	-> converting
+ * 			- HTML-Structure to JSON-Objects
+ * 			- JSON-Objects to HTML-Structure
+ * 
+ * 	-> creating single Element-Types
  */
-
-var bg_schoolmaterial = "#ffffff";
-var border_schoolmaterial = "3px solid #000000";
-var bg_lecture = "#ff0000";
-var border_lecture = "3px solid #770000";
-var bg_topic = "#00ff00";
-var border_topic = "1px solid #007700";
-var bg_chapter = "#0000ff";
-var border_chapter = "1px solid #000077";
-var bg_formattingContainer = "#ff00ff";
-var border_formattingContainer = "1px solid #770077";
-var bg_link = "#00ffff";
-var border_link = "1px solid #007777";
-
-var width = "500px";
-var height = "30px";
 
 function jsonToDom(profile,object){
 	
@@ -41,23 +28,23 @@ function jsonToDom(profile,object){
 	return element;
 }
 
-function domToJson(element){
+function domToJson(profile,element){
 	
 	var object;
 	
 	var classValue = element.getAttribute("class");
 	if(classValue === "schoolmaterial"){
-		object = json_getSchoolmaterialObject(element);
+		object = json_getSchoolmaterialObject(profile,element);
 	}else if(classValue === "lecture"){
-		object = json_getLectureObject(element);
+		object = json_getLectureObject(profile,element);
 	}else if(classValue === "topic"){
-		object = json_getTopicObject(element);
+		object = json_getTopicObject(profile,element);
 	}else if(classValue === "chapter"){
-		object = json_getChapterObject(element);
+		object = json_getChapterObject(profile,element);
 	}else if(classValue === "formattingContainer"){
-		object = json_getFormattingContainerObject(element);
+		object = json_getFormattingContainerObject(profile,element);
 	}else if(classValue === "link"){
-		object = json_getLinkObject(element);
+		object = json_getLinkObject(profile,element);
 	}
 	
 	return object;
@@ -72,11 +59,9 @@ function createSchoolmaterialElement(profile,nameFieldContent){
 	
 	var schoolmaterialElement = document.createElement("div");
 	schoolmaterialElement.setAttribute("class","schoolmaterial");
-	schoolmaterialElement.setAttribute("style","position:relative; left:40px;");
 	
 	// schoolmaterial head
 	var nameFieldElement = document.createElement("div");
-	nameFieldElement.setAttribute("style","width:" + width + "; height:" + height + "; background-color:" + bg_schoolmaterial + "; border:" + border_schoolmaterial + ";");
 	
 	nameFieldElement.appendChild(document.createTextNode(nameFieldContent));
 	if(profile.userType === "teacher"){
@@ -106,9 +91,9 @@ function dom_getSchoolmaterialElement(profile,object){
 
 function json_getSchoolmaterialObject(profile,element){
 	
-	var schoolmaterialObject = new Schoolmaterial();
+	var schoolmaterialObject = new Schoolmaterial(element.childNodes[0].childNodes[0].nodeValue);
 	
-	var childElements = element.childNodes;
+	var childElements = element.childNodes[1].childNodes;
 	for(var i = 0; i < childElements.length; i++){
 		schoolmaterialObject.content.push(json_getLectureObject(profile,childElements[i]));
 	}
@@ -128,11 +113,9 @@ function createLectureElement(profile, nameFieldContent){
 	
 	var lectureElement = document.createElement("div");
 	lectureElement.setAttribute("class","lecture");
-	lectureElement.setAttribute("style","position:relative; left:40px;");
 	
 	// lecture head
 	var nameFieldElement = document.createElement("div");
-	nameFieldElement.setAttribute("style","width:" + width + "; height:" + height + "; background-color:" + bg_lecture + "; border:" + border_lecture + ";");
 	
 	if(profile.userType === "teacher"){
 		nameFieldElement.appendChild(getInputElement({"type":"input","value":nameFieldContent,"width":"100px"}));
@@ -194,11 +177,9 @@ function createTopicElement(profile,nameFieldContent){
 	
 	var topicElement = document.createElement("div");
 	topicElement.setAttribute("class","topic");
-	topicElement.setAttribute("style","position:relative; left:40px;");
 	
 	// topic header
 	var topicHeaderElement = document.createElement("div");
-	topicHeaderElement.setAttribute("style","height:" + height + "; width:" + width + "; border:" + border_topic + "; background-color:" + bg_topic + ";");
 	
 	if(profile.userType === "teacher"){
 		topicHeaderElement.appendChild(getInputElement({"type":"text","value":nameFieldContent,"width":"100px"}));
@@ -211,46 +192,46 @@ function createTopicElement(profile,nameFieldContent){
 	
 	// topic content
 	var topicContentElement = document.createElement("div");
-	topicContentElement.setAttribute("style","position:relative; left:40px;");
+	topicContentElement.setAttribute("class","topicContentContainer");
 	
 	var contentElement = document.createElement("div");
+	contentElement.setAttribute("class","topicContent");
 	var contentHeader = document.createElement("div");
-	contentHeader.setAttribute("style","height:" + height + "; width:200px; border:" + border_topic + "; background-color:" + bg_topic + ";");
 	contentHeader.appendChild(document.createTextNode("Content"));
 	if(profile.userType === "teacher"){
 		contentHeader.appendChild(getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
 	}
 	contentElement.appendChild(contentHeader);
-	var content = document.createElement("div");
-	contentElement.appendChild(content);
+	var contentContent = document.createElement("div");
+	contentElement.appendChild(contentContent);
 	
 	topicContentElement.appendChild(contentElement);
 	
 	// topic exercises
 	var exercisesElement = document.createElement("div");
+	exercisesElement.setAttribute("class","topicExercises");
 	var exercisesHeader = document.createElement("div");
-	exercisesHeader.setAttribute("style","height:" + height + "; width:200px; border:" + border_topic + "; background-color:" + bg_topic + ";");
 	exercisesHeader.appendChild(document.createTextNode("Exercises"));
 	if(profile.userType === "teacher"){
 		exercisesHeader.appendChild(getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
 	}
 	exercisesElement.appendChild(exercisesHeader);
-	content = document.createElement("div");
-	exercisesElement.appendChild(content);
+	var exercisesContent = document.createElement("div");
+	exercisesElement.appendChild(exercisesContent);
 	
 	topicContentElement.appendChild(exercisesElement);
 	
 	// topic solutions
 	var solutionsElement = document.createElement("div");
+	solutionsElement.setAttribute("class","topicSolutions");
 	var solutionsHeader = document.createElement("div");
-	solutionsHeader.setAttribute("style","height:" + height + "; width:200px; border:" + border_topic + "; background-color:" + bg_topic + ";");
 	solutionsHeader.appendChild(document.createTextNode("Solutions"));
 	if(profile.userType === "teacher"){
 		solutionsHeader.appendChild(getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
 	}
 	solutionsElement.appendChild(solutionsHeader);
-	content = document.createElement("div");
-	solutionsElement.appendChild(content);
+	var solutionsContent = document.createElement("div");
+	solutionsElement.appendChild(solutionsContent);
 	
 	topicContentElement.appendChild(solutionsElement);
 	
@@ -263,26 +244,23 @@ function dom_getTopicElement(profile,object){
 	
 	var topicElement = createTopicElement(profile, object.name);
 	
-	var contentContentElement = topicElement.childNodes[1].childNodes[1].childNodes[0].childNodes[1];
+	var contentContentElement = topicElement.childNodes[1].childNodes[0].childNodes[1];
 	var contentChildObjects = object.content;
 	for(var i = 0; i < contentChildObjects.length; i++){
 		contentContentElement.appendChild(dom_getChapterElement(profile,contentChildObjects[i]));
 	}
-	topicElement.appendChild(contentContentElement);
 	
-	var exercisesContentElement = topicElement.childNodes[1].childNodes[1].childNodes[1].childNodes[1];
+	var exercisesContentElement = topicElement.childNodes[1].childNodes[1].childNodes[1];
 	var exercisesChildObjects = object.exercises;
 	for(var i = 0; i < exercisesChildObjects.length; i++){
 		exercisesContentElement.appendChild(dom_getChapterElement(profile,exercisesChildObjects[i]));
 	}
-	topicElement.appendChild(exercisesContentElement);
 	
-	var solutionsElement = topicElement.childNodes[1].childNodes[1].childNodes[2].childNodes[1];
+	var solutionsContentElement = topicElement.childNodes[1].childNodes[2].childNodes[1];
 	var solutionsChildObjects = object.solutions;
 	for(var i = 0; i < solutionsChildObjects.length; i++){
 		solutionsContentElement.appendChild(dom_getChapterElement(profile,solutionsChildObjects[i]));
 	}
-	topicElement.appendChild(solutionsContentElement);
 	
 	return topicElement;
 }
@@ -298,17 +276,17 @@ function json_getTopicObject(profile,element){
 	
 	var topicObject = new Topic(topicNameValue);
 	
-	var contentChildElements = element.childNodes[1].childNodes[0].childNodes[1];
+	var contentChildElements = element.childNodes[1].childNodes[0].childNodes[1].childNodes;
 	for(var i = 0; i < contentChildElements.length; i++){
 		topicObject.content.push(json_getChapterObject(profile,contentChildElements[i]));
 	}
 	
-	var exercisesChildElements = element.childNodes[1].childNodes[1].childNodes[1];
+	var exercisesChildElements = element.childNodes[1].childNodes[1].childNodes[1].childNodes;
 	for(var i = 0; i < exercisesChildElements.length; i++){
 		topicObject.exercises.push(json_getChapterObject(profile,exercisesChildElements[i]));
 	}
 	
-	var solutionsChildElements = element.childNodes[1].childNodes[2].childNodes[1];
+	var solutionsChildElements = element.childNodes[1].childNodes[2].childNodes[1].childNodes;
 	for(var i = 0; i < solutionsChildElements.length; i++){
 		topicObject.solutions.push(json_getChapterObject(profile,solutionsChildElements[i]));
 	}
@@ -327,11 +305,9 @@ function createChapterElement(profile, nameFieldContent){
 	
 	var chapterElement = document.createElement("div");
 	chapterElement.setAttribute("class","chapter");
-	chapterElement.setAttribute("style","position:relative; left:40px;");
 	
 	// chapter head
 	var nameFieldElement = document.createElement("div");
-	nameFieldElement.setAttribute("style","width:" + width + "; height:" + height + "; background-color:" + bg_chapter + "; border:" + border_chapter + ";");
 	
 	if(profile.userType === "teacher"){
 		nameFieldElement.appendChild(getInputElement({"type":"input","value":nameFieldContent,"width":"100px"}));
@@ -363,7 +339,7 @@ function dom_getChapterElement(profile,object){
 		if(childObjects[i].type === "chapter"){
 			childElement = dom_getChapterElement(profile,childObjects[i]);
 		}else{
-			childElement = dom_getFormattingContainerElement(childObjects[i]);
+			childElement = dom_getFormattingContainerElement(profile,childObjects[i]);
 		}
 		contentElement.appendChild(childElement);
 	}
@@ -387,14 +363,14 @@ function json_getChapterObject(profile,element){
 	for(var i = 0; i < childElements.length; i++){
 		var childObject;
 		if(childElements[i].getAttribute("class") === "chapter"){
-			childObject = json_getChapterObject(childElements[i]);
+			childObject = json_getChapterObject(profile,childElements[i]);
 		}else{
-			childObject = json_getFormattingContainerObject(childElements[i]);
+			childObject = json_getFormattingContainerObject(profile,childElements[i]);
 		}
-		chapter.content.push(childObject);
+		chapterObject.content.push(childObject);
 	}
 	
-	return chapter;
+	return chapterObject;
 }
 
 
@@ -405,15 +381,25 @@ function json_getChapterObject(profile,element){
  * @param object
  * @returns
  */
-function createFormattingContainerElement(profile,nameFieldContent){
+function createFormattingContainerElement(profile,styleProperties){
 	
 	var formattingContainerElement = document.createElement("div");
 	formattingContainerElement.setAttribute("class","formattingContainer");
-	formattingContainerElement.setAttribute("style","position:relative; left:40px;");
+	
+	var textAreaElement = document.createElement("textarea");
+	textAreaElement.setAttribute("style","height:" + styleProperties.height + "; width:" + styleProperties.width + "; color:" + styleProperties.color + "; background-color:" + styleProperties.backgroundColor + "; font-size:" + styleProperties.fontSize + "; font-weight:" + styleProperties.fontWeight + "; font-family:" + styleProperties.fontFamily + "; resize:none;");
+	
+	if(profile.userType === "teacher"){
+		
+	}else{
+		textAreaElement.setAttribute("disabled","disabled");
+		textAreaElement.setAttribute("readonly","readonly");
+	}
+	
+	formattingContainerElement.appendChild(textAreaElement);
 	
 	// formatting container head
-	var nameFieldElement = document.createElement("div");
-	nameFieldElement.setAttribute("style","height:" + height + "; width:" + width + "; border:" + border_formattingContainer + "; background-color:" + bg_formattingContainer + ";");
+	/*var nameFieldElement = document.createElement("div");
 	
 	if(profile.userType === "teacher"){
 		nameFieldElement.appendChild(getInputElement({"type":"input","value":nameFieldContent,"width":"100px"}));
@@ -424,21 +410,24 @@ function createFormattingContainerElement(profile,nameFieldContent){
 		nameFieldElement.appendChild(document.createTextNode(nameFieldContent));
 	}
 	
-	formattingContainerElement.appendChild(nameFieldElement);
+	formattingContainerElement.appendChild(nameFieldElement);*/
 	
 	// formatting container content
-	var contentElement = document.createElement("div");
-	formattingContainerElement.appendChild(contentElement);
+	/*var contentElement = document.createElement("div");
+	formattingContainerElement.appendChild(contentElement);*/
 	
 	return formattingContainerElement;
 }
 
 function dom_getFormattingContainerElement(profile,object){
 	
-	var formattingContainerElement = createTransformattingContainerElement(profile,object.name);
+	var formattingContainerElement = createFormattingContainerElement(profile,object);
 	
-	var contentElement = formattingContainerElement.childNodes[1];
-	var childObjects = object.content;
+	var textAreaElement = formattingContainerElement.childNodes[0];
+	textAreaElement.value = object.content[0];
+	
+	//var contentElement = formattingContainerElement.childNodes[1];
+	/*var childObjects = object.content;
 	for(var i = 0; i < childObjects.length; i++){
 		var childElement;
 		if(typeof childObjects[i] === "string"){
@@ -450,16 +439,27 @@ function dom_getFormattingContainerElement(profile,object){
 		}
 		contentElement.appendChild(childElement);
 	}
-	formattingContainerElement.appendChild(contentElement);
+	formattingContainerElement.appendChild(contentElement);*/
 	
 	return formattingContainerElement;
 }
 
-function json_getFormattingContainerObject(element){
+function json_getFormattingContainerObject(profile,element){
 	
 	var formattingContainerObject = new FormattingContainer();
 	
-	var childElements = element.childNodes;
+	var textAreaElement = element.childNodes[0];
+	formattingContainerObject.width = textAreaElement.style.width;
+	formattingContainerObject.height = textAreaElement.style.height;
+	formattingContainerObject.color = textAreaElement.style.color;
+	formattingContainerObject.backgroundColor = textAreaElement.style.backgroundColor;
+	formattingContainerObject.fontSize = textAreaElement.style.fontSize;
+	formattingContainerObject.fontWeight = textAreaElement.style.fontWeight;
+	formattingContainerObject.fontFamily = textAreaElement.style.fontFamily;
+	
+	formattingContainerObject.content[0] = textAreaElement.value;
+	
+	/*var childElements = element.childNodes;
 	for(var i = 0; i < childElements.length; i++){
 		var childObject;
 		if(typeof childElements[i].nodeValue === "string"){
@@ -470,7 +470,9 @@ function json_getFormattingContainerObject(element){
 			childObject = json_getLinkObject(childElements[i]);
 		}
 		formattingContainerObject.content.push(childObject);
-	}
+	}*/
+	
+	return formattingContainerObject;
 }
 
 /**
@@ -485,7 +487,7 @@ function createLinkElement(profile,nameFieldContent){
 	
 }
 
-function dom_getLinkElement(object){
+function dom_getLinkElement(profile,object){
 	
 	// link with reference
 	var aElement = document.createElement("a");
@@ -500,7 +502,7 @@ function dom_getLinkElement(object){
 	return aElement;
 }
 
-function json_getLinkObject(element){
+function json_getLinkObject(profile,element){
 	
 	// link object
 	var link = new Link();

@@ -23,9 +23,10 @@
  */
 
 // Prototype  || Constructor
-function Schoolmaterial(){
+function Schoolmaterial(name){
 	
 	this.type = "schoolmaterial";
+	this.name = name;
 	this.content = [];
 }
 
@@ -56,18 +57,18 @@ function Chapter(name){
 	this.content = [];
 }
 
-function FormattingContainer(name){
+function FormattingContainer(){
 	
 	this.type = "formattingContainer";
-	this.name = name;
+	//this.name = name;
 	
 	this.color = "#000000";
 	this.backgroundColor = "#ffffff";
-	this.fontWeight = "default";
+	this.fontWeight = "normal";
 	this.fontSize = "12px";
-	this.fontStyle = "arial";
-	this.width = null;
-	this.height = null;
+	this.fontFamily = "Arial";
+	this.width = "500px";
+	this.height = "200px";
 	this.position = "none";
 	
 	this.content = [];

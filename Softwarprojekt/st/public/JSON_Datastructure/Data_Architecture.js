@@ -2,10 +2,10 @@
  * Provides functionality of the html page
  */
 
-var profileTeacher = {"userType":"teacher","right":"write"};
-var profileStudent = {"userType":"student","right":"read"};
+var profile = {"userType":"teacher","right":"write"};
+//var profile = {"userType":"student","right":"read"};
 
-var domElement = createSchoolmaterialElement(profileTeacher, "Schoolmaterial");
+var domElement = createSchoolmaterialElement(profile, "Schoolmaterial");
 var jsonObject;
 
 window.onload = function(){
@@ -14,15 +14,30 @@ window.onload = function(){
 
 function convertToDom(){
 	
-	domElement = jsonToDom(profileTeacher, jsonObject);
-	document.getElementById("dataStructure_DOM").appendChild(domElement);
+	var jsonString = document.getElementsByTagName("textarea")[0].value;
+	jsonObject = JSON.parse(jsonString);
+	
+	domElement = jsonToDom(profile, jsonObject);
+	
+	var domStructureContainer = document.getElementById("dataStructure_DOM");
+	while(domStructureContainer.firstChild){
+		domStructureContainer.removeChild(domStructureContainer.firstChild);
+	}
+	domStructureContainer.appendChild(domElement);
 }
 
 function convertToJson(){
 	
-	jsonObject = domToJson(domElement);
-	var jsonContainer = document.getElementById("dataStructure_JSON");
-	jsonContainer.appendChild(getViewOfObject(jsonObject));
+	jsonObject = domToJson(profile,domElement);
+	
+	var jsonTextArea = document.getElementsByTagName("textarea")[0];
+	var jsonTextNode = document.createTextNode(JSON.stringify(jsonObject));
+	
+	/*while(jsonTextArea.firstChild){
+		jsonTextArea.removeChild(jsonTextArea.firstChild);
+	}*/
+	//jsonTextArea.appendChild(jsonTextNode);
+	jsonTextArea.value = JSON.stringify(jsonObject);
 }
 
 /**
@@ -33,7 +48,7 @@ function convertToJson(){
 function insertLectureElement(schoolmaterialElement){
 	
 	var contentElement = schoolmaterialElement.childNodes[1];
-	contentElement.appendChild(createLectureElement(profileTeacher, "Lecture-Name"));
+	contentElement.appendChild(createLectureElement(profile, "Lecture-Name"));
 }
 
 function removeLectureElement(lectureElement){
@@ -50,7 +65,7 @@ function removeLectureElement(lectureElement){
 function insertTopicElement(lectureElement){
 	
 	var lectureContentElement = lectureElement.childNodes[1];
-	lectureContentElement.appendChild(createTopicElement(profileTeacher, "Topic-Name"));
+	lectureContentElement.appendChild(createTopicElement(profile, "Topic-Name"));
 }
 
 function removeTopicElement(topicElement){
@@ -67,7 +82,7 @@ function removeTopicElement(topicElement){
 function insertChapterElement(element){
 	
 	var contentElement = element.childNodes[1];
-	contentElement.appendChild(createChapterElement(profileTeacher, "Chapter-Name"));
+	contentElement.appendChild(createChapterElement(profile, "Chapter-Name"));
 }
 
 function removeChapterElement(chapterElement){
@@ -84,7 +99,7 @@ function removeChapterElement(chapterElement){
 function insertFormattingContainerElement(element){
 	
 	var contentElement = element.childNodes[1];
-	contentElement.appendChild(createFormattingContainerElement(profileTeacher, "Formatting Container"));
+	contentElement.appendChild(createFormattingContainerElement(profile, new FormattingContainer()));
 }
 
 function removeFormattingContainerElement(formattingContainerElement){
