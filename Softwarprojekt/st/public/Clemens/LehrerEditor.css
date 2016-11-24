@@ -1,0 +1,45 @@
+@CHARSET "ISO-8859-1";
+
+#toolbar {	height: 100vh;
+			background-color:#F4F4F4;
+			
+}
+
+#content { height:100vh;
+}
+
+
+.elements { border: 1px solid grey;
+			height: 100px;
+			margin-top: 20px;
+			margin-bottom: 20px;
+			background-color: yellow;
+			text-align: center;
+			z-index:100;
+			}
+
+
+#lehrplan {border: 1px solid black;
+			background-color: #d0d0d0;
+			width: 100%;
+			height: 90%;
+			overflow: auto;
+			}
+#lehrplan.border{ border: 2px solid black;
+					background-color: #c0c0c0}
+
+.lecture {	height:90%;
+			background-color:white;
+			width:90%;}
+.lecture.border {
+			border: 2px solid black
+}			
+
+.topic {	height:90%;
+			background-color:#f4f1f1;
+			width:90%;}
+
+h2 {text-align:center
+	}
+
+
