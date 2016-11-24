@@ -2,8 +2,8 @@
  * Provides functionality of the html page
  */
 
-var profile = {"userType":"teacher","right":"write"};
-//var profile = {"userType":"student","right":"read"};
+var profile = {"name":"Max","surname":"Mustermann","userType":"teacher","right":"write"};
+//var profile = {"name":"Hanz","surname":"Heinhart","userType":"student","right":"read"};
 
 var domElement = createSchoolmaterialElement(profile, "Schoolmaterial");
 var jsonObject;
@@ -48,7 +48,7 @@ function convertToJson(){
 function insertLectureElement(schoolmaterialElement){
 	
 	var contentElement = schoolmaterialElement.childNodes[1];
-	contentElement.appendChild(createLectureElement(profile, "Lecture-Name"));
+	contentElement.appendChild(createLectureElement(profile, {"name":"Lecture-Name","authorName":null,"authorSurname":null,"date":null}));
 }
 
 function removeLectureElement(lectureElement){

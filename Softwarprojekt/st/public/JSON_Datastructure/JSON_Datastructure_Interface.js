@@ -109,7 +109,7 @@ function json_getSchoolmaterialObject(profile,element){
  * @returns
  */
 
-function createLectureElement(profile, nameFieldContent){
+function createLectureElement(profile, lectureHeaderFieldValues){
 	
 	var lectureElement = document.createElement("div");
 	lectureElement.setAttribute("class","lecture");
@@ -117,12 +117,36 @@ function createLectureElement(profile, nameFieldContent){
 	// lecture head
 	var nameFieldElement = document.createElement("div");
 	
+	
+	var authorValue;
+	if(lectureHeaderFieldValues.authorName === null && lectureHeaderFieldValues.authorSurname === null){
+		authorValue = profile.name + " " + profile.surname;
+	}else{
+		authorValue = lectureHeaderFieldValues.authorName + " " + lectureHeaderFieldValues.authorSurname;
+	}
+	
+	var dateValue;
+	if(lectureHeaderFieldValues.date === null){
+		dateValue = new Date().toLocaleDateString();
+	}else{
+		dateValue = lectureHeaderFieldValues.date;
+	}
+	
+	var authorField = document.createElement("span");
+	authorField.appendChild(document.createTextNode("Author: " + authorValue));
+	var dateField = document.createElement("span");
+	dateField.appendChild(document.createTextNode("Date: " + dateValue));
+	
 	if(profile.userType === "teacher"){
-		nameFieldElement.appendChild(getInputElement({"type":"input","value":nameFieldContent,"width":"100px"}));
+		nameFieldElement.appendChild(getInputElement({"type":"input","value":lectureHeaderFieldValues.name,"width":"100px"}));
 		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Topic","onclick":"insertTopicElement(this.parentNode.parentNode)"}));
+		nameFieldElement.appendChild(authorField);
+		nameFieldElement.appendChild(dateField);
 		nameFieldElement.appendChild(getInputElement({"type":"button","value":"X","onclick":"removeLectureElement(this.parentNode.parentNode)"}));
 	}else{
-		nameFieldElement.appendChild(document.createTextNode(nameFieldContent));
+		nameFieldElement.appendChild(document.createTextNode(lectureHeaderFieldValues.name));
+		nameFieldElement.appendChild(authorField);
+		nameFieldElement.appendChild(dateField);
 	}
 	
 	lectureElement.appendChild(nameFieldElement);
@@ -136,7 +160,7 @@ function createLectureElement(profile, nameFieldContent){
 
 function dom_getLectureElement(profile,object){
 	
-	var lectureElement = createLectureElement(profile, object.name);
+	var lectureElement = createLectureElement(profile, object);
 	
 	var contentElement = lectureElement.childNodes[1];
 	var childObjects = object.content;
@@ -151,14 +175,21 @@ function dom_getLectureElement(profile,object){
 function json_getLectureObject(profile,element){
 	
 	var lectureNameValue;
+	var lectureHeaderElement = element.childNodes[0];
 	
 	if(profile.right === "read"){
-		lectureNameValue = element.childNodes[0].childNodes[0].nodeValue;
+		lectureNameValue = lectureHeaderElement.childNodes[0].nodeValue;
 	}else{
-		lectureNameValue = element.childNodes[0].childNodes[0].value;
+		lectureNameValue = lectureHeaderElement.childNodes[0].value;
 	}
 	
 	var lectureObject = new Lecture(lectureNameValue);
+	
+	lectureObject.authorName = profile.name;
+	lectureObject.authorSurname = profile.surname;
+	
+	lectureObject.date = new Date().toLocaleDateString();
+	
 	
 	var childElements = element.childNodes[1].childNodes;
 	for(var i = 0; i < childElements.length; i++){
@@ -311,7 +342,7 @@ function createChapterElement(profile, nameFieldContent){
 	
 	if(profile.userType === "teacher"){
 		nameFieldElement.appendChild(getInputElement({"type":"input","value":nameFieldContent,"width":"100px"}));
-		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
+		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Sub-Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
 		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Formatting Container","onclick":"insertFormattingContainerElement(this.parentNode.parentNode)"}));
 		nameFieldElement.appendChild(getInputElement({"type":"button","value":"X","onclick":"removeChapterElement(this.parentNode.parentNode)"}));
 	}else{

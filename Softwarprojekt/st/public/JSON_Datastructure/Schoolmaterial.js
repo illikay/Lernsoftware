@@ -34,6 +34,9 @@ function Lecture(name){
 	
 	this.type = "lecture";
 	this.name = name;
+	this.authorName = null;
+	this.authorSurname = null;
+	this.date = null;
 	this.content = [];
 }
 

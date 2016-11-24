@@ -15,7 +15,7 @@
 
 .schoolmaterial > div:first-child,.lecture > div:first-child,.topic > div:first-child,.chapter > div:first-child,.formattingContainer > div:first-child{
     
-    width:500px;
+    width:600px;
 }
 
 .schoolmaterial > div:first-child{
@@ -57,4 +57,8 @@
     
     background-color:#00ffff;
     border-color:#007777;
+}
+
+.schoolmaterial > div:first-child > span,.lecture > div:first-child > span,.topic > div:first-child > span,.topicContent > div:first-child > span,.topicExercises > div:first-child > span,.topicSolutions > div:first-child > span,.chapter > div:first-child > span,.formattingContainer > div:first-child > span{
+    padding-left:5px;
 }
