@@ -32,8 +32,10 @@ function Schoolmaterial(name){
 
 function Lecture(name){
 	
-	this.type = "lecture";
+	this.type = "exam";
 	this.name = name;
+	this.lecture = null;
+	this.className = null;
 	this.authorName = null;
 	this.authorSurname = null;
 	this.date = null;

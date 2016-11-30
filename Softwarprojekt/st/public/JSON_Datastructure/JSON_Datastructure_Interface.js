@@ -13,7 +13,7 @@ function jsonToDom(profile,object){
 	
 	if(object.type === "schoolmaterial"){
 		element = dom_getSchoolmaterialElement(profile, object);
-	}else if(object.type === "lecture"){
+	}else if(object.type === "exam"){
 		element = dom_getLectureElement(profile, object);
 	}else if(object.type === "topic"){
 		element = dom_getTopicElement(profile,object);
@@ -35,7 +35,7 @@ function domToJson(profile,element){
 	var classValue = element.getAttribute("class");
 	if(classValue === "schoolmaterial"){
 		object = json_getSchoolmaterialObject(profile,element);
-	}else if(classValue === "lecture"){
+	}else if(classValue === "exam"){
 		object = json_getLectureObject(profile,element);
 	}else if(classValue === "topic"){
 		object = json_getTopicObject(profile,element);
@@ -65,7 +65,7 @@ function createSchoolmaterialElement(profile,nameFieldContent){
 	
 	nameFieldElement.appendChild(document.createTextNode(nameFieldContent));
 	if(profile.userType === "teacher"){
-		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Lecture","onclick":"insertLectureElement(this.parentNode.parentNode)"}));
+		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Exam","onclick":"insertLectureElement(this.parentNode.parentNode)"}));
 	}
 	schoolmaterialElement.appendChild(nameFieldElement);
 	
@@ -103,7 +103,7 @@ function json_getSchoolmaterialObject(profile,element){
 
 /**
  * #######################################################################
- * Lecture
+ * Exam
  * @param profile
  * @param nameFieldContent
  * @returns
@@ -112,7 +112,7 @@ function json_getSchoolmaterialObject(profile,element){
 function createLectureElement(profile, lectureHeaderFieldValues){
 	
 	var lectureElement = document.createElement("div");
-	lectureElement.setAttribute("class","lecture");
+	lectureElement.setAttribute("class","exam");
 	
 	// lecture head
 	var nameFieldElement = document.createElement("div");
@@ -138,7 +138,7 @@ function createLectureElement(profile, lectureHeaderFieldValues){
 	dateField.appendChild(document.createTextNode("Date: " + dateValue));
 	
 	if(profile.userType === "teacher"){
-		nameFieldElement.appendChild(getInputElement({"type":"input","value":lectureHeaderFieldValues.name,"width":"100px"}));
+		nameFieldElement.appendChild(getInputElement({"type":"text","value":lectureHeaderFieldValues.name,"width":"100px"}));
 		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Topic","onclick":"insertTopicElement(this.parentNode.parentNode)"}));
 		nameFieldElement.appendChild(authorField);
 		nameFieldElement.appendChild(dateField);
@@ -419,6 +419,8 @@ function createFormattingContainerElement(profile,styleProperties){
 	
 	var textAreaElement = document.createElement("textarea");
 	textAreaElement.setAttribute("style","height:" + styleProperties.height + "; width:" + styleProperties.width + "; color:" + styleProperties.color + "; background-color:" + styleProperties.backgroundColor + "; font-size:" + styleProperties.fontSize + "; font-weight:" + styleProperties.fontWeight + "; font-family:" + styleProperties.fontFamily + "; resize:none;");
+	
+	//tinymce.init({"selector":textAreaElement});
 	
 	if(profile.userType === "teacher"){
 		

@@ -10,6 +10,7 @@ var jsonObject;
 
 window.onload = function(){
 	document.getElementById("dataStructure_DOM").appendChild(domElement);
+	tinymce.init({"selector":"textarea"});
 }
 
 function convertToDom(){
@@ -48,7 +49,7 @@ function convertToJson(){
 function insertLectureElement(schoolmaterialElement){
 	
 	var contentElement = schoolmaterialElement.childNodes[1];
-	contentElement.appendChild(createLectureElement(profile, {"name":"Lecture-Name","authorName":null,"authorSurname":null,"date":null}));
+	contentElement.appendChild(createLectureElement(profile, {"name":"Exam-Name","authorName":null,"authorSurname":null,"date":null}));
 }
 
 function removeLectureElement(lectureElement){

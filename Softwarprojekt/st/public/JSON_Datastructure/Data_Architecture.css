@@ -1,11 +1,11 @@
 
-.schoolmaterial,.lecture,.topic,.topicContent,.topicExercises,.topicSolutions,.chapter,.formattingContainer{
+.schoolmaterial,.exam,.topic,.topicContent,.topicExercises,.topicSolutions,.chapter,.formattingContainer{
     
     position:relative;
     left:40px;
 }
 
-.schoolmaterial > div:first-child,.lecture > div:first-child,.topic > div:first-child,.topicContent > div:first-child,.topicExercises > div:first-child,.topicSolutions > div:first-child,.chapter > div:first-child,.formattingContainer > div:first-child{
+.schoolmaterial > div:first-child,.exam > div:first-child,.topic > div:first-child,.topicContent > div:first-child,.topicExercises > div:first-child,.topicSolutions > div:first-child,.chapter > div:first-child,.formattingContainer > div:first-child{
     
     height:30px;
     
@@ -13,7 +13,7 @@
     border-style:solid;
 }
 
-.schoolmaterial > div:first-child,.lecture > div:first-child,.topic > div:first-child,.chapter > div:first-child,.formattingContainer > div:first-child{
+.schoolmaterial > div:first-child,.exam > div:first-child,.topic > div:first-child,.chapter > div:first-child,.formattingContainer > div:first-child{
     
     width:600px;
 }
@@ -24,7 +24,7 @@
     border-color:#000000;
 }
 
-.lecture > div:first-child{
+.exam > div:first-child{
     
     background-color:#ff0000;
     border-color:#770000;
@@ -59,6 +59,6 @@
     border-color:#007777;
 }
 
-.schoolmaterial > div:first-child > span,.lecture > div:first-child > span,.topic > div:first-child > span,.topicContent > div:first-child > span,.topicExercises > div:first-child > span,.topicSolutions > div:first-child > span,.chapter > div:first-child > span,.formattingContainer > div:first-child > span{
+.schoolmaterial > div:first-child > span,.exam > div:first-child > span,.topic > div:first-child > span,.topicContent > div:first-child > span,.topicExercises > div:first-child > span,.topicSolutions > div:first-child > span,.chapter > div:first-child > span,.formattingContainer > div:first-child > span{
     padding-left:5px;
 }
