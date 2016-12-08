@@ -2,8 +2,8 @@
  * Provides functionality of the html page
  */
 
-var profile = {"name":"Max","surname":"Mustermann","userType":"teacher","right":"write"};
-//var profile = {"name":"Hanz","surname":"Heinhart","userType":"student","right":"read"};
+var profile = {"name":"Max","surname":"Mustermann","password":"teacher","userType":"teacher","right":"write"};
+//var profile = {"name":"Hanz","surname":"Heinhart","password":"student","userType":"student","right":"read"};
 
 var domElement = createSchoolmaterialElement(profile, "Schoolmaterial");
 var jsonObject;
@@ -43,19 +43,19 @@ function convertToJson(){
 
 /**
  * ########################################################################
- * Lecture
+ * Exam
  * @param chapterElement
  */
-function insertLectureElement(schoolmaterialElement){
+function insertExamElement(schoolmaterialElement){
 	
 	var contentElement = schoolmaterialElement.childNodes[1];
-	contentElement.appendChild(createLectureElement(profile, {"name":"Exam-Name","authorName":null,"authorSurname":null,"date":null}));
+	contentElement.appendChild(createExamElement(profile, {"name":"Exam-Name","authorName":null,"authorSurname":null,"date":null}));
 }
 
-function removeLectureElement(lectureElement){
+function removeExamElement(examElement){
 	
-	var schoolmaterialContentElement = lectureElement.parentNode;
-	schoolmaterialContentElement.removeChild(lectureElement);
+	var schoolmaterialContentElement = examElement.parentNode;
+	schoolmaterialContentElement.removeChild(examElement);
 }
 
 /**
@@ -63,9 +63,9 @@ function removeLectureElement(lectureElement){
  * Topic
  * @param chapterElement
  */
-function insertTopicElement(lectureElement){
+function insertTopicElement(examElement){
 	
-	var lectureContentElement = lectureElement.childNodes[1];
+	var lectureContentElement = examElement.childNodes[1];
 	lectureContentElement.appendChild(createTopicElement(profile, "Topic-Name"));
 }
 

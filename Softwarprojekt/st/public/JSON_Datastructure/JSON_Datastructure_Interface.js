@@ -36,7 +36,7 @@ function domToJson(profile,element){
 	if(classValue === "schoolmaterial"){
 		object = json_getSchoolmaterialObject(profile,element);
 	}else if(classValue === "exam"){
-		object = json_getLectureObject(profile,element);
+		object = json_getExamObject(profile,element);
 	}else if(classValue === "topic"){
 		object = json_getTopicObject(profile,element);
 	}else if(classValue === "chapter"){
@@ -65,7 +65,7 @@ function createSchoolmaterialElement(profile,nameFieldContent){
 	
 	nameFieldElement.appendChild(document.createTextNode(nameFieldContent));
 	if(profile.userType === "teacher"){
-		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Exam","onclick":"insertLectureElement(this.parentNode.parentNode)"}));
+		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Exam","onclick":"insertExamElement(this.parentNode.parentNode)"}));
 	}
 	schoolmaterialElement.appendChild(nameFieldElement);
 	
@@ -83,7 +83,7 @@ function dom_getSchoolmaterialElement(profile,object){
 	var contentElement = schoolmaterialElement.childNodes[1];
 	var childObjects = object.content;
 	for(var i = 0; i < childObjects.length; i++){
-		contentElement.appendChild(dom_getLectureElement(profile, childObjects[i]));
+		contentElement.appendChild(dom_getExamElement(profile, childObjects[i]));
 	}
 	
 	return schoolmaterialElement;
@@ -95,7 +95,7 @@ function json_getSchoolmaterialObject(profile,element){
 	
 	var childElements = element.childNodes[1].childNodes;
 	for(var i = 0; i < childElements.length; i++){
-		schoolmaterialObject.content.push(json_getLectureObject(profile,childElements[i]));
+		schoolmaterialObject.content.push(json_getExamObject(profile,childElements[i]));
 	}
 	
 	return schoolmaterialObject;
@@ -109,7 +109,11 @@ function json_getSchoolmaterialObject(profile,element){
  * @returns
  */
 
-function createLectureElement(profile, lectureHeaderFieldValues){
+function createExamElementent(element){
+	return element.childNodes[0].childNodes[0];
+}
+
+function createExamElement(profile, lectureHeaderFieldValues){
 	
 	var lectureElement = document.createElement("div");
 	lectureElement.setAttribute("class","exam");
@@ -117,7 +121,8 @@ function createLectureElement(profile, lectureHeaderFieldValues){
 	// lecture head
 	var nameFieldElement = document.createElement("div");
 	
-	
+	// Attribute Elements
+	// author
 	var authorValue;
 	if(lectureHeaderFieldValues.authorName === null && lectureHeaderFieldValues.authorSurname === null){
 		authorValue = profile.name + " " + profile.surname;
@@ -125,6 +130,7 @@ function createLectureElement(profile, lectureHeaderFieldValues){
 		authorValue = lectureHeaderFieldValues.authorName + " " + lectureHeaderFieldValues.authorSurname;
 	}
 	
+	// date
 	var dateValue;
 	if(lectureHeaderFieldValues.date === null){
 		dateValue = new Date().toLocaleDateString();
@@ -142,7 +148,7 @@ function createLectureElement(profile, lectureHeaderFieldValues){
 		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Topic","onclick":"insertTopicElement(this.parentNode.parentNode)"}));
 		nameFieldElement.appendChild(authorField);
 		nameFieldElement.appendChild(dateField);
-		nameFieldElement.appendChild(getInputElement({"type":"button","value":"X","onclick":"removeLectureElement(this.parentNode.parentNode)"}));
+		nameFieldElement.appendChild(getInputElement({"type":"button","value":"X","onclick":"removeExamElement(this.parentNode.parentNode)"}));
 	}else{
 		nameFieldElement.appendChild(document.createTextNode(lectureHeaderFieldValues.name));
 		nameFieldElement.appendChild(authorField);
@@ -158,45 +164,47 @@ function createLectureElement(profile, lectureHeaderFieldValues){
 	return lectureElement;
 }
 
-function dom_getLectureElement(profile,object){
+
+
+function dom_getExamElement(profile,object){
 	
-	var lectureElement = createLectureElement(profile, object);
+	var examElement = createExamElement(profile, object);
 	
-	var contentElement = lectureElement.childNodes[1];
+	var contentElement = examElement.childNodes[1];
 	var childObjects = object.content;
 	for(var i = 0; i < childObjects.length; i++){
 		contentElement.appendChild(dom_getTopicElement(profile,childObjects[i]));
 	}
-	lectureElement.appendChild(contentElement);
+	examElement.appendChild(contentElement);
 	
-	return lectureElement;
+	return examElement;
 }
 
-function json_getLectureObject(profile,element){
+function json_getExamObject(profile,element){
 	
-	var lectureNameValue;
-	var lectureHeaderElement = element.childNodes[0];
+	var examNameValue;
+	var examHeaderElement = element.childNodes[0];
 	
 	if(profile.right === "read"){
-		lectureNameValue = lectureHeaderElement.childNodes[0].nodeValue;
+		examNameValue = examHeaderElement.childNodes[0].nodeValue;
 	}else{
-		lectureNameValue = lectureHeaderElement.childNodes[0].value;
+		examNameValue = examHeaderElement.childNodes[0].value;
 	}
 	
-	var lectureObject = new Lecture(lectureNameValue);
+	var examObject = new Exam(examNameValue);
 	
-	lectureObject.authorName = profile.name;
-	lectureObject.authorSurname = profile.surname;
+	examObject.authorName = profile.name;
+	examObject.authorSurname = profile.surname;
 	
-	lectureObject.date = new Date().toLocaleDateString();
+	examObject.date = new Date().toLocaleDateString();
 	
 	
 	var childElements = element.childNodes[1].childNodes;
 	for(var i = 0; i < childElements.length; i++){
-		lectureObject.content.push(json_getTopicObject(profile,childElements[i]));
+		examObject.content.push(json_getTopicObject(profile,childElements[i]));
 	}
 	
-	return lectureObject;
+	return examObject;
 }
 
 /**
@@ -345,6 +353,7 @@ function createChapterElement(profile, nameFieldContent){
 		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Sub-Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
 		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Formatting Container","onclick":"insertFormattingContainerElement(this.parentNode.parentNode)"}));
 		nameFieldElement.appendChild(getInputElement({"type":"button","value":"X","onclick":"removeChapterElement(this.parentNode.parentNode)"}));
+		nameFieldElement.appendChild(getInputElement({"type":"file","value":"upload file","onchange":"uploadFile(this)","multiple":true}));
 	}else{
 		nameFieldElement.appendChild(document.createTextNode(nameFieldContent));
 	}

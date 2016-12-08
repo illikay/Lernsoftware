@@ -30,7 +30,7 @@ function Schoolmaterial(name){
 	this.content = [];
 }
 
-function Lecture(name){
+function Exam(name){
 	
 	this.type = "exam";
 	this.name = name;
@@ -84,20 +84,4 @@ function Link(){
 	this.type = "link";
 	this.reference = null;
 	this.content = [];
-}
-
-
-// Erzeugen eines JS-Objekts ohne Konstruktor
-function createChapter(name,author,date,content){
-	
-	return {
-		 "type":"chapter"
-		,"name":name
-		,"author":author
-		,"date":date
-		,"content":content
-		
-		,"setName":function(name){this.name = name;}
-		,"getName":function(){return name;}
-	}
 }

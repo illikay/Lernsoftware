@@ -23,5 +23,13 @@ function getInputElement(properties){
 		inputElement.setAttribute("onclick",properties.onclick);
 	}
 	
+	if(properties.hasOwnProperty("onchange")){
+		inputElement.setAttribute("onchange",properties.onchange);
+	}
+	
+	if(properties.hasOwnProperty("multiple")){
+		inputElement.setAttribute("multiple",properties.multiple);
+	}
+	
 	return inputElement;
 }
