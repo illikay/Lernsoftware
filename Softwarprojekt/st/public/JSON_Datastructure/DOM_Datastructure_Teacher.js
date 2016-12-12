@@ -1,4 +1,6 @@
 /**
+ * Teacher - DOM-Structure:
+ * 
  * Provides methods for
  * 	-> converting
  * 			- HTML-Structure to JSON-Objects
@@ -12,9 +14,9 @@ function jsonToDom(profile,object){
 	var element;
 	
 	if(object.type === "schoolmaterial"){
-		element = dom_getSchoolmaterialElement(profile, object);
+		element = dom_getSchoolmaterialElement(profile,object);
 	}else if(object.type === "exam"){
-		element = dom_getLectureElement(profile, object);
+		element = dom_getLectureElement(profile,object);
 	}else if(object.type === "topic"){
 		element = dom_getTopicElement(profile,object);
 	}else if(object.type === "chapter"){
@@ -104,9 +106,12 @@ function json_getSchoolmaterialObject(profile,element){
 /**
  * #######################################################################
  * Exam
- * @param profile
- * @param nameFieldContent
- * @returns
+ * 
+ * <div class="exam">
+ * 		<div>
+ * 		</div>
+ * 		<
+ * </div>
  */
 
 function createExamElementent(element){
