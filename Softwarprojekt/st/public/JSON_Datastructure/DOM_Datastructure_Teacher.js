@@ -123,9 +123,6 @@ function createExamElement(profile, lectureHeaderFieldValues){
 	var lectureElement = document.createElement("div");
 	lectureElement.setAttribute("class","exam");
 	
-	lectureElement.setAttribute("data-drop","true");
-	lectureElement.setAttribute("jqyoui-droppable","{ondrop:'createOnDrop()'}");
-	
 	// lecture head
 	var nameFieldElement = document.createElement("div");
 	
@@ -167,6 +164,9 @@ function createExamElement(profile, lectureHeaderFieldValues){
 	
 	// lecture content
 	var contentElement = document.createElement("div");
+	contentElement.setAttribute("data-jqyoui-options","{accept:'.topic'}");
+	contentElement.setAttribute("data-drop","true");
+	contentElement.setAttribute("jqyoui-droppable","{ondrop:'createOnDrop()'}");
 	lectureElement.appendChild(contentElement);
 	
 	return lectureElement;
