@@ -58,6 +58,10 @@ function removeExamElement(examElement){
 	schoolmaterialContentElement.removeChild(examElement);
 }
 
+function dropAction(examElement,contentElement){
+	examElement.childNodes[1].appendChild(contentElement);
+}
+
 /**
  * ########################################################################
  * Topic

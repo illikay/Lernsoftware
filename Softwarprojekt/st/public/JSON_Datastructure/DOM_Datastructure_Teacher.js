@@ -123,6 +123,9 @@ function createExamElement(profile, lectureHeaderFieldValues){
 	var lectureElement = document.createElement("div");
 	lectureElement.setAttribute("class","exam");
 	
+	lectureElement.setAttribute("data-drop","true");
+	lectureElement.setAttribute("jqyoui-droppable","{ondrop:'createOnDrop()'}");
+	
 	// lecture head
 	var nameFieldElement = document.createElement("div");
 	
