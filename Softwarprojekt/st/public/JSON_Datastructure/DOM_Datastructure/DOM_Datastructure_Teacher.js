@@ -106,12 +106,6 @@ function json_getSchoolmaterialObject(profile,element){
 /**
  * #######################################################################
  * Exam
- * 
- * <div class="exam">
- * 		<div>
- * 		</div>
- * 		<
- * </div>
  */
 
 function createExamElementent(element){

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>DOM_Datastructure_View</title>
+	<link type="text/css" rel="stylesheet" href="DOM_Datastructure_View.css">
+	<script type="text/javascript" src="../Helpers.js"></script>
+	<script type="text/javascript" src="../Schoolmaterial.js"></script>
+	<script type="text/javascript" src="DOM_Datastructure_Teacher.js"></script>
+	<script type="text/javascript" src="DOM_Datastructure_Student.js"></script>
+	<script type="text/javascript" src="../Data_Architecture.js"></script>
+	<script type="text/javascript" src="DOM_Datastructure_View.js"></script>
+</head>
+<body>
+
+<div id="rootContainer">
+	<div id="controllerContainer">
+		<div id="controllerContainer_header">
+			<span>DOM-Elements</span>
+		</div>
+		<div id="controllerContainer_content">
+			<div id="controllerContainer_contentArea">
+			</div>
+			<div id="controllerContainer_contentRefresh">
+				<input type="button" value="Refresh" onclick="refreshDomRepresentation()"/>
+			</div>
+		</div>
+	</div>
+
+	<div id="viewContainer">
+		<div id="viewContainer_header">
+			<span>Element-View</span>
+		</div>
+		<div id="viewContainer_content">
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
