@@ -33,20 +33,21 @@ function Schoolmaterial(name){
 function Exam(){
 	
 	this.type = "exam";
+	this.id = -1;
 	this.name = "";
 	this.lecture = "";
 	this.className = "";
-	this.authorName = "";
-	this.authorSurname = "";
-	this.date = null;
+	this.author = "";
+	this.lastChange = null;
+	this.examDate = null;
 	this.content = [];
 }
 
 function Topic(name){
 	
 	this.type = "topic";
+	this.id = -1;
 	this.name = name;
-	
 	this.content = [];
 	this.exercises = [];
 	this.solutions = [];
@@ -55,16 +56,17 @@ function Topic(name){
 function Chapter(name){
 	
 	this.type = "chapter";
+	this.id = -1;
 	this.name = name;
-	this.author = null;
-	this.date = null;
-	this.id = null;
+	this.exam = "";
+	this.workTime = "";
 	this.content = [];
 }
 
 function FormattingContainer(){
 	
 	this.type = "formattingContainer";
+	this.id = -1;
 	//this.name = name;
 	
 	this.color = "#000000";
