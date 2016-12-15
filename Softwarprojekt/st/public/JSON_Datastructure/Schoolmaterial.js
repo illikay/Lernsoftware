@@ -30,14 +30,14 @@ function Schoolmaterial(name){
 	this.content = [];
 }
 
-function Exam(name){
+function Exam(){
 	
 	this.type = "exam";
-	this.name = name;
-	this.lecture = null;
-	this.className = null;
-	this.authorName = null;
-	this.authorSurname = null;
+	this.name = "";
+	this.lecture = "";
+	this.className = "";
+	this.authorName = "";
+	this.authorSurname = "";
 	this.date = null;
 	this.content = [];
 }

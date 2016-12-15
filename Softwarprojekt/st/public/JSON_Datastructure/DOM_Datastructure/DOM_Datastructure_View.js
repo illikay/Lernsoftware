@@ -1,6 +1,7 @@
 /**
  * Functions for supporting functionality of DOM_Datastructure_View.html file:
  */
+var profile = {"name":"Max","surname":"Mustermann","password":"teacher","userType":"teacher","right":"write"};
 
 var domElements;
 
@@ -16,12 +17,37 @@ window.onload = function(){
 
 function refreshDomRepresentation(){
 	
+	/*var headElement = document.head;
+	
+	var scriptElements = headElement.getElementsByTagName("script");
+	var lastScriptElement = scriptElements[scriptElements.length-1];
+	while(2 < scriptElements.length){
+		headElement.removeChild(lastScriptElement.previousSibling);
+	}
+	
+	refreshScriptElements(0, headElement, scriptElements);*/
 	domElements = {
-			 "Exam": getDomRepresentation_Element(createExamElement(profile, {"name":"Exam-Name","authorName":null,"authorSurname":null,"date":null}))
+		 	"Exam": getDomRepresentation_Element(createExamElement({"name":"Exam-Name","lecture":"","className":"","authorName":"","authorSurname":"","date":null}))
 			,"Topic": getDomRepresentation_Element(createTopicElement(profile, "Topic-Name"))
 			,"Chapter": getDomRepresentation_Element(createChapterElement(profile, "Chapter-Name"))
 			,"Formatting-Container": getDomRepresentation_Element(createFormattingContainerElement(profile, new FormattingContainer()))
 	};
+}
+
+function refreshScriptElements(index, headElement, scriptElements){
+	alert(index);
+	switch(index){
+		case 0 : headElement.insertBefore(getScriptElement({"filePath":"../Schoolmaterial.js","onloadFunction":refreshScriptElements(index + 1, headElement, scriptElements)}),lastScriptElement); break;
+		case 1 : headElement.insertBefore(getScriptElement({"filePath":"DOM_Datastructure_Teacher.js","onloadFunction":refreshScriptElements(index + 1, headElement, scriptElements)}),lastScriptElement); break;
+		case 2 : headElement.insertBefore(getScriptElement({"filePath":"DOM_Datastructure_Student.js","onloadFunction":refreshScriptElements(index + 1, headElement, scriptElements)}),lastScriptElement); break;
+		case 3 : headElement.insertBefore(getScriptElement({"filePath":"../DataArchitecture.js","onloadFunction":refreshScriptElements(index + 1, headElement, scriptElements)}),lastScriptElement); break;
+		case 4 : domElements = {
+				 	"Exam": getDomRepresentation_Element(createExamElement({"name":"Exam-Name","lecture":"","className":"","authorName":"","authorSurname":"","date":null}))
+					,"Topic": getDomRepresentation_Element(createTopicElement(profile, "Topic-Name"))
+					,"Chapter": getDomRepresentation_Element(createChapterElement(profile, "Chapter-Name"))
+					,"Formatting-Container": getDomRepresentation_Element(createFormattingContainerElement(profile, new FormattingContainer()))
+				}; break;
+	}
 }
 
 function createDomRepresentation(elementName){

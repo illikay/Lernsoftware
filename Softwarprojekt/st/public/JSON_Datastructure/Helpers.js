@@ -33,3 +33,11 @@ function getInputElement(properties){
 	
 	return inputElement;
 }
+
+function getScriptElement(properties){
+	var scriptElement = document.createElement("script");
+	scriptElement.setAttribute("type","text/javascript");
+	scriptElement.onload = properties.onloadFunction;
+	scriptElement.setAttribute("src",properties.filePath);
+	return scriptElement;
+}

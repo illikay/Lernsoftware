@@ -9,44 +9,44 @@
  * 	-> creating single Element-Types
  */
 
-function jsonToDom(profile,object){
+function jsonToDom(object){
 	
 	var element;
 	
 	if(object.type === "schoolmaterial"){
-		element = dom_getSchoolmaterialElement(profile,object);
+		element = dom_getSchoolmaterialElement(object);
 	}else if(object.type === "exam"){
-		element = dom_getLectureElement(profile,object);
+		element = dom_getLectureElement(object);
 	}else if(object.type === "topic"){
-		element = dom_getTopicElement(profile,object);
+		element = dom_getTopicElement(object);
 	}else if(object.type === "chapter"){
-		element = dom_getChapterElement(profile,object);
+		element = dom_getChapterElement(object);
 	}else if(object.type === "formattingContainer"){
-		element = dom_getFormattingContainerElement(profile,object);
+		element = dom_getFormattingContainerElement(object);
 	}else if(object.type === "link"){
-		element = dom_getLinkElement(profile,object);
+		element = dom_getLinkElement(object);
 	}
 	
 	return element;
 }
 
-function domToJson(profile,element){
+function domToJson(element){
 	
 	var object;
 	
 	var classValue = element.getAttribute("class");
 	if(classValue === "schoolmaterial"){
-		object = json_getSchoolmaterialObject(profile,element);
+		object = json_getSchoolmaterialObject(element);
 	}else if(classValue === "exam"){
-		object = json_getExamObject(profile,element);
+		object = json_getExamObject(element);
 	}else if(classValue === "topic"){
-		object = json_getTopicObject(profile,element);
+		object = json_getTopicObject(element);
 	}else if(classValue === "chapter"){
-		object = json_getChapterObject(profile,element);
+		object = json_getChapterObject(element);
 	}else if(classValue === "formattingContainer"){
-		object = json_getFormattingContainerObject(profile,element);
+		object = json_getFormattingContainerObject(element);
 	}else if(classValue === "link"){
-		object = json_getLinkObject(profile,element);
+		object = json_getLinkObject(element);
 	}
 	
 	return object;
@@ -108,102 +108,134 @@ function json_getSchoolmaterialObject(profile,element){
  * Exam
  */
 
-function createExamElementent(element){
-	return element.childNodes[0].childNodes[0];
-}
-
-function createExamElement(profile, lectureHeaderFieldValues){
+function createExamElement(lectureHeaderFieldValues){
 	
-	var lectureElement = document.createElement("div");
-	lectureElement.setAttribute("class","exam");
+	var examElement = document.createElement("div");
+	examElement.setAttribute("class","exam");
 	
 	// lecture head
 	var nameFieldElement = document.createElement("div");
 	
-	// Attribute Elements
+	// lecture attribute elements ###############################################################################
+	
+	// name
+	var examNameField = document.createElement("span");
+	examNameField.setAttribute("id","examName");
+	examNameField.appendChild(document.createTextNode("Exam-Name: "));
+	examNameField.appendChild(getInputElement({"type":"text","value":lectureHeaderFieldValues.name,"width":"100px"}));
+	nameFieldElement.appendChild(examNameField);
+	
+	// lecture notifier
+	var lectureNotifierField = document.createElement("span");
+	lectureNotifierField.setAttribute("id","examLectureNotifier");
+	lectureNotifierField.appendChild(document.createTextNode("Lecture: "));
+	lectureNotifierField.appendChild(getInputElement({"type":"text","value":lectureHeaderFieldValues.lecture,"width":"100px"}));
+	nameFieldElement.appendChild(lectureNotifierField);
+	
+	// class name
+	var classNameField = document.createElement("span");
+	classNameField.setAttribute("id","examClassName");
+	classNameField.appendChild(document.createTextNode("Class: "));
+	classNameField.appendChild(getInputElement({"type":"text","value":lectureHeaderFieldValues.className,"width":"100px"}));
+	nameFieldElement.appendChild(classNameField);
+	
 	// author
-	var authorValue;
-	if(lectureHeaderFieldValues.authorName === null && lectureHeaderFieldValues.authorSurname === null){
-		authorValue = profile.name + " " + profile.surname;
-	}else{
-		authorValue = lectureHeaderFieldValues.authorName + " " + lectureHeaderFieldValues.authorSurname;
-	}
+	var authorNameField = document.createElement("span");
+	authorNameField.setAttribute("id","examAuthorName");
+	authorNameField.appendChild(document.createTextNode("Author-Name: "));
+	authorNameField.appendChild(getInputElement({"type":"text","value":lectureHeaderFieldValues.authorName}));
+	nameFieldElement.appendChild(authorNameField);
+	
+	var authorSurnameField = document.createElement("span");
+	authorSurnameField.setAttribute("id","examAuthorSurname");
+	authorSurnameField.appendChild(document.createTextNode("Author-Surname: "));
+	authorSurnameField.appendChild(getInputElement({"type":"text","value":lectureHeaderFieldValues.authorSurname}));
+	nameFieldElement.appendChild(authorSurnameField);
 	
 	// date
+	var dateField = document.createElement("span");
+	dateField.setAttribute("id","examDate");
+	
 	var dateValue;
 	if(lectureHeaderFieldValues.date === null){
 		dateValue = new Date().toLocaleDateString();
 	}else{
 		dateValue = lectureHeaderFieldValues.date;
 	}
+	var dateFieldName = document.createElement("span");
+	dateFieldName.appendChild(document.createTextNode("Date: "));
+	dateField.appendChild(dateFieldName);
+	var dateFieldValue = document.createElement("span");
+	dateFieldValue.appendChild(document.createTextNode(dateValue));
+	dateField.appendChild(dateFieldValue);
 	
-	var authorField = document.createElement("span");
-	authorField.appendChild(document.createTextNode("Author: " + authorValue));
-	var dateField = document.createElement("span");
-	dateField.appendChild(document.createTextNode("Date: " + dateValue));
+	nameFieldElement.appendChild(dateField);
 	
-	if(profile.userType === "teacher"){
-		nameFieldElement.appendChild(getInputElement({"type":"text","value":lectureHeaderFieldValues.name,"width":"100px"}));
-		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Topic","onclick":"insertTopicElement(this.parentNode.parentNode)"}));
-		nameFieldElement.appendChild(authorField);
-		nameFieldElement.appendChild(dateField);
-		nameFieldElement.appendChild(getInputElement({"type":"button","value":"X","onclick":"removeExamElement(this.parentNode.parentNode)"}));
-	}else{
-		nameFieldElement.appendChild(document.createTextNode(lectureHeaderFieldValues.name));
-		nameFieldElement.appendChild(authorField);
-		nameFieldElement.appendChild(dateField);
-	}
+	// create Topic
+	nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Topic","onclick":"insertTopicElement(this.parentNode.parentNode)"}));
 	
-	lectureElement.appendChild(nameFieldElement);
+	// checkbox
+	var visibilityCheckerField = document.createElement("span");
+	visibilityCheckerField.appendChild(document.createTextNode("Visibility: "));
+	visibilityCheckerField.appendChild(getInputElement({"type":"checkbox","onchange":"changeChildElementVisibility(this)"}));
+	nameFieldElement.appendChild(visibilityCheckerField);
 	
-	// lecture content
+	// delete Exam
+	nameFieldElement.appendChild(getInputElement({"type":"button","value":"X","onclick":"removeExamElement(this.parentNode.parentNode)"}));
+	
+	examElement.appendChild(nameFieldElement);
+	
+	
+	// lecture content #################################################################################
+	
 	var contentElement = document.createElement("div");
 	contentElement.setAttribute("data-jqyoui-options","{accept:'.topic'}");
 	contentElement.setAttribute("data-drop","true");
 	contentElement.setAttribute("jqyoui-droppable","{ondrop:'createOnDrop()'}");
-	lectureElement.appendChild(contentElement);
-	
-	return lectureElement;
-}
-
-
-
-function dom_getExamElement(profile,object){
-	
-	var examElement = createExamElement(profile, object);
-	
-	var contentElement = examElement.childNodes[1];
-	var childObjects = object.content;
-	for(var i = 0; i < childObjects.length; i++){
-		contentElement.appendChild(dom_getTopicElement(profile,childObjects[i]));
-	}
 	examElement.appendChild(contentElement);
 	
 	return examElement;
 }
 
-function json_getExamObject(profile,element){
+
+
+function dom_getExamElement(object){
 	
-	var examNameValue;
-	var examHeaderElement = element.childNodes[0];
+	var examElement = createExamElement(object);
 	
-	if(profile.right === "read"){
-		examNameValue = examHeaderElement.childNodes[0].nodeValue;
-	}else{
-		examNameValue = examHeaderElement.childNodes[0].value;
+	var contentElement = examElement.childNodes[1];
+	var childObjects = object.content;
+	for(var i = 0; i < childObjects.length; i++){
+		contentElement.appendChild(dom_getTopicElement(childObjects[i]));
 	}
+	// examElement.appendChild(contentElement);
+	
+	return examElement;
+}
+
+function json_getExamObject(element){
 	
 	var examObject = new Exam(examNameValue);
 	
-	examObject.authorName = profile.name;
-	examObject.authorSurname = profile.surname;
+	var examNameValue;
+	var examHeaderElements = element.childNodes[0].childNodes;
 	
-	examObject.date = new Date().toLocaleDateString();
-	
+	for(var i = 0; i < examHeaderElements.length; i++){
+		var examHeaderElement = examHeaderElements[i];
+		var childNodeID = examHeaderElement.id;
+		switch(childNodeID){
+			case "examName" : examObject.name = examHeaderElement.childNodes[1].value;
+			case "examLectureNotifier" : examObject.lecture = examHeaderElement.childNodes[1].value;
+			case "examClassName" : examObject.className = examHeaderElement.childNodes[1].value;
+			case "examAuthorName" : examObject.authorName = examHeaderElement.childNodes[1].value;
+			case "examAuthorSurname" : examObject.authorSurname = examHeaderElement.childNodes[1].value;
+			case "examDate" : examObject.date = new Date().toLocaleDateString();
+		}
+	}
 	
 	var childElements = element.childNodes[1].childNodes;
 	for(var i = 0; i < childElements.length; i++){
-		examObject.content.push(json_getTopicObject(profile,childElements[i]));
+		examObject.content.push(json_getTopicObject(childElements[i]));
 	}
 	
 	return examObject;
