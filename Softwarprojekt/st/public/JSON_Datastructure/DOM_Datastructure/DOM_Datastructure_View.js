@@ -1,57 +1,63 @@
 /**
  * Functions for supporting functionality of DOM_Datastructure_View.html file:
  */
-var profile = {"name":"Max","surname":"Mustermann","password":"teacher","userType":"teacher","right":"write"};
 
 var domElements;
+var headElement;
+var scriptElements;
+var lastScriptElement;
+var controllerContainerContent;
+var viewContainerContent;
+var initialization = true;
 
 window.onload = function(){
+	
+	headElement = document.head;
+	scriptElements = headElement.getElementsByTagName("script");
+	lastScriptElement = scriptElements[scriptElements.length-1];
+	controllerContainerContent = document.getElementById("controllerContainer_contentArea");
+	viewContainerContent = document.getElementById("viewContainer_content");
+	
 	refreshDomRepresentation();
-	
-	var controllerContainerContent = document.getElementById("controllerContainer_contentArea");
-	
-	for(element in domElements){
-		controllerContainerContent.appendChild(getInputElement({"type":"button","value":element,"onclick":"createDomRepresentation('" + element + "');"}));
-	}
 }
 
 function refreshDomRepresentation(){
 	
-	/*var headElement = document.head;
-	
-	var scriptElements = headElement.getElementsByTagName("script");
-	var lastScriptElement = scriptElements[scriptElements.length-1];
 	while(2 < scriptElements.length){
 		headElement.removeChild(lastScriptElement.previousSibling);
 	}
 	
-	refreshScriptElements(0, headElement, scriptElements);*/
-	domElements = {
-		 	"Exam": getDomRepresentation_Element(createExamElement({"name":"Exam-Name","lecture":"","className":"","authorName":"","authorSurname":"","date":null}))
-			,"Topic": getDomRepresentation_Element(createTopicElement(profile, "Topic-Name"))
-			,"Chapter": getDomRepresentation_Element(createChapterElement(profile, "Chapter-Name"))
-			,"Formatting-Container": getDomRepresentation_Element(createFormattingContainerElement(profile, new FormattingContainer()))
-	};
+	refreshScriptElements(0);
 }
 
-function refreshScriptElements(index, headElement, scriptElements){
-	alert(index);
+function refreshScriptElements(index){
+	
 	switch(index){
-		case 0 : headElement.insertBefore(getScriptElement({"filePath":"../Schoolmaterial.js","onloadFunction":refreshScriptElements(index + 1, headElement, scriptElements)}),lastScriptElement); break;
-		case 1 : headElement.insertBefore(getScriptElement({"filePath":"DOM_Datastructure_Teacher.js","onloadFunction":refreshScriptElements(index + 1, headElement, scriptElements)}),lastScriptElement); break;
-		case 2 : headElement.insertBefore(getScriptElement({"filePath":"DOM_Datastructure_Student.js","onloadFunction":refreshScriptElements(index + 1, headElement, scriptElements)}),lastScriptElement); break;
-		case 3 : headElement.insertBefore(getScriptElement({"filePath":"../DataArchitecture.js","onloadFunction":refreshScriptElements(index + 1, headElement, scriptElements)}),lastScriptElement); break;
-		case 4 : domElements = {
+		case 0 : headElement.insertBefore(getScriptElement({"filePath":"../Schoolmaterial.js","onloadFunction":function(){refreshScriptElements(index + 1);}}),lastScriptElement); break;
+		case 1 : headElement.insertBefore(getScriptElement({"filePath":"DOM_Datastructure_Teacher.js","onloadFunction":function(){refreshScriptElements(index + 1);}}),lastScriptElement); break;
+		case 2 : headElement.insertBefore(getScriptElement({"filePath":"DOM_Datastructure_Student.js","onloadFunction":function(){refreshScriptElements(index + 1);}}),lastScriptElement); break;
+		case 3 : headElement.insertBefore(getScriptElement({"filePath":"../Data_Architecture.js","onloadFunction":function(){refreshScriptElements(index + 1);}}),lastScriptElement); break;
+		case 4 : 
+			domElements = {
 				 	"Exam": getDomRepresentation_Element(createExamElement({"name":"Exam-Name","lecture":"","className":"","authorName":"","authorSurname":"","date":null}))
 					,"Topic": getDomRepresentation_Element(createTopicElement(profile, "Topic-Name"))
 					,"Chapter": getDomRepresentation_Element(createChapterElement(profile, "Chapter-Name"))
 					,"Formatting-Container": getDomRepresentation_Element(createFormattingContainerElement(profile, new FormattingContainer()))
-				}; break;
+			};
+			
+			if(initialization){
+				for(element in domElements){
+					controllerContainerContent.appendChild(getInputElement({"type":"button","value":element,"onclick":"createDomRepresentation('" + element + "');"}));
+				}
+				
+				initialization = false;
+			}
+			
+			break;
 	}
 }
 
 function createDomRepresentation(elementName){
-	var viewContainerContent = document.getElementById("viewContainer_content");
 	
 	while(viewContainerContent.firstChild){
 		viewContainerContent.removeChild(viewContainerContent.firstChild);
