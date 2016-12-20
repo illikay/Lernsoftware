@@ -49,7 +49,7 @@ function convertToJson(){
 function insertExamElement(schoolmaterialElement){
 	
 	var contentElement = schoolmaterialElement.childNodes[1];
-	contentElement.appendChild(createExamElement({"name":"Exam-Name","lecture":"","className":"","authorName":"","authorSurname":"","date":null}));
+	contentElement.appendChild(createExamElement({}));
 }
 
 function removeExamElement(examElement){
@@ -70,7 +70,7 @@ function dropAction(examElement,contentElement){
 function insertTopicElement(examElement){
 	
 	var lectureContentElement = examElement.childNodes[1];
-	lectureContentElement.appendChild(createTopicElement(profile, "Topic-Name"));
+	lectureContentElement.appendChild(createTopicElement(profile));
 }
 
 function removeTopicElement(topicElement){

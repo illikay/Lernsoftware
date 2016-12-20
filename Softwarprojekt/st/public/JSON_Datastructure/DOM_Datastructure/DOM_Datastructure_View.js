@@ -39,8 +39,8 @@ function refreshScriptElements(index){
 		case 3 : headElement.insertBefore(getScriptElement({"filePath":"../Data_Architecture.js","onloadFunction":function(){refreshScriptElements(index + 1);}}),lastScriptElement); break;
 		case 4 : 
 			domElements = {
-				 	"Exam": getDomRepresentation_Element(createExamElement({"name":"Exam-Name","lecture":"","className":"","authorName":"","authorSurname":"","date":null}))
-					,"Topic": getDomRepresentation_Element(createTopicElement(profile, "Topic-Name"))
+				 	"Exam": getDomRepresentation_Element(createExamElement({}))
+					,"Topic": getDomRepresentation_Element(createTopicElement(profile))
 					,"Chapter": getDomRepresentation_Element(createChapterElement(profile, "Chapter-Name"))
 					,"Formatting-Container": getDomRepresentation_Element(createFormattingContainerElement(profile, new FormattingContainer()))
 			};
