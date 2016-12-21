@@ -40,9 +40,9 @@ function refreshScriptElements(index){
 		case 4 : 
 			domElements = {
 				 	"Exam": getDomRepresentation_Element(createExamElement({}))
-					,"Topic": getDomRepresentation_Element(createTopicElement(profile))
-					,"Chapter": getDomRepresentation_Element(createChapterElement(profile, "Chapter-Name"))
-					,"Formatting-Container": getDomRepresentation_Element(createFormattingContainerElement(profile, new FormattingContainer()))
+					,"Topic": getDomRepresentation_Element(createTopicElement())
+					,"Chapter": getDomRepresentation_Element(createChapterElement({}))
+					,"Formatting-Container": getDomRepresentation_Element(createFormattingContainerElement(new FormattingContainer()))
 			};
 			
 			if(initialization){

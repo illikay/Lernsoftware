@@ -1,11 +1,11 @@
 /**
- * Provides functionality of the html page
+ * Provides functionality for Data_Architecture.html
  */
-var profile = {"name":"Max","surname":"Mustermann","password":"teacher","userType":"teacher","right":"write"};
 
-//var profile = {"name":"Hanz","surname":"Heinhart","password":"student","userType":"student","right":"read"};
+// var profile = {"name":"Max","surname":"Mustermann","password":"teacher","userType":"teacher","right":"write"};
+// var profile = {"name":"Hanz","surname":"Heinhart","password":"student","userType":"student","right":"read"};
 
-var domElement = createSchoolmaterialElement(profile, "Schoolmaterial");
+var domElement = createSchoolmaterialElement("Schoolmaterial");
 var jsonObject;
 
 window.onload = function(){
@@ -18,7 +18,7 @@ function convertToDom(){
 	var jsonString = document.getElementsByTagName("textarea")[0].value;
 	jsonObject = JSON.parse(jsonString);
 	
-	domElement = jsonToDom(profile, jsonObject);
+	domElement = jsonToDom(jsonObject);
 	
 	var domStructureContainer = document.getElementById("dataStructure_DOM");
 	while(domStructureContainer.firstChild){
@@ -29,7 +29,7 @@ function convertToDom(){
 
 function convertToJson(){
 	
-	jsonObject = domToJson(profile,domElement);
+	jsonObject = domToJson(domElement);
 	
 	var jsonTextArea = document.getElementsByTagName("textarea")[0];
 	var jsonTextNode = document.createTextNode(JSON.stringify(jsonObject));
@@ -70,7 +70,7 @@ function dropAction(examElement,contentElement){
 function insertTopicElement(examElement){
 	
 	var lectureContentElement = examElement.childNodes[1];
-	lectureContentElement.appendChild(createTopicElement(profile));
+	lectureContentElement.appendChild(createTopicElement());
 }
 
 function removeTopicElement(topicElement){
@@ -87,7 +87,7 @@ function removeTopicElement(topicElement){
 function insertChapterElement(element){
 	
 	var contentElement = element.childNodes[1];
-	contentElement.appendChild(createChapterElement(profile, "Chapter-Name"));
+	contentElement.appendChild(createChapterElement({}));
 }
 
 function removeChapterElement(chapterElement){
@@ -104,7 +104,7 @@ function removeChapterElement(chapterElement){
 function insertFormattingContainerElement(element){
 	
 	var contentElement = element.childNodes[1];
-	contentElement.appendChild(createFormattingContainerElement(profile, new FormattingContainer()));
+	contentElement.appendChild(createFormattingContainerElement(new FormattingContainer()));
 }
 
 function removeFormattingContainerElement(formattingContainerElement){

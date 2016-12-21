@@ -57,7 +57,7 @@ function domToJson(element){
  * Schoolmaterial
  */
 
-function createSchoolmaterialElement(profile,nameFieldContent){
+function createSchoolmaterialElement(schoolmaterialName){
 	
 	var schoolmaterialElement = document.createElement("div");
 	schoolmaterialElement.setAttribute("class","schoolmaterial");
@@ -65,10 +65,9 @@ function createSchoolmaterialElement(profile,nameFieldContent){
 	// schoolmaterial head
 	var nameFieldElement = document.createElement("div");
 	
-	nameFieldElement.appendChild(document.createTextNode(nameFieldContent));
-	if(profile.userType === "teacher"){
-		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Exam","onclick":"insertExamElement(this.parentNode.parentNode)"}));
-	}
+	nameFieldElement.appendChild(document.createTextNode(schoolmaterialName));
+	nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Exam","onclick":"insertExamElement(this.parentNode.parentNode)"}));
+	
 	schoolmaterialElement.appendChild(nameFieldElement);
 	
 	// schoolmaterial content
@@ -78,9 +77,9 @@ function createSchoolmaterialElement(profile,nameFieldContent){
 	return schoolmaterialElement;
 }
 
-function dom_getSchoolmaterialElement(profile,object){
+function dom_getSchoolmaterialElement(object){
 	
-	var schoolmaterialElement = createSchoolmaterialElement(profile, object.name);
+	var schoolmaterialElement = createSchoolmaterialElement(object.name);
 	
 	var contentElement = schoolmaterialElement.childNodes[1];
 	var childObjects = object.content;
@@ -91,7 +90,7 @@ function dom_getSchoolmaterialElement(profile,object){
 	return schoolmaterialElement;
 }
 
-function json_getSchoolmaterialObject(profile,element){
+function json_getSchoolmaterialObject(element){
 	
 	var schoolmaterialObject = new Schoolmaterial(element.childNodes[0].childNodes[0].nodeValue);
 	
@@ -108,7 +107,7 @@ function json_getSchoolmaterialObject(profile,element){
  * Exam
  */
 
-function createExamElement(lectureHeaderFieldValues){
+function createExamElement(attributeValues){
 	
 	var examElement = document.createElement("div");
 	examElement.setAttribute("class","exam");
@@ -127,7 +126,7 @@ function createExamElement(lectureHeaderFieldValues){
 	examNameField.appendChild(examNameFieldName);
 	
 	var examNameFieldValue = document.createElement("span");
-	examNameFieldValue.appendChild(getInputElement({"type":"text","value":lectureHeaderFieldValues.name || "Exam-Name","width":"100px"}));
+	examNameFieldValue.appendChild(getInputElement({"type":"text","value":attributeValues.name || "Exam-Name","width":"100px"}));
 	examNameField.appendChild(examNameFieldValue);
 	
 	examHeaderElement.appendChild(examNameField);
@@ -141,7 +140,7 @@ function createExamElement(lectureHeaderFieldValues){
 	lectureNotifierField.appendChild(lectureNotifierFieldName);
 	
 	var lectureNotifierFieldValue = document.createElement("span");
-	lectureNotifierFieldValue.appendChild(getInputElement({"type":"text","value":lectureHeaderFieldValues.lecture || "Lecture","width":"100px"}));
+	lectureNotifierFieldValue.appendChild(getInputElement({"type":"text","value":attributeValues.lecture || "Lecture","width":"100px"}));
 	lectureNotifierField.appendChild(lectureNotifierFieldValue);
 	
 	examHeaderElement.appendChild(lectureNotifierField);
@@ -155,7 +154,7 @@ function createExamElement(lectureHeaderFieldValues){
 	classNameField.appendChild(classNameFieldName);
 	
 	var classNameFieldValue = document.createElement("span");
-	classNameFieldValue.appendChild(getInputElement({"type":"text","value":lectureHeaderFieldValues.className || "Class","width":"100px"}));
+	classNameFieldValue.appendChild(getInputElement({"type":"text","value":attributeValues.className || "Class","width":"100px"}));
 	classNameField.appendChild(classNameFieldValue);
 	
 	examHeaderElement.appendChild(classNameField);
@@ -169,7 +168,7 @@ function createExamElement(lectureHeaderFieldValues){
 	authorNameField.appendChild(authorNameFieldName);
 	
 	var authorNameFieldValue = document.createElement("span");
-	authorNameFieldValue.appendChild(getInputElement({"type":"text","value":lectureHeaderFieldValues.author || "Author-Name"}));
+	authorNameFieldValue.appendChild(getInputElement({"type":"text","value":attributeValues.author || "Author-Name"}));
 	authorNameField.appendChild(authorNameFieldValue);
 	
 	examHeaderElement.appendChild(authorNameField);
@@ -183,7 +182,7 @@ function createExamElement(lectureHeaderFieldValues){
 	lastChangeField.appendChild(lastChangeFieldName);
 	
 	var lastChangeFieldValue = document.createElement("span");
-	lastChangeFieldValue.appendChild(document.createTextNode(lectureHeaderFieldValues.date || new Date().toLocaleDateString()));
+	lastChangeFieldValue.appendChild(document.createTextNode(attributeValues.date || new Date().toLocaleDateString()));
 	lastChangeField.appendChild(lastChangeFieldValue);
 	
 	examHeaderElement.appendChild(lastChangeField);
@@ -197,7 +196,7 @@ function createExamElement(lectureHeaderFieldValues){
 	examDateField.appendChild(examDateFieldName);
 	
 	var examDateFieldValue = document.createElement("span");
-	examDateFieldValue.appendChild(getInputElement({"type":"text","value":lectureHeaderFieldValues.examDate || ""}));
+	examDateFieldValue.appendChild(getInputElement({"type":"text","value":attributeValues.examDate || ""}));
 	examDateField.appendChild(examDateFieldValue);
 	
 	examHeaderElement.appendChild(examDateField);
@@ -289,7 +288,7 @@ function json_getExamObject(element){
  * Topic:
  */
 
-function createTopicElement(profile,topicName){
+function createTopicElement(topicName){
 	
 	var topicElement = document.createElement("div");
 	topicElement.setAttribute("class","topic");
@@ -327,101 +326,116 @@ function createTopicElement(profile,topicName){
 	var topicContentElement = document.createElement("div");
 	topicContentElement.setAttribute("class","topicContentContainer");
 	
-	var contentElement = document.createElement("div");
-	contentElement.setAttribute("class","topicContent");
-	var contentHeader = document.createElement("div");
-	contentHeader.appendChild(document.createTextNode("Content"));
-	if(profile.userType === "teacher"){
-		contentHeader.appendChild(getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
-	}
-	contentElement.appendChild(contentHeader);
-	var contentContent = document.createElement("div");
-	contentElement.appendChild(contentContent);
+	// content part
+	var contentPartElement = document.createElement("div");
+	contentPartElement.setAttribute("class","topicContentPart");
 	
-	topicContentElement.appendChild(contentElement);
+	var contentPartHeader = document.createElement("div");
 	
-	// topic exercises
-	var exercisesElement = document.createElement("div");
-	exercisesElement.setAttribute("class","topicExercises");
-	var exercisesHeader = document.createElement("div");
-	exercisesHeader.appendChild(document.createTextNode("Exercises"));
-	if(profile.userType === "teacher"){
-		exercisesHeader.appendChild(getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
-	}
-	exercisesElement.appendChild(exercisesHeader);
-	var exercisesContent = document.createElement("div");
-	exercisesElement.appendChild(exercisesContent);
+	var contentPartNameField = document.createElement("span");
+	contentPartNameField.appendChild(document.createTextNode("Content"));
+	contentPartHeader.appendChild(contentPartNameField);
 	
-	topicContentElement.appendChild(exercisesElement);
+	var contentPartCreateChapterField = document.createElement("span");
+	contentPartCreateChapterField.appendChild(getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
+	contentPartHeader.appendChild(contentPartCreateChapterField);
 	
-	// topic solutions
-	var solutionsElement = document.createElement("div");
-	solutionsElement.setAttribute("class","topicSolutions");
-	var solutionsHeader = document.createElement("div");
-	solutionsHeader.appendChild(document.createTextNode("Solutions"));
-	if(profile.userType === "teacher"){
-		solutionsHeader.appendChild(getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
-	}
-	solutionsElement.appendChild(solutionsHeader);
-	var solutionsContent = document.createElement("div");
-	solutionsElement.appendChild(solutionsContent);
+	contentPartElement.appendChild(contentPartHeader);
 	
-	topicContentElement.appendChild(solutionsElement);
+	var contentPartContent = document.createElement("div");
+	contentPartElement.appendChild(contentPartContent);
+	
+	topicContentElement.appendChild(contentPartElement);
+	
+	// exercises part
+	var exercisesPartElement = document.createElement("div");
+	exercisesPartElement.setAttribute("class","topicExercises");
+	
+	var exercisesPartHeader = document.createElement("div");
+	
+	var exercisesPartNameField = document.createElement("span");
+	exercisesPartNameField.appendChild(document.createTextNode("Exercises"));
+	exercisesPartHeader.appendChild(exercisesPartNameField);
+	
+	var exercisesPartCreateChapterField = document.createElement("span");
+	exercisesPartCreateChapterField.appendChild(getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
+	exercisesPartHeader.appendChild(exercisesPartCreateChapterField);
+	
+	exercisesPartElement.appendChild(exercisesPartHeader);
+	
+	var exercisesPartContent = document.createElement("div");
+	exercisesPartElement.appendChild(exercisesPartContent);
+	
+	topicContentElement.appendChild(exercisesPartElement);
+	
+	// solutions part
+	var solutionsPartElement = document.createElement("div");
+	solutionsPartElement.setAttribute("class","topicSolutions");
+	
+	var solutionsPartHeader = document.createElement("div");
+	
+	var solutionsPartNameField = document.createElement("span");
+	solutionsPartNameField.appendChild(document.createTextNode("Solutions"));
+	solutionsPartHeader.appendChild(solutionsPartNameField);
+	
+	var solutionsPartCreateChapterField = document.createElement("span");
+	solutionsPartCreateChapterField.appendChild(getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
+	solutionsPartHeader.appendChild(solutionsPartCreateChapterField);
+	
+	solutionsPartElement.appendChild(solutionsPartHeader);
+	
+	var solutionsPartContent = document.createElement("div");
+	solutionsPartElement.appendChild(solutionsPartContent);
+	
+	topicContentElement.appendChild(solutionsPartElement);
 	
 	topicElement.appendChild(topicContentElement);
 	
 	return topicElement;
 }
 
-function dom_getTopicElement(profile,object){
+function dom_getTopicElement(object){
 	
-	var topicElement = createTopicElement(profile, object.name);
+	var topicElement = createTopicElement(object.name);
 	
 	var contentContentElement = topicElement.childNodes[1].childNodes[0].childNodes[1];
 	var contentChildObjects = object.content;
 	for(var i = 0; i < contentChildObjects.length; i++){
-		contentContentElement.appendChild(dom_getChapterElement(profile,contentChildObjects[i]));
+		contentContentElement.appendChild(dom_getChapterElement(contentChildObjects[i]));
 	}
 	
 	var exercisesContentElement = topicElement.childNodes[1].childNodes[1].childNodes[1];
 	var exercisesChildObjects = object.exercises;
 	for(var i = 0; i < exercisesChildObjects.length; i++){
-		exercisesContentElement.appendChild(dom_getChapterElement(profile,exercisesChildObjects[i]));
+		exercisesContentElement.appendChild(dom_getChapterElement(exercisesChildObjects[i]));
 	}
 	
 	var solutionsContentElement = topicElement.childNodes[1].childNodes[2].childNodes[1];
 	var solutionsChildObjects = object.solutions;
 	for(var i = 0; i < solutionsChildObjects.length; i++){
-		solutionsContentElement.appendChild(dom_getChapterElement(profile,solutionsChildObjects[i]));
+		solutionsContentElement.appendChild(dom_getChapterElement(solutionsChildObjects[i]));
 	}
 	
 	return topicElement;
 }
 
-function json_getTopicObject(profile,element){
+function json_getTopicObject(element){
 	
-	var topicNameValue;
-	if(profile.right === "read"){
-		topicNameValue = element.childNodes[0].childNodes[0].nodeValue;
-	}else{
-		topicNameValue = element.childNodes[0].childNodes[0].value;
+	var topicObject = new Topic(topicNameValue = element.childNodes[0].childNodes[0].childNodes[1].childNodes[0].value);
+	
+	var contentPartChildElements = element.childNodes[1].childNodes[0].childNodes[1].childNodes;
+	for(var i = 0; i < contentPartChildElements.length; i++){
+		topicObject.content.push(json_getChapterObject(contentPartChildElements[i]));
 	}
 	
-	var topicObject = new Topic(topicNameValue);
-	
-	var contentChildElements = element.childNodes[1].childNodes[0].childNodes[1].childNodes;
-	for(var i = 0; i < contentChildElements.length; i++){
-		topicObject.content.push(json_getChapterObject(profile,contentChildElements[i]));
+	var exercisesPartChildElements = element.childNodes[1].childNodes[1].childNodes[1].childNodes;
+	for(var i = 0; i < exercisesPartChildElements.length; i++){
+		topicObject.exercises.push(json_getChapterObject(exercisesPartChildElements[i]));
 	}
 	
-	var exercisesChildElements = element.childNodes[1].childNodes[1].childNodes[1].childNodes;
-	for(var i = 0; i < exercisesChildElements.length; i++){
-		topicObject.exercises.push(json_getChapterObject(profile,exercisesChildElements[i]));
-	}
-	
-	var solutionsChildElements = element.childNodes[1].childNodes[2].childNodes[1].childNodes;
-	for(var i = 0; i < solutionsChildElements.length; i++){
-		topicObject.solutions.push(json_getChapterObject(profile,solutionsChildElements[i]));
+	var solutionsPartChildElements = element.childNodes[1].childNodes[2].childNodes[1].childNodes;
+	for(var i = 0; i < solutionsPartChildElements.length; i++){
+		topicObject.solutions.push(json_getChapterObject(solutionsPartChildElements[i]));
 	}
 	
 	return topicObject;
@@ -434,36 +448,72 @@ function json_getTopicObject(profile,element){
  * @param object
  * @returns
  */
-function createChapterElement(profile, nameFieldContent){
+function createChapterElement(attributeValues){
 	
 	var chapterElement = document.createElement("div");
 	chapterElement.setAttribute("class","chapter");
 	
-	// chapter head
-	var nameFieldElement = document.createElement("div");
+	var chapterHeaderElement = document.createElement("div");
 	
-	if(profile.userType === "teacher"){
-		nameFieldElement.appendChild(getInputElement({"type":"input","value":nameFieldContent,"width":"100px"}));
-		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Sub-Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
-		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Formatting Container","onclick":"insertFormattingContainerElement(this.parentNode.parentNode)"}));
-		nameFieldElement.appendChild(getInputElement({"type":"button","value":"X","onclick":"removeChapterElement(this.parentNode.parentNode)"}));
-		nameFieldElement.appendChild(getInputElement({"type":"file","value":"upload file","onchange":"uploadFile(this)","multiple":true}));
-	}else{
-		nameFieldElement.appendChild(document.createTextNode(nameFieldContent));
-	}
+	// chapter attribute elements ###############################################################################
 	
-	chapterElement.appendChild(nameFieldElement);
+	// chapter name
+	/*var chapterNameField = document.createElement("span");
+	chapterNameField.setAttribute("id","chapterName");
 	
-	// chapter content
-	var contentElement = document.createElement("div");
-	chapterElement.appendChild(contentElement);
+	var chapterNameFieldName = document.createElement("span");
+	chapterNameFieldName.appendChild(document.createTextNode("Chapter-Name: "));
+	chapterNameField.appendChild(chapterNameFieldName);
+	
+	var chapterNameFieldValue = document.createElement("span");
+	chapterNameFieldValue.appendChild(getInputElement({"type":"text","value":chapterName || "Chapter-Name","width":"100px"}));
+	chapterNameField.appendChild(chapterNameFieldValue);*/
+	
+	chapterHeaderElement.appendChild(getContainerElement_Span({"id":"chapterName","name":"Chapter-Name: ","value":getInputElement({"type":"text","value":attributeValues.name || "Chapter-Name","width":"100px"})}));
+	
+	// exam name
+	chapterHeaderElement.appendChild(getContainerElement_Span({"id":"chapterExamName","name":"Exam-Name: ","value":document.createTextNode(attributeValues.exam || "Exam-Name")}));
+	
+	// work time
+	chapterHeaderElement.appendChild(getContainerElement_Span({"id":"chapterWorkTime","name":"Work-Time: ","value":getInputElement({"type":"text","value":attributeValues.workTime || "Work-Time"})}));
+	
+	// create sub-chapter
+	/*var chapterCreateChapterField = document.createElement("span");
+	chapterCreateChapterField.appendChild(getInputElement({"type":"button","value":"create Sub-Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));*/
+	
+	chapterHeaderElement.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"create Sub-Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"})}));
+	
+	// create formatting-container
+	/*var chapterCreateFormattingContainerField = document.createElement("span");
+	chapterCreateFormattingContainerField.appendChild(getInputElement({"type":"button","value":"create Formatting Container","onclick":"insertFormattingContainerElement(this.parentNode.parentNode)"}));*/
+	
+	chapterHeaderElement.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"create Formatting Container","onclick":"insertFormattingContainerElement(this.parentNode.parentNode)"})}));
+	
+	// remove chapter
+	/*var chapterRemoveChapterField = document.createElement("span");
+	chapterRemoveChapterField.appendChild(getInputElement({"type":"button","value":"X","onclick":"removeChapterElement(this.parentNode.parentNode)"}));*/
+	
+	chapterHeaderElement.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"X","onclick":"removeChapterElement(this.parentNode.parentNode)"})}));
+	
+	// upload files
+	/*var chapterUploadFilesField = document.createElement("span");
+	chapterUploadFilesField.appendChild(getInputElement({"type":"file","value":"upload file","onchange":"uploadFile(this)","multiple":true}));*/
+	
+	chapterHeaderElement.appendChild(getContainerElement_Span({"value":getInputElement({"type":"file","value":"upload file","onchange":"uploadFile(this)","multiple":true})}));
+	
+	chapterElement.appendChild(chapterHeaderElement);
+	
+	// chapter content #################################################################################
+	
+	var chapterContentElement = document.createElement("div");
+	chapterElement.appendChild(chapterContentElement);
 	
 	return chapterElement;
 }
 
-function dom_getChapterElement(profile,object){
+function dom_getChapterElement(object){
 	
-	var chapterElement = createChapterElement(profile, object.name);
+	var chapterElement = createChapterElement(object);
 	
 	// chapter body|content
 	var contentElement = chapterElement.childNodes[1];
@@ -471,9 +521,9 @@ function dom_getChapterElement(profile,object){
 	for(var i = 0; i < childObjects.length; i++){
 		var childElement;
 		if(childObjects[i].type === "chapter"){
-			childElement = dom_getChapterElement(profile,childObjects[i]);
+			childElement = dom_getChapterElement(childObjects[i]);
 		}else{
-			childElement = dom_getFormattingContainerElement(profile,childObjects[i]);
+			childElement = dom_getFormattingContainerElement(childObjects[i]);
 		}
 		contentElement.appendChild(childElement);
 	}
@@ -482,24 +532,31 @@ function dom_getChapterElement(profile,object){
 	return chapterElement;
 }
 
-function json_getChapterObject(profile,element){
+function json_getChapterObject(element){
 	
-	var chapterNameValue;
-	if(profile.right === "read"){
-		chapterNameValue = element.childNodes[0].childNodes[0].nodeValue;
-	}else{
-		chapterNameValue = element.childNodes[0].childNodes[0].value;
+	var chapterObject = new Chapter();
+	
+	// element.childNodes[0].childNodes[0].value
+	
+	var chapterHeaderElements = element.childNodes[0].childNodes;
+	
+	for(var i = 0; i < chapterHeaderElements.length; i++){
+		var chapterHeaderElement = chapterHeaderElements[i];
+		var childNodeID = chapterHeaderElement.id;
+		switch(childNodeID){
+			case "chapterName" : chapterObject.name = chapterHeaderElement.childNodes[1].childNodes[0].value;
+			case "chapterExamName" : chapterObject.lecture = chapterHeaderElement.childNodes[1].childNodes[0].value;
+			case "chapterWorkTime" : chapterObject.className = chapterHeaderElement.childNodes[1].childNodes[0].value;
+		}
 	}
-	
-	var chapterObject = new Chapter(chapterNameValue);
 	
 	var childElements = element.childNodes[1].childNodes;
 	for(var i = 0; i < childElements.length; i++){
 		var childObject;
 		if(childElements[i].getAttribute("class") === "chapter"){
-			childObject = json_getChapterObject(profile,childElements[i]);
+			childObject = json_getChapterObject(childElements[i]);
 		}else{
-			childObject = json_getFormattingContainerObject(profile,childElements[i]);
+			childObject = json_getFormattingContainerObject(childElements[i]);
 		}
 		chapterObject.content.push(childObject);
 	}
@@ -515,7 +572,7 @@ function json_getChapterObject(profile,element){
  * @param object
  * @returns
  */
-function createFormattingContainerElement(profile,styleProperties){
+function createFormattingContainerElement(styleProperties){
 	
 	var formattingContainerElement = document.createElement("div");
 	formattingContainerElement.setAttribute("class","formattingContainer");
@@ -525,12 +582,10 @@ function createFormattingContainerElement(profile,styleProperties){
 	
 	//tinymce.init({"selector":textAreaElement});
 	
-	if(profile.userType === "teacher"){
-		
-	}else{
-		textAreaElement.setAttribute("disabled","disabled");
+	/*
+	 * textAreaElement.setAttribute("disabled","disabled");
 		textAreaElement.setAttribute("readonly","readonly");
-	}
+	 */
 	
 	formattingContainerElement.appendChild(textAreaElement);
 	
@@ -555,9 +610,9 @@ function createFormattingContainerElement(profile,styleProperties){
 	return formattingContainerElement;
 }
 
-function dom_getFormattingContainerElement(profile,object){
+function dom_getFormattingContainerElement(object){
 	
-	var formattingContainerElement = createFormattingContainerElement(profile,object);
+	var formattingContainerElement = createFormattingContainerElement(object);
 	
 	var textAreaElement = formattingContainerElement.childNodes[0];
 	textAreaElement.value = object.content[0];
@@ -580,7 +635,7 @@ function dom_getFormattingContainerElement(profile,object){
 	return formattingContainerElement;
 }
 
-function json_getFormattingContainerObject(profile,element){
+function json_getFormattingContainerObject(element){
 	
 	var formattingContainerObject = new FormattingContainer();
 	
@@ -618,12 +673,12 @@ function json_getFormattingContainerObject(profile,element){
  * @param object
  * @returns
  */
-function createLinkElement(profile,nameFieldContent){
+function createLinkElement(linkName){
 	
 	
 }
 
-function dom_getLinkElement(profile,object){
+function dom_getLinkElement(object){
 	
 	// link with reference
 	var aElement = document.createElement("a");
@@ -638,7 +693,7 @@ function dom_getLinkElement(profile,object){
 	return aElement;
 }
 
-function json_getLinkObject(profile,element){
+function json_getLinkObject(element){
 	
 	// link object
 	var link = new Link();

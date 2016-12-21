@@ -41,3 +41,25 @@ function getScriptElement(properties){
 	scriptElement.setAttribute("src",properties.filePath);
 	return scriptElement;
 }
+
+function getContainerElement_Span(properties){
+	
+	var spanContainerElement = document.createElement("span");
+	if(properties.id){
+		spanContainerElement.setAttribute("id",properties.id);
+	}
+	
+	if(properties.name && properties.value){
+		var nameElement = document.createElement("span");
+		nameElement.appendChild(document.createTextNode(properties.name));
+		spanContainerElement.appendChild(nameElement);
+		
+		var valueElement = document.createElement("span");
+		valueElement.appendChild(properties.value);
+		spanContainerElement.appendChild(valueElement);
+	}else{
+		spanContainerElement.appendChild(properties.value);
+	}
+	
+	return spanContainerElement;
+}

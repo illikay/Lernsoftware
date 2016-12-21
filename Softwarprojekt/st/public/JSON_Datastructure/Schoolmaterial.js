@@ -53,11 +53,11 @@ function Topic(name){
 	this.solutions = [];
 }
 
-function Chapter(name){
+function Chapter(){
 	
 	this.type = "chapter";
 	this.id = -1;
-	this.name = name;
+	this.name = "";
 	this.exam = "";
 	this.workTime = "";
 	this.content = [];
