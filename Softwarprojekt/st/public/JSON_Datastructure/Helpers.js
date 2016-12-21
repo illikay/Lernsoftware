@@ -35,6 +35,7 @@ function getInputElement(properties){
 }
 
 function getScriptElement(properties){
+	
 	var scriptElement = document.createElement("script");
 	scriptElement.setAttribute("type","text/javascript");
 	scriptElement.onload = properties.onloadFunction;
@@ -45,8 +46,13 @@ function getScriptElement(properties){
 function getContainerElement_Span(properties){
 	
 	var spanContainerElement = document.createElement("span");
+	
 	if(properties.id){
 		spanContainerElement.setAttribute("id",properties.id);
+	}
+	
+	if(properties.className){
+		spanContainerElement.setAttribute("class",properties.className);
 	}
 	
 	if(properties.name && properties.value){

@@ -119,7 +119,7 @@ function createExamElement(attributeValues){
 	
 	// name
 	var examNameField = document.createElement("span");
-	examNameField.setAttribute("id","examName");
+	examNameField.setAttribute("class","examName");
 	
 	var examNameFieldName = document.createElement("span");
 	examNameFieldName.appendChild(document.createTextNode("Exam-Name: "));
@@ -133,7 +133,7 @@ function createExamElement(attributeValues){
 	
 	// lecture notifier
 	var lectureNotifierField = document.createElement("span");
-	lectureNotifierField.setAttribute("id","examLectureNotifier");
+	lectureNotifierField.setAttribute("class","examLectureNotifier");
 	
 	var lectureNotifierFieldName = document.createElement("span");
 	lectureNotifierFieldName.appendChild(document.createTextNode("Lecture: "));
@@ -147,7 +147,7 @@ function createExamElement(attributeValues){
 	
 	// class name
 	var classNameField = document.createElement("span");
-	classNameField.setAttribute("id","examClassName");
+	classNameField.setAttribute("class","examClassName");
 	
 	var classNameFieldName = document.createElement("span");
 	classNameFieldName.appendChild(document.createTextNode("Class: "));
@@ -161,7 +161,7 @@ function createExamElement(attributeValues){
 	
 	// author
 	var authorNameField = document.createElement("span");
-	authorNameField.setAttribute("id","examAuthorName");
+	authorNameField.setAttribute("class","examAuthorName");
 	
 	var authorNameFieldName = document.createElement("span");
 	authorNameFieldName.appendChild(document.createTextNode("Author-Name: "));
@@ -175,7 +175,7 @@ function createExamElement(attributeValues){
 	
 	// last change
 	var lastChangeField = document.createElement("span");
-	lastChangeField.setAttribute("id","lastChange");
+	lastChangeField.setAttribute("class","lastChange");
 	
 	var lastChangeFieldName = document.createElement("span");
 	lastChangeFieldName.appendChild(document.createTextNode("Date: "));
@@ -189,7 +189,7 @@ function createExamElement(attributeValues){
 	
 	// exam date
 	var examDateField = document.createElement("span");
-	examDateField.setAttribute("id","examDate");
+	examDateField.setAttribute("class","examDate");
 	
 	var examDateFieldName = document.createElement("span");
 	examDateFieldName.appendChild(document.createTextNode("Exam-Date: "));
@@ -264,8 +264,8 @@ function json_getExamObject(element){
 	
 	for(var i = 0; i < examHeaderElements.length; i++){
 		var examHeaderElement = examHeaderElements[i];
-		var childNodeID = examHeaderElement.id;
-		switch(childNodeID){
+		var childNodeClass = examHeaderElement.id;
+		switch(childNodeClass){
 			case "examName" : examObject.name = examHeaderElement.childNodes[1].childNodes[0].value;
 			case "examLectureNotifier" : examObject.lecture = examHeaderElement.childNodes[1].childNodes[0].value;
 			case "examClassName" : examObject.className = examHeaderElement.childNodes[1].childNodes[0].value;
@@ -300,7 +300,7 @@ function createTopicElement(topicName){
 	
 	// topic name
 	var topicNameField = document.createElement("span");
-	topicNameField.setAttribute("id","topicName");
+	topicNameField.setAttribute("class","topicName");
 	
 	var topicNameFieldName = document.createElement("span");
 	topicNameFieldName.appendChild(document.createTextNode("Topic-Name: "));
@@ -469,13 +469,13 @@ function createChapterElement(attributeValues){
 	chapterNameFieldValue.appendChild(getInputElement({"type":"text","value":chapterName || "Chapter-Name","width":"100px"}));
 	chapterNameField.appendChild(chapterNameFieldValue);*/
 	
-	chapterHeaderElement.appendChild(getContainerElement_Span({"id":"chapterName","name":"Chapter-Name: ","value":getInputElement({"type":"text","value":attributeValues.name || "Chapter-Name","width":"100px"})}));
+	chapterHeaderElement.appendChild(getContainerElement_Span({"className":"chapterName","name":"Chapter-Name: ","value":getInputElement({"type":"text","value":attributeValues.name || "Chapter-Name","width":"100px"})}));
 	
 	// exam name
-	chapterHeaderElement.appendChild(getContainerElement_Span({"id":"chapterExamName","name":"Exam-Name: ","value":document.createTextNode(attributeValues.exam || "Exam-Name")}));
+	chapterHeaderElement.appendChild(getContainerElement_Span({"className":"chapterExamName","name":"Exam-Name: ","value":document.createTextNode(attributeValues.exam || "Exam-Name")}));
 	
 	// work time
-	chapterHeaderElement.appendChild(getContainerElement_Span({"id":"chapterWorkTime","name":"Work-Time: ","value":getInputElement({"type":"text","value":attributeValues.workTime || "Work-Time"})}));
+	chapterHeaderElement.appendChild(getContainerElement_Span({"className":"chapterWorkTime","name":"Work-Time: ","value":getInputElement({"type":"text","value":attributeValues.workTime || "Work-Time"})}));
 	
 	// create sub-chapter
 	/*var chapterCreateChapterField = document.createElement("span");
@@ -542,8 +542,8 @@ function json_getChapterObject(element){
 	
 	for(var i = 0; i < chapterHeaderElements.length; i++){
 		var chapterHeaderElement = chapterHeaderElements[i];
-		var childNodeID = chapterHeaderElement.id;
-		switch(childNodeID){
+		var childNodeClass = chapterHeaderElement.id;
+		switch(childNodeClass){
 			case "chapterName" : chapterObject.name = chapterHeaderElement.childNodes[1].childNodes[0].value;
 			case "chapterExamName" : chapterObject.lecture = chapterHeaderElement.childNodes[1].childNodes[0].value;
 			case "chapterWorkTime" : chapterObject.className = chapterHeaderElement.childNodes[1].childNodes[0].value;
@@ -568,17 +568,26 @@ function json_getChapterObject(element){
 /**
  * #########################################################################################
  * Formatting-Container:
- * 
- * @param object
- * @returns
  */
-function createFormattingContainerElement(styleProperties){
+function createFormattingContainerElement(idValue){ // styleProperties
+	
+	var id = idValue; //  || "AbCdEfG"
 	
 	var formattingContainerElement = document.createElement("div");
 	formattingContainerElement.setAttribute("class","formattingContainer");
 	
-	var textAreaElement = document.createElement("textarea");
-	textAreaElement.setAttribute("style","height:" + styleProperties.height + "; width:" + styleProperties.width + "; color:" + styleProperties.color + "; background-color:" + styleProperties.backgroundColor + "; font-size:" + styleProperties.fontSize + "; font-weight:" + styleProperties.fontWeight + "; font-family:" + styleProperties.fontFamily + "; resize:none;");
+	var containerHead = document.createElement("div");
+	
+	containerHead.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"to edit","onclick":"createEditableTextArea(" + id + ")"})}));
+	
+	formattingContainerElement.appendChild(containerHead);
+	
+	var containerContent = document.createElement("div");
+	containerContent.setAttribute("id","viewContainer_" + id);
+	formattingContainerElement.appendChild(containerContent);
+	
+	// var textAreaElement = document.createElement("textarea");
+	// textAreaElement.setAttribute("style","height:" + styleProperties.height + "; width:" + styleProperties.width + "; color:" + styleProperties.color + "; background-color:" + styleProperties.backgroundColor + "; font-size:" + styleProperties.fontSize + "; font-weight:" + styleProperties.fontWeight + "; font-family:" + styleProperties.fontFamily + "; resize:none;");
 	
 	//tinymce.init({"selector":textAreaElement});
 	
@@ -587,7 +596,7 @@ function createFormattingContainerElement(styleProperties){
 		textAreaElement.setAttribute("readonly","readonly");
 	 */
 	
-	formattingContainerElement.appendChild(textAreaElement);
+	// formattingContainerElement.appendChild(textAreaElement);
 	
 	// formatting container head
 	/*var nameFieldElement = document.createElement("div");
