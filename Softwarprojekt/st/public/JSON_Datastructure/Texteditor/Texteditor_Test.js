@@ -3,7 +3,7 @@
  */
 var containerElement;
 var textAreaElements = [];
-var idCounter = 0;
+var idCounter = 1;
 
 // var viewContainerElement;
 var editableTextAreaContainerElement;
@@ -35,9 +35,10 @@ function createEditableTextArea(id){
 	editableTextAreaContainerElement.appendChild(getEditableTextAreaElement(editorID,id));
 	
 	if(tinyMCE.get(editorID)){
-		tinymce.EditorManager.execCommand('mceAddControl',true, editorID);
+		tinymce.EditorManager.execCommand('mceAddEditor',true, editorID); // TinyMCE 4
+		// tinymce.EditorManager.execCommand('mceAddControl',true, editorID);
 	}else{
-		tinymce.init({"selector":"#"+editorID});
+		tinymce.init({"selector":"#" + editorID});
 	}
 	
 	tinyMCE.get(editorID).setContent(contentString); // "<strong>Hallo</strong> Welt !!!"
@@ -48,7 +49,7 @@ function getEditableTextAreaElement(id,idNumber){
 	var textAreaContainer = document.createElement("div");
 	
 	var containerHeader = document.createElement("div");
-	containerHeader.appendChild(getInputElement({"type":"button","value":"save","onclick":"saveContent(this.parentNode.nextSibling.childNodes[1].getAttribute('id')," + idNumber + ")"}));
+	containerHeader.appendChild(getInputElement({"type":"button","value":"save","onclick":"saveContent(this.parentNode.nextSibling.childNodes[1].getAttribute('id'),'" + idNumber + "')"}));
 	textAreaContainer.appendChild(containerHeader);
 	
 	var containerContent = document.createElement("div");
@@ -64,7 +65,6 @@ function getEditableTextAreaElement(id,idNumber){
 
 function saveContent(id,idNumber){
 	
-	
 	var viewContainerElement = document.getElementById("viewContainer_" + idNumber);
 	
 	while(viewContainerElement.firstChild){
@@ -76,7 +76,8 @@ function saveContent(id,idNumber){
 	//var nodeClone = contentNode.cloneNode(true);
 	viewContainerElement.innerHTML = contentString; // nodeClone
 	
-	tinymce.EditorManager.execCommand('mceRemoveControl',true, id);
+	tinymce.EditorManager.execCommand('mceRemoveEditor',true, id); // TinyMCE 4
+	// tinymce.EditorManager.execCommand('mceRemoveControl',true, id);
 	
 	while(editableTextAreaContainerElement.firstChild){
 		editableTextAreaContainerElement.removeChild(editableTextAreaContainerElement.firstChild);

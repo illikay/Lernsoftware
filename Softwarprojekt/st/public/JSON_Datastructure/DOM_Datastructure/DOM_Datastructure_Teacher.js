@@ -569,17 +569,15 @@ function json_getChapterObject(element){
  * #########################################################################################
  * Formatting-Container:
  */
-function createFormattingContainerElement(idValue){ // styleProperties
+function createFormattingContainerElement(idValue){
 	
-	var id = idValue; //  || "AbCdEfG"
+	var id = idValue || "GCEbdAf";
 	
 	var formattingContainerElement = document.createElement("div");
 	formattingContainerElement.setAttribute("class","formattingContainer");
 	
 	var containerHead = document.createElement("div");
-	
-	containerHead.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"to edit","onclick":"createEditableTextArea(" + id + ")"})}));
-	
+	containerHead.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"to edit","onclick":"createEditableTextArea('" + id + "')"})}));
 	formattingContainerElement.appendChild(containerHead);
 	
 	var containerContent = document.createElement("div");
