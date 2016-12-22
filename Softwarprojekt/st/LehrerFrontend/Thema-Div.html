@@ -1,0 +1,11 @@
+
+<!-- 	<div ng-if="true"> -->
+		{{element.title}}
+		<div id="Klausur" class="thumbnail"  ng-model="element.content" data-drop="true" jqyoui-droppable="{multiple:true }" data-jqyoui-options="{accept: '.Thema, .Kapitel '}" style="background:#f1f1f1 ;height:20vh">	
+		<ul>
+    		<li ng-if="element.content" ng-repeat="element in content track by $index" ng-include="'container'">
+    		
+    		</li>
+		</ul>	
+		</div>
+<!-- 	</div> -->

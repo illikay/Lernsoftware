@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+		
+	<!-- jQuery -->	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+
+
+	<!-- Bootstrap -->
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Angularjs -->
+	<script src="angularjs/angular.js"></script>
+	<script src="angularjs/angular-dragdrop.js"></script>
+<!--     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script> -->	
+	
+	<!-- Datenstruktur -->
+	
+	<script type="text/javascript" src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
+<!-- 	<script type="text/javascript" src="JSON_Datastructure/Helpers.js"></script> -->
+<!-- 	<script type="text/javascript" src="JSON_Datastructure/Schoolmaterial.js"></script> -->
+<!-- 	<script type="text/javascript" src="JSON_Datastructure/TestData.js"></script> -->
+<!-- 	<script type="text/javascript" src="JSON_Datastructure/DOM_Datastructure_Teacher.js"></script> -->
+<!-- 	<script type="text/javascript" src="JSON_Datastructure/DOM_Datastructure_Student.js"></script> -->
+<!-- 	<script type="text/javascript" src="JSON_Datastructure/Data_Architecture.js"></script> -->
+<!-- 	<script type="text/javascript" src="JSON_Datastructure/ServerCommunication.js"></script>	 -->
+	
+	<script type="text/javascript" src="Editor.js"></script>
+	
+</head>
+<body>
+
+
+<div ng-app="myApp" ng-controller="LehrerCtrl">
+
+
+<script type="text/ng-template" id="container">
+    {{element.title}}
+    <div id="Klausur" class="thumbnail"  ng-model="element.content" data-drop="true" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept: '.Thema, .Kapitel '}" style="background:#f1f1f1 ;height:20vh">
+
+	<ul ng-if="element.content">
+     <li ng-repeat = "element in element.content track by $index" ng-include="'container'">
+		
+	 </li>
+	</ul>
+</script>
+
+<div class="container-fluid">
+<div class="row">
+	
+	<!-- Kopfbereich -->
+	
+	<div id="header" class="col-md-12">
+		<h1 style="text-align:center">Logo und so weiter</h1>
+	</div>
+	
+	
+	<div id="left" class="col-md-2">
+	
+	
+	<!-- Explorer -->
+	
+	<div id="explorer" style="height:35vh">
+		<ul>
+			<li>1. Ebene
+				<ul>
+					<li>2.Ebene	</li>	
+				</ul>
+				<li>hallo Welt</li>
+			</li>			
+		</ul>
+	</div>
+	
+	
+	<!-- Toolbox -->
+	
+	<div id="toolbox" style="height:35vh">
+		
+		<ul>
+			<li ng-repeat="element in toolbox">
+				<div class="btn btn-primary {{element.title}}" ng-model="toolbox" data-drag="true" jqyoui-draggable ="{index: {{$index}}, placeholder:'keep'}" data-jqyoui-options="{revert: 'invalid' , helper:'clone'}" >
+				{{element.title}}
+				</div>
+			</li>
+			
+	
+		</ul>
+	</div>
+	</div>
+	
+	
+	<!-- Lehrplan Bearbeitungsfläche -->
+	
+	<div id="lehrplan" class="col-md-8" style="background:#f1f1f1 ;height:80vh">
+		<div>
+		<h3> Klausur</h3>
+		
+		
+		<div ng-module="lehrplan">
+					
+			<div ng-repeat = "element in lehrplan.content" ng-include="'container'"></div>
+			
+			
+<!-- 		<div id="Klausur" class="thumbnail"  ng-model="lehrplan.content" data-drop="{{lehrplan.dropvalue}}" jqyoui-droppable="{multiple:true}" data-jqyoui-options="{accept: '.Thema, .Kapitel '}" style="background:#f1f1f1 ;height:20vh">	 -->
+<!-- 		<ul> -->
+<!--     		<li ng-repeat="element in lehrplan.content track by $index" ng-include="'Thema-Div.html'"> -->
+    		
+<!--     		</li> -->
+<!-- 		</ul> -->
+<!-- 		<div id="Klausur" class="thumbnail"  ng-model="lehrplan.content" data-drop="{{lehrplan.dropvalue}}" jqyoui-droppable="{multiple:true }" data-jqyoui-options="{accept: '.Thema, .Kapitel '}" style="background:#f1f1f1 ;height:20vh">		 -->
+			
+<!-- 				<div ng-repeat="element in lehrplan.content track by $index"  ng-model="lehrplan" ng-include="{{element.title}} + '-Div.html'"> -->
+<!-- 				</div> -->
+<!-- 		</div>		 -->
+		</div>
+		</div>
+	</div>
+	
+
+
+</div>
+</div>
+</div>
+
+
+</body>
+</html>
