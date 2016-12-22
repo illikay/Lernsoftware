@@ -10,7 +10,7 @@ var jsonObject;
 
 window.onload = function(){
 	document.getElementById("dataStructure_DOM").appendChild(domElement);
-	tinymce.init({"selector":"textarea"});
+	// tinymce.init({"selector":"textarea"});
 }
 
 function convertToDom(){

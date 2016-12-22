@@ -2,7 +2,6 @@
  * 
  */
 var containerElement;
-var textAreaElements = [];
 var idCounter = 1;
 
 // var viewContainerElement;
@@ -12,7 +11,6 @@ window.onload = function(){
 	containerElement = document.getElementById("container");
 	// viewContainerElement = document.getElementById("viewContainer");
 	editableTextAreaContainerElement = document.getElementById("editableTextAreaContainer");
-	//tinymce.init({"selector":"textarea"});
 }
 
 function addNewFormattingContainer(){
@@ -20,42 +18,41 @@ function addNewFormattingContainer(){
 	containerElement.appendChild(createFormattingContainerElement(idCounter++));
 }
 
-function createEditableTextArea(id){
+function createEditableTextArea(viewId,editorId){
 	
-	var viewContainerElement = document.getElementById("viewContainer_" + id);
-	var contentNode = viewContainerElement.childNodes[0];
+	/*var contentString = "";
+	if(viewContainerElement && viewContainerElement.innerHTML){
+		contentString = viewContainerElement.innerHTML;
+	}*/
+	// alert("Import: " + contentString);
+	// var editorId = "editableTextArea_" + id; // "editableTextArea"
 	
-	var contentString = "";
-	if(contentNode && contentNode.innerHTML){
-		contentString = contentNode.innerHTML;
-	}
+	editableTextAreaContainerElement.appendChild(getEditableTextAreaElement(viewId,editorId));
 	
-	var editorID = "editableTextArea_" + id; // "editableTextArea"
-	
-	editableTextAreaContainerElement.appendChild(getEditableTextAreaElement(editorID,id));
-	
-	if(tinyMCE.get(editorID)){
-		tinymce.EditorManager.execCommand('mceAddEditor',true, editorID); // TinyMCE 4
+	if(tinyMCE.get(editorId)){
+		tinymce.EditorManager.execCommand('mceAddEditor',true, editorId); // TinyMCE 4
 		// tinymce.EditorManager.execCommand('mceAddControl',true, editorID);
 	}else{
-		tinymce.init({"selector":"#" + editorID});
+		tinymce.init({"selector":"textarea#" + editorId});
 	}
 	
-	tinyMCE.get(editorID).setContent(contentString); // "<strong>Hallo</strong> Welt !!!"
+	var viewContainerElement = document.getElementById(viewId); // "formattingContainerView_" + id
+	
+	tinyMCE.get(editorId).setContent(viewContainerElement.innerHTML); // "<strong>Hallo</strong> Welt !!!"
 }
 
-function getEditableTextAreaElement(id,idNumber){
+function getEditableTextAreaElement(viewId,editorId){
 	
 	var textAreaContainer = document.createElement("div");
 	
 	var containerHeader = document.createElement("div");
-	containerHeader.appendChild(getInputElement({"type":"button","value":"save","onclick":"saveContent(this.parentNode.nextSibling.childNodes[1].getAttribute('id'),'" + idNumber + "')"}));
+	containerHeader.appendChild(getInputElement({"type":"button","value":"save","onclick":"saveEditableTextAreaContent('" + viewId + "','" + editorId + "')"})); // this.parentNode.nextSibling.childNodes[1].getAttribute('id')
 	textAreaContainer.appendChild(containerHeader);
 	
 	var containerContent = document.createElement("div");
 	
 	var textAreaElement = document.createElement("textarea");
-	textAreaElement.setAttribute("id",id);
+	textAreaElement.setAttribute("id",editorId);
 	containerContent.appendChild(textAreaElement);
 	
 	textAreaContainer.appendChild(containerContent);
@@ -63,20 +60,20 @@ function getEditableTextAreaElement(id,idNumber){
 	return textAreaContainer;
 }
 
-function saveContent(id,idNumber){
+function saveEditableTextAreaContent(viewId,editorId){
 	
-	var viewContainerElement = document.getElementById("viewContainer_" + idNumber);
+	var viewContainerElement = document.getElementById(viewId);
 	
 	while(viewContainerElement.firstChild){
 		viewContainerElement.removeChild(viewContainerElement.firstChild);
 	}
 	
-	var contentString = tinyMCE.get(id).getContent({"format":"raw"});
-	
+	var contentString = tinyMCE.get(editorId).getContent({"format":"raw"});
+	// alert("Export: " + contentString);
 	//var nodeClone = contentNode.cloneNode(true);
 	viewContainerElement.innerHTML = contentString; // nodeClone
 	
-	tinymce.EditorManager.execCommand('mceRemoveEditor',true, id); // TinyMCE 4
+	tinymce.EditorManager.execCommand('mceRemoveEditor',true, editorId); // TinyMCE 4
 	// tinymce.EditorManager.execCommand('mceRemoveControl',true, id);
 	
 	while(editableTextAreaContainerElement.firstChild){

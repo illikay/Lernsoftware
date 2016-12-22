@@ -576,43 +576,16 @@ function createFormattingContainerElement(idValue){
 	var formattingContainerElement = document.createElement("div");
 	formattingContainerElement.setAttribute("class","formattingContainer");
 	
+	// head
 	var containerHead = document.createElement("div");
-	containerHead.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"to edit","onclick":"createEditableTextArea('" + id + "')"})}));
+	containerHead.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"to edit","onclick":"createEditableTextArea('formattingContainerView_" + id + "','editableTextArea_" + id + "')"})}));
+	containerHead.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"X","onclick":"removeFormattingContainerElement(this.parentNode.parentNode.parentNode)"})}));
 	formattingContainerElement.appendChild(containerHead);
 	
+	// content
 	var containerContent = document.createElement("div");
-	containerContent.setAttribute("id","viewContainer_" + id);
+	containerContent.setAttribute("id","formattingContainerView_" + id);
 	formattingContainerElement.appendChild(containerContent);
-	
-	// var textAreaElement = document.createElement("textarea");
-	// textAreaElement.setAttribute("style","height:" + styleProperties.height + "; width:" + styleProperties.width + "; color:" + styleProperties.color + "; background-color:" + styleProperties.backgroundColor + "; font-size:" + styleProperties.fontSize + "; font-weight:" + styleProperties.fontWeight + "; font-family:" + styleProperties.fontFamily + "; resize:none;");
-	
-	//tinymce.init({"selector":textAreaElement});
-	
-	/*
-	 * textAreaElement.setAttribute("disabled","disabled");
-		textAreaElement.setAttribute("readonly","readonly");
-	 */
-	
-	// formattingContainerElement.appendChild(textAreaElement);
-	
-	// formatting container head
-	/*var nameFieldElement = document.createElement("div");
-	
-	if(profile.userType === "teacher"){
-		nameFieldElement.appendChild(getInputElement({"type":"input","value":nameFieldContent,"width":"100px"}));
-		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Formatting Container","onclick":"insertFormattingContainerElement(this.parentNode.parentNode)"}));
-		nameFieldElement.appendChild(getInputElement({"type":"button","value":"create Link","onclick":"insertLinkElement(this)"}));
-		nameFieldElement.appendChild(getInputElement({"type":"button","value":"X","onclick":"removeFormattingContainerElement(this.parentNode.parentNode)"}));
-	}else{
-		nameFieldElement.appendChild(document.createTextNode(nameFieldContent));
-	}
-	
-	formattingContainerElement.appendChild(nameFieldElement);*/
-	
-	// formatting container content
-	/*var contentElement = document.createElement("div");
-	formattingContainerElement.appendChild(contentElement);*/
 	
 	return formattingContainerElement;
 }
