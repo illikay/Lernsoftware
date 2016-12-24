@@ -42,7 +42,7 @@ function refreshScriptElements(index){
 				 	"Exam": getDomRepresentation_Element(createExamElement({}))
 					,"Topic": getDomRepresentation_Element(createTopicElement())
 					,"Chapter": getDomRepresentation_Element(createChapterElement({}))
-					,"Formatting-Container": getDomRepresentation_Element(createFormattingContainerElement())
+					,"Formatting-Container": getDomRepresentation_Element(createFormattingContainerElement({"callbackCreate":function(e){}}))
 			};
 			
 			if(initialization){

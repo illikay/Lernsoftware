@@ -11,20 +11,15 @@
 
 function jsonToDom(object){
 	
-	var element;
+	var element = null;
 	
-	if(object.type === "schoolmaterial"){
-		element = dom_getSchoolmaterialElement(object);
-	}else if(object.type === "exam"){
-		element = dom_getLectureElement(object);
-	}else if(object.type === "topic"){
-		element = dom_getTopicElement(object);
-	}else if(object.type === "chapter"){
-		element = dom_getChapterElement(object);
-	}else if(object.type === "formattingContainer"){
-		element = dom_getFormattingContainerElement(object);
-	}else if(object.type === "link"){
-		element = dom_getLinkElement(object);
+	switch(object.type){
+		case "schoolmaterial" : element = dom_getSchoolmaterialElement(object); break;
+		case "exam" : element = dom_getLectureElement(object); break;
+		case "topic" : element = dom_getTopicElement(object); break;
+		case "chapter" : element = dom_getChapterElement(object); break;
+		case "formattingContainer" : element = dom_getFormattingContainerElement(object); break;
+		case "link" : element = dom_getLinkElement(object); break;
 	}
 	
 	return element;
@@ -32,21 +27,15 @@ function jsonToDom(object){
 
 function domToJson(element){
 	
-	var object;
+	var object = null;
 	
-	var classValue = element.getAttribute("class");
-	if(classValue === "schoolmaterial"){
-		object = json_getSchoolmaterialObject(element);
-	}else if(classValue === "exam"){
-		object = json_getExamObject(element);
-	}else if(classValue === "topic"){
-		object = json_getTopicObject(element);
-	}else if(classValue === "chapter"){
-		object = json_getChapterObject(element);
-	}else if(classValue === "formattingContainer"){
-		object = json_getFormattingContainerObject(element);
-	}else if(classValue === "link"){
-		object = json_getLinkObject(element);
+	switch(element.getAttribute("class")){
+		case "schoolmaterial" : object = json_getSchoolmaterialObject(element); break;
+		case "exam" : object = json_getExamObject(element); break;
+		case "topic" : object = json_getTopicObject(element); break;
+		case "chapter" : object = json_getChapterObject(element); break;
+		case "formattingContainer" : object = json_getFormattingContainerObject(element); break;
+		case "link" : object = json_getLinkObject(element); break;
 	}
 	
 	return object;
@@ -84,7 +73,7 @@ function dom_getSchoolmaterialElement(object){
 	var contentElement = schoolmaterialElement.childNodes[1];
 	var childObjects = object.content;
 	for(var i = 0; i < childObjects.length; i++){
-		contentElement.appendChild(dom_getExamElement(profile, childObjects[i]));
+		contentElement.appendChild(dom_getExamElement(childObjects[i]));
 	}
 	
 	return schoolmaterialElement;
@@ -96,7 +85,7 @@ function json_getSchoolmaterialObject(element){
 	
 	var childElements = element.childNodes[1].childNodes;
 	for(var i = 0; i < childElements.length; i++){
-		schoolmaterialObject.content.push(json_getExamObject(profile,childElements[i]));
+		schoolmaterialObject.content.push(json_getExamObject(childElements[i]));
 	}
 	
 	return schoolmaterialObject;
@@ -118,113 +107,31 @@ function createExamElement(attributeValues){
 	// lecture attribute elements ###############################################################################
 	
 	// name
-	var examNameField = document.createElement("span");
-	examNameField.setAttribute("class","examName");
-	
-	var examNameFieldName = document.createElement("span");
-	examNameFieldName.appendChild(document.createTextNode("Exam-Name: "));
-	examNameField.appendChild(examNameFieldName);
-	
-	var examNameFieldValue = document.createElement("span");
-	examNameFieldValue.appendChild(getInputElement({"type":"text","value":attributeValues.name || "Exam-Name","width":"100px"}));
-	examNameField.appendChild(examNameFieldValue);
-	
-	examHeaderElement.appendChild(examNameField);
+	examHeaderElement.appendChild(getAttributeContainerElement({"className":"examName","name":"Exam-Name: ","value":getInputElement({"type":"text","value":attributeValues.name || "Exam-Name","width":"100px"})}));
 	
 	// lecture notifier
-	var lectureNotifierField = document.createElement("span");
-	lectureNotifierField.setAttribute("class","examLectureNotifier");
-	
-	var lectureNotifierFieldName = document.createElement("span");
-	lectureNotifierFieldName.appendChild(document.createTextNode("Lecture: "));
-	lectureNotifierField.appendChild(lectureNotifierFieldName);
-	
-	var lectureNotifierFieldValue = document.createElement("span");
-	lectureNotifierFieldValue.appendChild(getInputElement({"type":"text","value":attributeValues.lecture || "Lecture","width":"100px"}));
-	lectureNotifierField.appendChild(lectureNotifierFieldValue);
-	
-	examHeaderElement.appendChild(lectureNotifierField);
+	examHeaderElement.appendChild(getAttributeContainerElement({"className":"examLectureNotifier","name":"Lecture: ","value":getInputElement({"type":"text","value":attributeValues.lecture || "Lecture","width":"100px"})}));
 	
 	// class name
-	var classNameField = document.createElement("span");
-	classNameField.setAttribute("class","examClassName");
-	
-	var classNameFieldName = document.createElement("span");
-	classNameFieldName.appendChild(document.createTextNode("Class: "));
-	classNameField.appendChild(classNameFieldName);
-	
-	var classNameFieldValue = document.createElement("span");
-	classNameFieldValue.appendChild(getInputElement({"type":"text","value":attributeValues.className || "Class","width":"100px"}));
-	classNameField.appendChild(classNameFieldValue);
-	
-	examHeaderElement.appendChild(classNameField);
+	examHeaderElement.appendChild(getAttributeContainerElement({"className":"examClassName","name":"Class: ","value":getInputElement({"type":"text","value":attributeValues.className || "Class","width":"100px"})}));
 	
 	// author
-	var authorNameField = document.createElement("span");
-	authorNameField.setAttribute("class","examAuthorName");
-	
-	var authorNameFieldName = document.createElement("span");
-	authorNameFieldName.appendChild(document.createTextNode("Author-Name: "));
-	authorNameField.appendChild(authorNameFieldName);
-	
-	var authorNameFieldValue = document.createElement("span");
-	authorNameFieldValue.appendChild(getInputElement({"type":"text","value":attributeValues.author || "Author-Name"}));
-	authorNameField.appendChild(authorNameFieldValue);
-	
-	examHeaderElement.appendChild(authorNameField);
+	examHeaderElement.appendChild(getAttributeContainerElement({"className":"examAuthorName","name":"Author-Name: ","value":getInputElement({"type":"text","value":attributeValues.author || "Author-Name"})}));
 	
 	// last change
-	var lastChangeField = document.createElement("span");
-	lastChangeField.setAttribute("class","lastChange");
-	
-	var lastChangeFieldName = document.createElement("span");
-	lastChangeFieldName.appendChild(document.createTextNode("Date: "));
-	lastChangeField.appendChild(lastChangeFieldName);
-	
-	var lastChangeFieldValue = document.createElement("span");
-	lastChangeFieldValue.appendChild(document.createTextNode(attributeValues.date || new Date().toLocaleDateString()));
-	lastChangeField.appendChild(lastChangeFieldValue);
-	
-	examHeaderElement.appendChild(lastChangeField);
+	examHeaderElement.appendChild(getAttributeContainerElement({"className":"lastChange","name":"Date: ","value":document.createTextNode(attributeValues.date || new Date().toLocaleDateString())}));
 	
 	// exam date
-	var examDateField = document.createElement("span");
-	examDateField.setAttribute("class","examDate");
-	
-	var examDateFieldName = document.createElement("span");
-	examDateFieldName.appendChild(document.createTextNode("Exam-Date: "));
-	examDateField.appendChild(examDateFieldName);
-	
-	var examDateFieldValue = document.createElement("span");
-	examDateFieldValue.appendChild(getInputElement({"type":"text","value":attributeValues.examDate || ""}));
-	examDateField.appendChild(examDateFieldValue);
-	
-	examHeaderElement.appendChild(examDateField);
+	examHeaderElement.appendChild(getAttributeContainerElement({"className":"examDate","name":"Exam-Date: ","value":getInputElement({"type":"text","value":attributeValues.examDate || ""})}));
 	
 	// create Topic
-	var createTopicField = document.createElement("span");
-	createTopicField.appendChild(getInputElement({"type":"button","value":"create Topic","onclick":"insertTopicElement(this.parentNode.parentNode)"}));
-	
-	examHeaderElement.appendChild(createTopicField);
+	examHeaderElement.appendChild(getAttributeContainerElement({"value":getInputElement({"type":"button","value":"create Topic","onclick":"insertTopicElement(this.parentNode.parentNode.parentNode)"})}));
 	
 	// checkbox
-	var visibilityCheckerField = document.createElement("span");
-	
-	var visibilityCheckerFieldName = document.createElement("span");
-	visibilityCheckerFieldName.appendChild(document.createTextNode("Visibility: "));
-	visibilityCheckerField.appendChild(visibilityCheckerFieldName);
-	
-	var visibilityCheckerFieldValue = document.createElement("span");
-	visibilityCheckerFieldValue.appendChild(getInputElement({"type":"checkbox","onchange":"changeChildElementVisibility(this)"}));
-	visibilityCheckerField.appendChild(visibilityCheckerFieldValue);
-	
-	examHeaderElement.appendChild(visibilityCheckerField);
+	examHeaderElement.appendChild(getAttributeContainerElement({"name":"Visibility: ","value":getInputElement({"type":"checkbox","onchange":"changeChildElementVisibility(this)"})}));
 	
 	// delete Exam
-	var removeExamField = document.createElement("span");
-	removeExamField.appendChild(getInputElement({"type":"button","value":"X","onclick":"removeExamElement(this.parentNode.parentNode)"}));
-	
-	examHeaderElement.appendChild(removeExamField);
+	examHeaderElement.appendChild(getAttributeContainerElement({"value":getInputElement({"type":"button","value":"X","onclick":"removeExamElement(this.parentNode.parentNode.parentNode)"})}));
 	
 	examElement.appendChild(examHeaderElement);
 	
@@ -283,6 +190,22 @@ function json_getExamObject(element){
 	return examObject;
 }
 
+function insertExamElement(schoolmaterialElement){
+	
+	var contentElement = schoolmaterialElement.childNodes[1];
+	contentElement.appendChild(createExamElement({}));
+}
+
+function removeExamElement(examElement){
+	
+	var schoolmaterialContentElement = examElement.parentNode;
+	schoolmaterialContentElement.removeChild(examElement);
+}
+
+function dropAction(examElement,contentElement){
+	examElement.childNodes[1].appendChild(contentElement);
+}
+
 /**
  * #########################################################################################
  * Topic:
@@ -299,27 +222,12 @@ function createTopicElement(topicName){
 	// topic attribute elements ###############################################################################
 	
 	// topic name
-	var topicNameField = document.createElement("span");
-	topicNameField.setAttribute("class","topicName");
-	
-	var topicNameFieldName = document.createElement("span");
-	topicNameFieldName.appendChild(document.createTextNode("Topic-Name: "));
-	topicNameField.appendChild(topicNameFieldName);
-	
-	var topicNameFieldValue = document.createElement("span");
-	topicNameFieldValue.appendChild(getInputElement({"type":"text","value":topicName || "Topic-Name","width":"100px"}));
-	topicNameField.appendChild(topicNameFieldValue);
-	
-	topicHeaderElement.appendChild(topicNameField);
+	topicHeaderElement.appendChild(getAttributeContainerElement({"className":"topicName","name":"Topic-Name: ","value":getInputElement({"type":"text","value":topicName || "Topic-Name","width":"100px"})}));
 	
 	// remove topic
-	var removeTopicField = document.createElement("span");
-	removeTopicField.appendChild(getInputElement({"type":"button","value":"X","onclick":"removeTopicElement(this.parentNode.parentNode)"}));
-	
-	topicHeaderElement.appendChild(removeTopicField);
+	topicHeaderElement.appendChild(getAttributeContainerElement({"value":getInputElement({"type":"button","value":"X","onclick":"removeTopicElement(this.parentNode.parentNode.parentNode)"})}));
 	
 	topicElement.appendChild(topicHeaderElement);
-	
 	
 	// topic content #################################################################################
 	
@@ -331,15 +239,8 @@ function createTopicElement(topicName){
 	contentPartElement.setAttribute("class","topicContentPart");
 	
 	var contentPartHeader = document.createElement("div");
-	
-	var contentPartNameField = document.createElement("span");
-	contentPartNameField.appendChild(document.createTextNode("Content"));
-	contentPartHeader.appendChild(contentPartNameField);
-	
-	var contentPartCreateChapterField = document.createElement("span");
-	contentPartCreateChapterField.appendChild(getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
-	contentPartHeader.appendChild(contentPartCreateChapterField);
-	
+	contentPartHeader.appendChild(getAttributeContainerElement({"value":document.createTextNode("Content")}));
+	contentPartHeader.appendChild(getAttributeContainerElement({"value":getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode.parentNode)"})}));
 	contentPartElement.appendChild(contentPartHeader);
 	
 	var contentPartContent = document.createElement("div");
@@ -349,18 +250,11 @@ function createTopicElement(topicName){
 	
 	// exercises part
 	var exercisesPartElement = document.createElement("div");
-	exercisesPartElement.setAttribute("class","topicExercises");
+	exercisesPartElement.setAttribute("class","topicExercisesPart");
 	
 	var exercisesPartHeader = document.createElement("div");
-	
-	var exercisesPartNameField = document.createElement("span");
-	exercisesPartNameField.appendChild(document.createTextNode("Exercises"));
-	exercisesPartHeader.appendChild(exercisesPartNameField);
-	
-	var exercisesPartCreateChapterField = document.createElement("span");
-	exercisesPartCreateChapterField.appendChild(getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
-	exercisesPartHeader.appendChild(exercisesPartCreateChapterField);
-	
+	exercisesPartHeader.appendChild(getAttributeContainerElement({"value":document.createTextNode("Exercises")}));
+	exercisesPartHeader.appendChild(getAttributeContainerElement({"value":getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode.parentNode)"})}));
 	exercisesPartElement.appendChild(exercisesPartHeader);
 	
 	var exercisesPartContent = document.createElement("div");
@@ -370,18 +264,11 @@ function createTopicElement(topicName){
 	
 	// solutions part
 	var solutionsPartElement = document.createElement("div");
-	solutionsPartElement.setAttribute("class","topicSolutions");
+	solutionsPartElement.setAttribute("class","topicSolutionsPart");
 	
 	var solutionsPartHeader = document.createElement("div");
-	
-	var solutionsPartNameField = document.createElement("span");
-	solutionsPartNameField.appendChild(document.createTextNode("Solutions"));
-	solutionsPartHeader.appendChild(solutionsPartNameField);
-	
-	var solutionsPartCreateChapterField = document.createElement("span");
-	solutionsPartCreateChapterField.appendChild(getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));
-	solutionsPartHeader.appendChild(solutionsPartCreateChapterField);
-	
+	solutionsPartHeader.appendChild(getAttributeContainerElement({"value":document.createTextNode("Solutions")}));
+	solutionsPartHeader.appendChild(getAttributeContainerElement({"value":getInputElement({"type":"button","value":"create Chapter","onclick":"insertChapterElement(this.parentNode.parentNode.parentNode)"})}));
 	solutionsPartElement.appendChild(solutionsPartHeader);
 	
 	var solutionsPartContent = document.createElement("div");
@@ -441,6 +328,18 @@ function json_getTopicObject(element){
 	return topicObject;
 }
 
+function insertTopicElement(examElement){
+	
+	var lectureContentElement = examElement.childNodes[1];
+	lectureContentElement.appendChild(createTopicElement());
+}
+
+function removeTopicElement(topicElement){
+	
+	var lectureContentElement = topicElement.parentNode;
+	lectureContentElement.removeChild(topicElement);
+}
+
 /**
  * #########################################################################################
  * Chapter:
@@ -458,48 +357,25 @@ function createChapterElement(attributeValues){
 	// chapter attribute elements ###############################################################################
 	
 	// chapter name
-	/*var chapterNameField = document.createElement("span");
-	chapterNameField.setAttribute("id","chapterName");
-	
-	var chapterNameFieldName = document.createElement("span");
-	chapterNameFieldName.appendChild(document.createTextNode("Chapter-Name: "));
-	chapterNameField.appendChild(chapterNameFieldName);
-	
-	var chapterNameFieldValue = document.createElement("span");
-	chapterNameFieldValue.appendChild(getInputElement({"type":"text","value":chapterName || "Chapter-Name","width":"100px"}));
-	chapterNameField.appendChild(chapterNameFieldValue);*/
-	
-	chapterHeaderElement.appendChild(getContainerElement_Span({"className":"chapterName","name":"Chapter-Name: ","value":getInputElement({"type":"text","value":attributeValues.name || "Chapter-Name","width":"100px"})}));
+	chapterHeaderElement.appendChild(getAttributeContainerElement({"className":"chapterName","name":"Chapter-Name: ","value":getInputElement({"type":"text","value":attributeValues.name || "Chapter-Name","width":"100px"})}));
 	
 	// exam name
-	chapterHeaderElement.appendChild(getContainerElement_Span({"className":"chapterExamName","name":"Exam-Name: ","value":document.createTextNode(attributeValues.exam || "Exam-Name")}));
+	chapterHeaderElement.appendChild(getAttributeContainerElement({"className":"chapterExamName","name":"Exam-Name: ","value":document.createTextNode(attributeValues.exam || "Exam-Name")}));
 	
 	// work time
-	chapterHeaderElement.appendChild(getContainerElement_Span({"className":"chapterWorkTime","name":"Work-Time: ","value":getInputElement({"type":"text","value":attributeValues.workTime || "Work-Time"})}));
+	chapterHeaderElement.appendChild(getAttributeContainerElement({"className":"chapterWorkTime","name":"Work-Time: ","value":getInputElement({"type":"text","value":attributeValues.workTime || "Work-Time"})}));
 	
 	// create sub-chapter
-	/*var chapterCreateChapterField = document.createElement("span");
-	chapterCreateChapterField.appendChild(getInputElement({"type":"button","value":"create Sub-Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"}));*/
-	
-	chapterHeaderElement.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"create Sub-Chapter","onclick":"insertChapterElement(this.parentNode.parentNode)"})}));
+	chapterHeaderElement.appendChild(getAttributeContainerElement({"value":getInputElement({"type":"button","value":"create Sub-Chapter","onclick":"insertChapterElement(this.parentNode.parentNode.parentNode)"})}));
 	
 	// create formatting-container
-	/*var chapterCreateFormattingContainerField = document.createElement("span");
-	chapterCreateFormattingContainerField.appendChild(getInputElement({"type":"button","value":"create Formatting Container","onclick":"insertFormattingContainerElement(this.parentNode.parentNode)"}));*/
-	
-	chapterHeaderElement.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"create Formatting Container","onclick":"insertFormattingContainerElement(this.parentNode.parentNode)"})}));
+	chapterHeaderElement.appendChild(getAttributeContainerElement({"value":getInputElement({"type":"button","value":"create Formatting Container","onclick":"insertFormattingContainerElement(this.parentNode.parentNode.parentNode)"})}));
 	
 	// remove chapter
-	/*var chapterRemoveChapterField = document.createElement("span");
-	chapterRemoveChapterField.appendChild(getInputElement({"type":"button","value":"X","onclick":"removeChapterElement(this.parentNode.parentNode)"}));*/
-	
-	chapterHeaderElement.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"X","onclick":"removeChapterElement(this.parentNode.parentNode)"})}));
+	chapterHeaderElement.appendChild(getAttributeContainerElement({"value":getInputElement({"type":"button","value":"X","onclick":"removeChapterElement(this.parentNode.parentNode.parentNode)"})}));
 	
 	// upload files
-	/*var chapterUploadFilesField = document.createElement("span");
-	chapterUploadFilesField.appendChild(getInputElement({"type":"file","value":"upload file","onchange":"uploadFile(this)","multiple":true}));*/
-	
-	chapterHeaderElement.appendChild(getContainerElement_Span({"value":getInputElement({"type":"file","value":"upload file","onchange":"uploadFile(this)","multiple":true})}));
+	chapterHeaderElement.appendChild(getAttributeContainerElement({"value":getInputElement({"type":"file","value":"upload file","onchange":"uploadFile(this)","multiple":true})}));
 	
 	chapterElement.appendChild(chapterHeaderElement);
 	
@@ -564,27 +440,42 @@ function json_getChapterObject(element){
 	return chapterObject;
 }
 
+function insertChapterElement(element){
+	
+	var contentElement = element.childNodes[1];
+	contentElement.appendChild(createChapterElement({}));
+}
+
+function removeChapterElement(chapterElement){
+	
+	var parentElement = chapterElement.parentNode;
+	parentElement.removeChild(chapterElement);
+}
+
 
 /**
  * #########################################################################################
  * Formatting-Container:
  */
-function createFormattingContainerElement(idValue){
+var idValue = 1;
+
+function createFormattingContainerElement(properties){
 	
-	var id = idValue || "GCEbdAf";
+	var id = idValue++;
 	
 	var formattingContainerElement = document.createElement("div");
 	formattingContainerElement.setAttribute("class","formattingContainer");
 	
 	// head
 	var containerHead = document.createElement("div");
-	containerHead.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"to edit","onclick":"createEditableTextArea('formattingContainerView_" + id + "','editableTextArea_" + id + "')"})}));
-	containerHead.appendChild(getContainerElement_Span({"value":getInputElement({"type":"button","value":"X","onclick":"removeFormattingContainerElement(this.parentNode.parentNode.parentNode)"})}));
+	containerHead.appendChild(getAttributeContainerElement({"value":getInputElement({"type":"button","value":"to edit","onclick":"createEditableTextArea({'viewId':'formattingContainerView_" + id + "','editorId':'editableTextArea_" + id + "','callbackCreate':" + properties.callbackCreate + ",'callbackSave':" + (properties.callbackSave || function(){}) + "})"})}));
+	containerHead.appendChild(getAttributeContainerElement({"value":getInputElement({"type":"button","value":"X","onclick":"removeFormattingContainerElement(this.parentNode.parentNode.parentNode)"})}));
 	formattingContainerElement.appendChild(containerHead);
 	
 	// content
 	var containerContent = document.createElement("div");
 	containerContent.setAttribute("id","formattingContainerView_" + id);
+	containerContent.innerHTML = properties.content || "";
 	formattingContainerElement.appendChild(containerContent);
 	
 	return formattingContainerElement;
@@ -592,58 +483,52 @@ function createFormattingContainerElement(idValue){
 
 function dom_getFormattingContainerElement(object){
 	
-	var formattingContainerElement = createFormattingContainerElement(object);
-	
-	var textAreaElement = formattingContainerElement.childNodes[0];
-	textAreaElement.value = object.content[0];
-	
-	//var contentElement = formattingContainerElement.childNodes[1];
-	/*var childObjects = object.content;
-	for(var i = 0; i < childObjects.length; i++){
-		var childElement;
-		if(typeof childObjects[i] === "string"){
-			childElement = document.createTextNode(childObjects[i]);
-		}else if(childObjects.type === "formattingContainer"){
-			childElement = dom_getFormattingContainerElement(childObjects[i]);
-		}else if(childObjects[i].type === "link"){
-			childElement = dom_getLinkElement(childObjects[i]);
-		}
-		contentElement.appendChild(childElement);
-	}
-	formattingContainerElement.appendChild(contentElement);*/
-	
-	return formattingContainerElement;
+	return createFormattingContainerElement({
+		"content":object.content
+		,"callbackCreate":callbackCreate
+		,"callbackSave":callbackSave
+		});
 }
 
 function json_getFormattingContainerObject(element){
 	
 	var formattingContainerObject = new FormattingContainer();
 	
-	var textAreaElement = element.childNodes[0];
-	formattingContainerObject.width = textAreaElement.style.width;
-	formattingContainerObject.height = textAreaElement.style.height;
-	formattingContainerObject.color = textAreaElement.style.color;
-	formattingContainerObject.backgroundColor = textAreaElement.style.backgroundColor;
-	formattingContainerObject.fontSize = textAreaElement.style.fontSize;
-	formattingContainerObject.fontWeight = textAreaElement.style.fontWeight;
-	formattingContainerObject.fontFamily = textAreaElement.style.fontFamily;
-	
-	formattingContainerObject.content[0] = textAreaElement.value;
-	
-	/*var childElements = element.childNodes;
-	for(var i = 0; i < childElements.length; i++){
-		var childObject;
-		if(typeof childElements[i].nodeValue === "string"){
-			childObject = childElements[i].nodeValue;
-		}else if(childElements[i].getAttribute("class") === "formattingContainer"){
-			childObject = json_getFormattingContainerObject(childElements[i]);
-		}else if(childElements[i].getAttribute("class") === "link"){
-			childObject = json_getLinkObject(childElements[i]);
-		}
-		formattingContainerObject.content.push(childObject);
-	}*/
+	formattingContainerObject.content = element.childNodes[1].innerHTML;
 	
 	return formattingContainerObject;
+}
+
+function insertFormattingContainerElement(element){
+	
+	var contentElement = element.childNodes[1];
+	contentElement.appendChild(createFormattingContainerElement({"callbackCreate":callbackCreate,"callbackSave":callbackSave}));
+}
+
+function removeFormattingContainerElement(formattingContainerElement){
+	
+	var parentElement = formattingContainerElement.parentNode;
+	parentElement.removeChild(formattingContainerElement);
+}
+
+
+function callbackCreate(editableTextAreaElement){
+	
+	var containerElement = document.getElementById("container");
+	containerElement.style.opacity = 0.03;
+	
+	var editorContainerElement = document.createElement("div");
+	editorContainerElement.setAttribute("id","editorContainer");
+	editorContainerElement.appendChild(editableTextAreaElement);
+	document.body.appendChild(editorContainerElement);
+}
+
+function callbackSave(){
+	
+	var containerElement = document.getElementById("container");
+	containerElement.style.opacity = 1;
+	
+	document.body.removeChild(document.getElementById("editorContainer"));
 }
 
 /**

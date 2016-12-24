@@ -2,15 +2,11 @@
  * Provides functionality for Data_Architecture.html
  */
 
-// var profile = {"name":"Max","surname":"Mustermann","password":"teacher","userType":"teacher","right":"write"};
-// var profile = {"name":"Hanz","surname":"Heinhart","password":"student","userType":"student","right":"read"};
-
 var domElement = createSchoolmaterialElement("Schoolmaterial");
 var jsonObject;
 
 window.onload = function(){
 	document.getElementById("dataStructure_DOM").appendChild(domElement);
-	// tinymce.init({"selector":"textarea"});
 }
 
 function convertToDom(){
@@ -30,88 +26,10 @@ function convertToDom(){
 function convertToJson(){
 	
 	jsonObject = domToJson(domElement);
-	
 	var jsonTextArea = document.getElementsByTagName("textarea")[0];
-	var jsonTextNode = document.createTextNode(JSON.stringify(jsonObject));
-	
-	/*while(jsonTextArea.firstChild){
-		jsonTextArea.removeChild(jsonTextArea.firstChild);
-	}*/
-	//jsonTextArea.appendChild(jsonTextNode);
 	jsonTextArea.value = JSON.stringify(jsonObject);
 }
 
-/**
- * ########################################################################
- * Exam
- * @param chapterElement
- */
-function insertExamElement(schoolmaterialElement){
-	
-	var contentElement = schoolmaterialElement.childNodes[1];
-	contentElement.appendChild(createExamElement({}));
-}
-
-function removeExamElement(examElement){
-	
-	var schoolmaterialContentElement = examElement.parentNode;
-	schoolmaterialContentElement.removeChild(examElement);
-}
-
-function dropAction(examElement,contentElement){
-	examElement.childNodes[1].appendChild(contentElement);
-}
-
-/**
- * ########################################################################
- * Topic
- * @param chapterElement
- */
-function insertTopicElement(examElement){
-	
-	var lectureContentElement = examElement.childNodes[1];
-	lectureContentElement.appendChild(createTopicElement());
-}
-
-function removeTopicElement(topicElement){
-	
-	var lectureContentElement = topicElement.parentNode;
-	lectureContentElement.removeChild(topicElement);
-}
-
-/**
- * ########################################################################
- * Chapter
- * @param chapterElement
- */
-function insertChapterElement(element){
-	
-	var contentElement = element.childNodes[1];
-	contentElement.appendChild(createChapterElement({}));
-}
-
-function removeChapterElement(chapterElement){
-	
-	var parentElement = chapterElement.parentNode;
-	parentElement.removeChild(chapterElement);
-}
-
-/**
- * ########################################################################
- * Formatting Container
- */
-
-function insertFormattingContainerElement(element){
-	
-	var contentElement = element.childNodes[1];
-	contentElement.appendChild(createFormattingContainerElement(new FormattingContainer()));
-}
-
-function removeFormattingContainerElement(formattingContainerElement){
-	
-	var parentElement = formattingContainerElement.parentNode;
-	parentElement.removeChild(formattingContainerElement);
-}
 
 /**
  * ########################################################################

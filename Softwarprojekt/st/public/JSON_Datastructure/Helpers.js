@@ -43,29 +43,67 @@ function getScriptElement(properties){
 	return scriptElement;
 }
 
-function getContainerElement_Span(properties){
+function getObjectString(object){
 	
-	var spanContainerElement = document.createElement("span");
+	var objectString = "";
+	
+	if(Object.prototype.toString.call(object) === "[object Object]"){
+		
+		objectString = objectString.concat("{");
+		for(var key in object){
+			objectString = objectString.concat("'",key,"':");
+			
+			switch(typeof object[key]){
+				case "string" : objectString = objectString.concat("'",object[key],"',"); break;
+				case "object" : objectString = objectString.concat(getObjectString(object[key]),","); break;
+				default : objectString = objectString.concat(object[key],","); break;
+			}
+		}
+		objectString = objectString.substring(0,objectString.length-1).concat("}");
+	}else{
+		objectString = objectString.concat("[");
+		if(object.length > 0){
+			for(var i = 0; i < object.length; i++){
+				var contentValue = object[i];
+				switch(typeof contentValue){
+					case "string" : objectString = objectString.concat("'",contentValue,"'"); break;
+					case "object" : objectString = objectString.concat(getObjectString(contentValue)); break;
+					default : objectString = objectString.concat(contentValue); break;
+				}
+				if(i < object.length-1){
+					objectString = objectString.concat(",");
+				}
+			}
+		}
+		objectString = objectString.concat("]");
+	}
+	
+	return objectString;
+}
+
+function getAttributeContainerElement(properties){
+	
+	var containerElement = document.createElement("span");
 	
 	if(properties.id){
-		spanContainerElement.setAttribute("id",properties.id);
+		containerElement.setAttribute("id",properties.id);
 	}
 	
 	if(properties.className){
-		spanContainerElement.setAttribute("class",properties.className);
+		containerElement.setAttribute("class",properties.className);
 	}
 	
 	if(properties.name && properties.value){
 		var nameElement = document.createElement("span");
 		nameElement.appendChild(document.createTextNode(properties.name));
-		spanContainerElement.appendChild(nameElement);
+		containerElement.appendChild(nameElement);
 		
 		var valueElement = document.createElement("span");
 		valueElement.appendChild(properties.value);
-		spanContainerElement.appendChild(valueElement);
+		containerElement.appendChild(valueElement);
 	}else{
-		spanContainerElement.appendChild(properties.value);
+		containerElement.appendChild(properties.value);
 	}
 	
-	return spanContainerElement;
+	return containerElement;
 }

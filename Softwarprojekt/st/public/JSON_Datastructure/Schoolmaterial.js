@@ -67,18 +67,8 @@ function FormattingContainer(){
 	
 	this.type = "formattingContainer";
 	this.id = -1;
-	//this.name = name;
 	
-	this.color = "#000000";
-	this.backgroundColor = "#ffffff";
-	this.fontWeight = "normal";
-	this.fontSize = "12px";
-	this.fontFamily = "Arial";
-	this.width = "500px";
-	this.height = "200px";
-	this.position = "none";
-	
-	this.content = [];
+	this.content = "";
 }
 
 function Link(){
