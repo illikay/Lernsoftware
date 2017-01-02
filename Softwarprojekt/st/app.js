@@ -1,21 +1,44 @@
 
-//einbinden der Node.js Module 
+//Einbinden der Node.js Module 
 
 var express = require('express');
+
 var bodyParser = require('body-parser');
+
+
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 var app = express();
 
+var morgan = require('morgan');
+var passport = require('passport');
+var config = require('./config/database');
 
-//einbinden der Routing-Dateien in die Hauptkonfigurationsdatei des Node.js - Servers 
+var jwt = require('jwt-simple');
+var User = require('./models/user.js');
 
-var index  = require('./routes/index')
-var user = require('./routes/user');
-var benutzer = require('./routes/benutzer');
 
+//Middleware Body-Parser
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
+
+
+
+//Einbinden der Routing-Dateien in die Hauptkonfigurationsdatei des Node.js - Servers 
+
+var index  = require('./routes/index.js');
+var user = require('./routes/user.js');
+var benutzer = require('./routes/benutzer.js');
+
+
+require('./config/passport.js')(passport);
+
+require('./uploader/app.js')(app);
+
+var apiRoutes = express.Router();
 
 //Datenbank Integration mit Mongoose
 
@@ -35,32 +58,31 @@ db.once('open', function callback(){
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.methodOverride());
-app.use(bodyParser.json());
+app.set('view engine', 'pug');
+
+app.use(morgan('dev'));
+
 app.use(app.router);
+
+app.use(passport.initialize());
 
 //einbinden der statischen Ordner in das Backend
 
+app.use(express.static(path.join(__dirname, 'shop')));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'static')));  //Hier befinden sich die Dateien, die mit Angular.js erstellt worden sind 
+app.use(express.static(path.join(__dirname, 'static'))); 
+app.use(express.static(path.join(__dirname, 'uploader')));
+
 
 //Error Handler für uncaught Exceptions
 
-process.on('uncaughtException', (err) => { console.error(`Caught exception: ${err}`); });
+//process.on('uncaughtException', (err) => { console.error(`Caught exception: ${err}`); });
 
 
-//Routen-Handling mit Weiterleitung der Http-Requests 
 
-app.get('/users', user.list);	//Beispiel-Route von Express.js erzeugt
+//route für benutzer.js 
 
 app.post('/benutzer' , benutzer.create); // fügt neuen Benutzer ein
-
-app.get('/benutzer' , benutzer.get); // listet alle Benutzer auf
 
 app.get('/benutzer/:benutzerId' , benutzer.show); //listet nur einen Benutzer auf
 
@@ -68,13 +90,76 @@ app.delete('/benutzer' , benutzer.deleteByName); // löscht einen Benutzer anhan
 
 app.delete('/benutzer/:benutzerId' , benutzer.deleteById); // löscht einen Benutzer anhand seiner Id 
 
+app.put('/benutzer/:benutzerId', benutzer.update);
 
 
-//laden der Basis-Datei, des mit Angular.js erstellten Frontends als Basis-Url
+
+
+
+//route für user authentification!
+
+app.post('/api/signup', user.authenticateNewUser);
+
+
+app.post('/api/authenticate', user.authenticate); 
+
+
+//route to a restricted info (GET http://localhost:8080/api/memberinfo)
+app.get('/api/memberinfo', passport.authenticate('jwt', { session: false}), function(req, res) {
+  var token = getToken(req.headers);
+  if (token) {
+    var decoded = jwt.decode(token, config.secret);
+    User.findOne({
+      name: decoded.name
+    }, function(err, user) {
+        if (err) throw err;
+ 
+        if (!user) {
+          return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+        } else {
+          res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
+        }
+    });
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+});
+ 
+getToken = function (headers) {
+  if (headers && headers.authorization) {
+    var parted = headers.authorization.split(' ');
+    if (parted.length === 2) {
+      return parted[1];
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+};
+
+
+
+
+
+
+//laden der Angular.js Dateien
 
 app.get('/', function(req, res) {
     res.sendfile(path.join(__dirname, 'static' , 'index.html')); 
 });
+
+app.get('/webshop', function(req, res) {
+    res.sendfile(path.join(__dirname, 'shop' , 'index.html')); 
+});
+
+app.get('/uploadWebsite', function(req, res) {
+    res.sendfile(path.join(__dirname, 'uploader' , 'index.html')); 
+});
+
+
+
+
 
 
 //erzeugt den Server, wird immer dann ausgeführt, wenn der Server einen Request empfängt 
@@ -82,3 +167,6 @@ app.get('/', function(req, res) {
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+
+
