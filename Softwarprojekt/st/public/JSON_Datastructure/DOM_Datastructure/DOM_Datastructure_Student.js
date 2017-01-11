@@ -9,3 +9,7 @@
  * 	-> creating single Element-Types
  */
 
+var datastructure_student = function(){
+	
+	
+}();

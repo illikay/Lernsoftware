@@ -1,20 +1,32 @@
 /**
  * 
  */
-var containerElement;
 
 window.onload = function(){
-	
-	containerElement = document.getElementById("container");
+	texteditorTest.onload();
 }
 
-function addNewFormattingContainer(){
+var texteditorTest = function(){
 	
-	containerElement.appendChild(createFormattingContainerElement({"callbackCreate":callbackCreate}));
-}
+	var containerElement;
 
-function callbackCreate(editableTextAreaElement){
+	function onload(){
+		containerElement = document.getElementById("container");
+	}
 	
-	var editableTextAreaContainerElement = document.getElementById("editableTextAreaContainer");
-	editableTextAreaContainerElement.appendChild(editableTextAreaElement);
-}
+	function addNewFormattingContainer(){
+		
+		containerElement.appendChild(createFormattingContainerElement({"callbackCreate":callbackCreate}));
+	}
+
+	function callbackCreate(editableTextAreaElement){
+		
+		var editableTextAreaContainerElement = document.getElementById("editableTextAreaContainer");
+		editableTextAreaContainerElement.appendChild(editableTextAreaElement);
+	}
+	
+	return {
+		"onload":onload
+		,"new":addNewFormattingContainer
+	};
+}();

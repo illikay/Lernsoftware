@@ -2,34 +2,41 @@
  * Provides functionality for xPath operations.
  */
 
-/*
- * Parameter = JSON-Object:
- *  - .doc			not required
- *  - .node
- *  - .expression
- */
-function xPath(properties){
+var xPath = function(){
 	
-	var nodeSet;
-	var docNode = properties.doc || document;
-	
-	if(docNode.evaluate){
+	/*
+	 * Parameter = JSON-Object:
+	 *  - .doc			not required
+	 *  - .node
+	 *  - .expression
+	 */
+	function getNodes(properties){
 		
-		nodeSet = [];
+		var nodeSet;
+		var docNode = properties.doc || document;
 		
-		// nodes -> XPathResult - Object
-		var nodes = docNode.evaluate(properties.expression,properties.node,null,XPathResult.ANY_TYPE,null);
-		var node = nodes.iterateNext();
-		while(node){
-			nodeSet.push(node);
-			node = nodes.iterateNext();
+		if(docNode.evaluate){
+			
+			nodeSet = [];
+			
+			// nodes -> XPathResult - Object
+			var nodes = docNode.evaluate(properties.expression,properties.node,null,XPathResult.ANY_TYPE,null);
+			var node = nodes.iterateNext();
+			while(node){
+				nodeSet.push(node);
+				node = nodes.iterateNext();
+			}
+			
+		}else if(window.ActiveXObject){
+			
+			docNode.setProperty("SelectionLanguage", "XPath");
+			nodeSet = docNode.selectNodes(properties.expression);
 		}
 		
-	}else if(window.ActiveXObject){
-		
-		docNode.setProperty("SelectionLanguage", "XPath");
-		nodeSet = docNode.selectNodes(properties.expression);
+		return nodeSet;
 	}
 	
-	return nodeSet;
-}
+	return {
+		"getNodes":getNodes
+	};
+}();

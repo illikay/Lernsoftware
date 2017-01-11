@@ -78,3 +78,7 @@ body{
     height:400px;
     z-index:7;
 }
+
+input[type="text"]{
+    width:100px;
+}

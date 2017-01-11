@@ -18,17 +18,17 @@
 
 <div id="container">
 	<div>
-		<input type="button" value="create" onclick="fillOutputContainer()">
+		<input type="button" value="create" onclick="dataArchitecture.fill()">
 		<div id="outputContainer"></div>
 	</div>
 	<div>
-		<input type="button" value="convertToJSON" onclick="convertToJson()">
+		<input type="button" value="convertToJSON" onclick="dataArchitecture.toJSON()">
 		<div id="dataStructure_JSON">
 			<textarea rows="10" cols="100"></textarea>
 		</div>
 	</div>
 	<div>
-		<input type="button" value="convertToDOM" onclick="convertToDom()">
+		<input type="button" value="convertToDOM" onclick="dataArchitecture.toDOM()">
 		<div id="dataStructure_DOM"></div>
 	</div>
 </div>
