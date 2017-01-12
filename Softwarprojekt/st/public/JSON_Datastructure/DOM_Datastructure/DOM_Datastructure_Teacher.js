@@ -21,6 +21,7 @@ var datastructure_teacher = function(){
 			case "schoolmaterial" : element = schoolmaterial.toDOM(object); break;
 			case "exam" : element = lecture.toDOM(object); break;
 			case "topic" : element = topic.toDOM(object); break;
+			case "exercise" : element = exercise.toDOM(object); break;
 			case "chapter" : element = chapter.toDOM(object); break;
 			case "formattingContainer" : element = formattingContainer.toDOM(object); break;
 			case "link" : element = link.toDOM(object); break;
@@ -37,6 +38,7 @@ var datastructure_teacher = function(){
 			case "schoolmaterial" : object = schoolmaterial.toJSON(element); break;
 			case "exam" : object = exam.toJSON(element); break;
 			case "topic" : object = topic.toJSON(element); break;
+			case "exercise" : object = exercise.toJSON(element); break;
 			case "chapter" : object = chapter.toJSON(element); break;
 			case "formattingContainer" : object = formattingContainer.toJSON(element); break;
 			case "link" : object = link.toJSON(element); break;
@@ -281,7 +283,7 @@ var datastructure_teacher = function(){
 			
 			var exercisesPartHeader = document.createElement("div");
 			exercisesPartHeader.appendChild(helpers.special.attributeContainer({"value":document.createTextNode("Exercises")}));
-			exercisesPartHeader.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"create Chapter","onclick":"datastructure_teacher.chapter.insert(this.parentNode.parentNode.parentNode)"})}));
+			exercisesPartHeader.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"create Exercise","onclick":"datastructure_teacher.exercise.insert(this.parentNode.parentNode.parentNode)"})}));
 			exercisesPartElement.appendChild(exercisesPartHeader);
 			
 			var exercisesPartContent = document.createElement("div");
@@ -290,7 +292,7 @@ var datastructure_teacher = function(){
 			topicContentElement.appendChild(exercisesPartElement);
 			
 			// solutions part
-			var solutionsPartElement = document.createElement("div");
+			/*var solutionsPartElement = document.createElement("div");
 			solutionsPartElement.setAttribute("class","topicSolutionsPart");
 			
 			var solutionsPartHeader = document.createElement("div");
@@ -301,7 +303,7 @@ var datastructure_teacher = function(){
 			var solutionsPartContent = document.createElement("div");
 			solutionsPartElement.appendChild(solutionsPartContent);
 			
-			topicContentElement.appendChild(solutionsPartElement);
+			topicContentElement.appendChild(solutionsPartElement);*/
 			
 			topicElement.appendChild(topicContentElement);
 			
@@ -321,14 +323,14 @@ var datastructure_teacher = function(){
 			var exercisesContentElement = topicElement.childNodes[1].childNodes[1].childNodes[1];
 			var exercisesChildObjects = object.exercises;
 			for(var i = 0; i < exercisesChildObjects.length; i++){
-				exercisesContentElement.appendChild(chapter.toDOM(exercisesChildObjects[i]));
+				exercisesContentElement.appendChild(exercise.toDOM(exercisesChildObjects[i]));
 			}
 			
-			var solutionsContentElement = topicElement.childNodes[1].childNodes[2].childNodes[1];
+			/*var solutionsContentElement = topicElement.childNodes[1].childNodes[2].childNodes[1];
 			var solutionsChildObjects = object.solutions;
 			for(var i = 0; i < solutionsChildObjects.length; i++){
 				solutionsContentElement.appendChild(chapter.toDOM(solutionsChildObjects[i]));
-			}
+			}*/
 			
 			return topicElement;
 		}
@@ -344,13 +346,13 @@ var datastructure_teacher = function(){
 			
 			var exercisesPartChildElements = element.childNodes[1].childNodes[1].childNodes[1].childNodes;
 			for(var i = 0; i < exercisesPartChildElements.length; i++){
-				topicObject.exercises.push(chapter.toJSON(exercisesPartChildElements[i]));
+				topicObject.exercises.push(exercise.toJSON(exercisesPartChildElements[i]));
 			}
 			
-			var solutionsPartChildElements = element.childNodes[1].childNodes[2].childNodes[1].childNodes;
+			/*var solutionsPartChildElements = element.childNodes[1].childNodes[2].childNodes[1].childNodes;
 			for(var i = 0; i < solutionsPartChildElements.length; i++){
 				topicObject.solutions.push(chapter.toJSON(solutionsPartChildElements[i]));
-			}
+			}*/
 			
 			return topicObject;
 		}
@@ -378,10 +380,130 @@ var datastructure_teacher = function(){
 
 	/**
 	 * #########################################################################################
+	 * Exercise:
+	 */
+	var exercise = function(){
+		
+		function createExerciseElement(exerciseName){
+			
+			var exerciseElement = document.createElement("div");
+			exerciseElement.setAttribute("class","exercise");
+			
+			// header
+			var headerElement = document.createElement("div");
+			headerElement.setAttribute("class","exerciseHeader");
+			exerciseElement.appendChild(headerElement);
+			
+			headerElement.appendChild(helpers.special.attributeContainer({"className":"exerciseName","name":"Exercise-Name: ","value":helpers.elements.input({"type":"text","value":exerciseName || "Exercise-Name"})}));
+			headerElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"X","onclick":"datastructure_teacher.exercise.remove(this.parentNode.parentNode.parentNode)"})}));
+			
+			// content
+			var contentElement = document.createElement("div");
+			contentElement.setAttribute("class","exerciseContent");
+			exerciseElement.appendChild(contentElement);
+			
+			//-Question
+			var questionElement = document.createElement("div");
+			questionElement.setAttribute("class","exerciseQuestion");
+			contentElement.appendChild(questionElement);
+			
+			//-Question-Header
+			var questionHeaderElement = document.createElement("div");
+			questionHeaderElement.setAttribute("class","exerciseQuestionHeader");
+			questionElement.appendChild(questionHeaderElement);
+			
+			questionHeaderElement.appendChild(helpers.special.attributeContainer({"value":document.createTextNode("Question")}));
+			questionHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"create Formatting Container","onclick":"datastructure_teacher.formattingContainer.insert(this.parentNode.parentNode.parentNode)"})}));
+			
+			//-Question-Content
+			var questionContentElement = document.createElement("div");
+			questionContentElement.setAttribute("class","exerciseQuestionContent");
+			questionElement.appendChild(questionContentElement);
+			
+			//-Solution
+			var solutionElement = document.createElement("div");
+			solutionElement.setAttribute("class","exerciseSolution");
+			contentElement.appendChild(solutionElement);
+			
+			//-Solution-Header
+			var solutionHeaderElement = document.createElement("div");
+			solutionHeaderElement.setAttribute("class","exerciseSolutionHeader");
+			solutionElement.appendChild(solutionHeaderElement);
+			
+			solutionHeaderElement.appendChild(helpers.special.attributeContainer({"value":document.createTextNode("Solution")}));
+			solutionHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"create Formatting Container","onclick":"datastructure_teacher.formattingContainer.insert(this.parentNode.parentNode.parentNode)"})}));
+			
+			//-Solution-Content
+			var solutionContentElement = document.createElement("div");
+			solutionContentElement.setAttribute("class","exerciseSolutionContent");
+			solutionElement.appendChild(solutionContentElement);
+			
+			return exerciseElement;
+		}
+		
+		function dom_getExerciseElement(object){
+			
+			var exerciseElement = createExerciseElement(object.name);
+			
+			var questionContentElement = exerciseElement.childNodes[1].childNodes[0].childNodes[1];
+			var questionObjects = object.question;
+			for(var i = 0; i < questionObjects.length; i++){
+				questionContentElement.appendChild(formattingContainer.toDOM(questionObjects[i]));
+			}
+			
+			var solutionContentElement = exerciseElement.childNodes[1].childNodes[1].childNodes[1];
+			var solutionObjects = object.solution;
+			for(var i = 0; i < solutionObjects.length; i++){
+				solutionContentElement.appendChild(formattingContainer.toDOM(solutionObjects[i]));
+			}
+			
+			return exerciseElement;
+		}
+		
+		function json_getExerciseObject(element){
+			
+			var exerciseObject = jsonObjectFactory.create("exercise");
+			exerciseObject.name = element.childNodes[0].childNodes[0].childNodes[1].childNodes[0].value;
+			
+			var questionContentChildElements = element.childNodes[1].childNodes[0].childNodes[1].childNodes;
+			var questionObjects = exerciseObject.question;
+			for(var i = 0; i < questionContentChildElements.length; i++){
+				questionObjects.push(formattingContainer.toJSON(questionContentChildElements[i]));
+			}
+			
+			var solutionContentChildElements = element.childNodes[1].childNodes[1].childNodes[1].childNodes;
+			var solutionObjects = exerciseObject.solution;
+			for(var i = 0; i < solutionContentChildElements.length; i++){
+				solutionObjects.push(formattingContainer.toJSON(solutionContentChildElements[i]));
+			}
+			
+			return exerciseObject;
+		}
+		
+		function insertExerciseElement(element){
+			
+			var contentElement = element.childNodes[1];
+			contentElement.appendChild(createExerciseElement());
+		}
+
+		function removeExerciseElement(exerciseElement){
+			
+			var parentElement = exerciseElement.parentNode;
+			parentElement.removeChild(exerciseElement);
+		}
+		
+		return {
+			"create":createExerciseElement
+			,"toDOM":dom_getExerciseElement
+			,"toJSON":json_getExerciseObject
+			,"insert":insertExerciseElement
+			,"remove":removeExerciseElement
+		};
+	}();
+	
+	/**
+	 * #########################################################################################
 	 * Chapter:
-	 * 
-	 * @param object
-	 * @returns
 	 */
 	var chapter = function(){
 		
@@ -649,6 +771,7 @@ var datastructure_teacher = function(){
 		,"exam":exam
 		,"topic":topic
 		,"chapter":chapter
+		,"exercise":exercise
 		,"formattingContainer":formattingContainer
 	};
 }();

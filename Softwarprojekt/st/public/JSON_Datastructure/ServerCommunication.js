@@ -14,7 +14,13 @@ var serverCommunication = function(){
 	            //txt = "Select one or more files.";
 	        }else{
 	        	//alert(element.hasOwnProperty("files"));
+
 	            sendData("POST", "api/upload", element.files, uploadFileCallback, {"element":element});
+
+	        	var formData = new FormData();
+	        	formData.append("Filedata",element.files[0]);
+	            sendData("POST", "api/upload", "multipart/form-data", formData, uploadFileCallback, {"element":element});
+
 	        }
 	    }else{
 	        if(x.value == ""){
@@ -47,7 +53,7 @@ var serverCommunication = function(){
 	/*
 	 * XMLHttpRequest
 	 */
-	function sendData(method,url,files,callback,appendix){
+	function sendData(method,url,enctype,files,callback,appendix){
 		
 		var xmlhttp;
 	    if(window.XMLHttpRequest){
@@ -63,6 +69,7 @@ var serverCommunication = function(){
 	        }
 	    };
 	    xmlhttp.open(method,url,true);
+	    // xmlhttp.setRequestHeader(enctype);
 	    xmlhttp.send({"files":files});
 	}
 

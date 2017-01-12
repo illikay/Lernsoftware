@@ -17,7 +17,7 @@ var texteditor = function(){
 				"selector":"textarea#" + properties.editorId
 				,"plugins":"textcolor colorpicker lists advlist table image link"
 				,"tools":"inserttable tablepops deletetable cell row column"
-				,"toolbar":["undo redo | styleselect formatselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify"
+				,"toolbar":["undo redo | styleselect formatselect | fontsizeselect | fontselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify"
 				            ,"bullist numlist | table | image | insertfile | link unlink"]});
 		}
 		

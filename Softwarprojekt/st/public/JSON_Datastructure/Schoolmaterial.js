@@ -56,6 +56,14 @@ var jsonObjectFactory = function(){
 		this.solutions = [];
 	}
 
+	function Exercise(){
+		
+		this.type = "exercise";
+		this.name = "";
+		this.question = [];
+		this.solution = [];
+	}
+	
 	function Chapter(){
 		
 		this.type = "chapter";
@@ -89,6 +97,7 @@ var jsonObjectFactory = function(){
 			case "schoolmaterial" : object = new Schoolmaterial(constructorArguments); break;
 			case "exam" : object = new Exam(); break;
 			case "topic" : object = new Topic(constructorArguments); break;
+			case "exercise" : object = new Exercise(constructorArguments); break;
 			case "chapter" : object = new Chapter(); break;
 			case "formattingContainer" : object = new FormattingContainer(); break;
 			case "link" : object = new Link(); break;

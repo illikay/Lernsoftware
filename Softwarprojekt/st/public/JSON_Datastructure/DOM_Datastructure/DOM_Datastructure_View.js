@@ -47,6 +47,7 @@ var datastructureView = function(){
 					 	"Exam": getDomRepresentation_Element(datastructure_teacher.exam.create())
 						,"Topic": getDomRepresentation_Element(datastructure_teacher.topic.create())
 						,"Chapter": getDomRepresentation_Element(datastructure_teacher.chapter.create())
+						,"Exercise": getDomRepresentation_Element(datastructure_teacher.exercise.create())
 						,"Formatting-Container": getDomRepresentation_Element(datastructure_teacher.formattingContainer.create({"callbackCreate":function(e){}}))
 				};
 				
