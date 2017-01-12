@@ -14,7 +14,7 @@ var serverCommunication = function(){
 	            //txt = "Select one or more files.";
 	        }else{
 	        	//alert(element.hasOwnProperty("files"));
-	            sendData("POST", "http://127.0.0.1:3000/api/upload", element.files, uploadFileCallback, {"element":element});
+	            sendData("POST", "api/upload", element.files, uploadFileCallback, {"element":element});
 	        }
 	    }else{
 	        if(x.value == ""){

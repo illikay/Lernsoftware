@@ -72,6 +72,7 @@ app.use(express.static(path.join(__dirname, 'shop')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'static'))); 
 app.use(express.static(path.join(__dirname, 'uploader')));
+app.use(express.static(path.join(__dirname, 'public' , 'JSON_Datastructure')));
 
 
 //Error Handler für uncaught Exceptions
@@ -156,6 +157,12 @@ app.get('/webshop', function(req, res) {
 app.get('/uploadWebsite', function(req, res) {
     res.sendfile(path.join(__dirname, 'uploader' , 'index.html')); 
 });
+
+app.get('/uploadLaurin', function(req, res) {
+    res.sendfile(path.join(__dirname, 'public', 'JSON_Datastructure' , 'Data_Architecture.html')); 
+});
+
+
 
 
 
