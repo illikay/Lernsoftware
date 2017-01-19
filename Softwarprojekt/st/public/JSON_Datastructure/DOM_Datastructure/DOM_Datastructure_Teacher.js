@@ -62,7 +62,7 @@ var datastructure_teacher = function(){
 			var nameFieldElement = document.createElement("div");
 			
 			nameFieldElement.appendChild(document.createTextNode(schoolmaterialName || "Schoolmaterial-Name"));
-			nameFieldElement.appendChild(helpers.elements.input({"type":"button","value":"create Exam","onclick":"datastructure_teacher.exam.insert(this.parentNode.parentNode)"}));
+			nameFieldElement.appendChild(element.createInsert("Exam"));
 			
 			schoolmaterialElement.appendChild(nameFieldElement);
 			
@@ -144,13 +144,13 @@ var datastructure_teacher = function(){
 			examHeaderElement.appendChild(helpers.special.attributeContainer({"className":"examDate","name":"Exam-Date: ","value":helpers.elements.input({"type":"text","value":attributeValues.examDate || ""})}));
 			
 			// create Topic
-			examHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"create Topic","onclick":"datastructure_teacher.topic.insert(this.parentNode.parentNode.parentNode)"})}));
+			examHeaderElement.appendChild(element.createInsert("Topic"));
 			
-			// checkbox
-			examHeaderElement.appendChild(helpers.special.attributeContainer({"name":"Visibility: ","value":helpers.elements.input({"type":"checkbox","onchange":"changeChildElementVisibility(this)"})}));
+			// content visibility
+			examHeaderElement.appendChild(contentVisibility.create());
 			
 			// delete Exam
-			examHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"X","onclick":"datastructure_teacher.exam.remove(this.parentNode.parentNode.parentNode)"})}));
+			examHeaderElement.appendChild(element.createRemove());
 			
 			examElement.appendChild(examHeaderElement);
 			
@@ -208,29 +208,11 @@ var datastructure_teacher = function(){
 			
 			return examObject;
 		}
-
-		function insertExamElement(schoolmaterialElement){
-			
-			var contentElement = schoolmaterialElement.childNodes[1];
-			contentElement.appendChild(createExamElement());
-		}
-
-		function removeExamElement(examElement){
-			
-			var schoolmaterialContentElement = examElement.parentNode;
-			schoolmaterialContentElement.removeChild(examElement);
-		}
-
-		function dropAction(examElement,contentElement){
-			examElement.childNodes[1].appendChild(contentElement);
-		}
 		
 		return {
 			"create":createExamElement
 			,"toDOM":dom_getExamElement
 			,"toJSON":json_getExamObject
-			,"insert":insertExamElement
-			,"remove":removeExamElement
 		};
 	}();
 
@@ -254,7 +236,7 @@ var datastructure_teacher = function(){
 			topicHeaderElement.appendChild(helpers.special.attributeContainer({"className":"topicName","name":"Topic-Name: ","value":helpers.elements.input({"type":"text","value":topicName || "Topic-Name"})}));
 			
 			// remove topic
-			topicHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"X","onclick":"datastructure_teacher.topic.remove(this.parentNode.parentNode.parentNode)"})}));
+			topicHeaderElement.appendChild(element.createRemove());
 			
 			topicElement.appendChild(topicHeaderElement);
 			
@@ -269,7 +251,8 @@ var datastructure_teacher = function(){
 			
 			var contentPartHeader = document.createElement("div");
 			contentPartHeader.appendChild(helpers.special.attributeContainer({"value":document.createTextNode("Content")}));
-			contentPartHeader.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"create Chapter","onclick":"datastructure_teacher.chapter.insert(this.parentNode.parentNode.parentNode)"})}));
+			contentPartHeader.appendChild(element.createInsert("Chapter"));
+			contentPartHeader.appendChild(contentVisibility.create());
 			contentPartElement.appendChild(contentPartHeader);
 			
 			var contentPartContent = document.createElement("div");
@@ -283,7 +266,8 @@ var datastructure_teacher = function(){
 			
 			var exercisesPartHeader = document.createElement("div");
 			exercisesPartHeader.appendChild(helpers.special.attributeContainer({"value":document.createTextNode("Exercises")}));
-			exercisesPartHeader.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"create Exercise","onclick":"datastructure_teacher.exercise.insert(this.parentNode.parentNode.parentNode)"})}));
+			exercisesPartHeader.appendChild(element.createInsert("Exercise"));
+			exercisesPartHeader.appendChild(contentVisibility.create());
 			exercisesPartElement.appendChild(exercisesPartHeader);
 			
 			var exercisesPartContent = document.createElement("div");
@@ -356,25 +340,11 @@ var datastructure_teacher = function(){
 			
 			return topicObject;
 		}
-
-		function insertTopicElement(examElement){
-			
-			var lectureContentElement = examElement.childNodes[1];
-			lectureContentElement.appendChild(createTopicElement());
-		}
-
-		function removeTopicElement(topicElement){
-			
-			var lectureContentElement = topicElement.parentNode;
-			lectureContentElement.removeChild(topicElement);
-		}
 		
 		return {
 			"create":createTopicElement
 			,"toDOM":dom_getTopicElement
 			,"toJSON":json_getTopicObject
-			,"insert":insertTopicElement
-			,"remove":removeTopicElement
 		};
 	}();
 
@@ -395,7 +365,7 @@ var datastructure_teacher = function(){
 			exerciseElement.appendChild(headerElement);
 			
 			headerElement.appendChild(helpers.special.attributeContainer({"className":"exerciseName","name":"Exercise-Name: ","value":helpers.elements.input({"type":"text","value":exerciseName || "Exercise-Name"})}));
-			headerElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"X","onclick":"datastructure_teacher.exercise.remove(this.parentNode.parentNode.parentNode)"})}));
+			headerElement.appendChild(element.createRemove());
 			
 			// content
 			var contentElement = document.createElement("div");
@@ -413,7 +383,8 @@ var datastructure_teacher = function(){
 			questionElement.appendChild(questionHeaderElement);
 			
 			questionHeaderElement.appendChild(helpers.special.attributeContainer({"value":document.createTextNode("Question")}));
-			questionHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"create Formatting Container","onclick":"datastructure_teacher.formattingContainer.insert(this.parentNode.parentNode.parentNode)"})}));
+			questionHeaderElement.appendChild(element.createInsert("Formatting Container"));
+			questionHeaderElement.appendChild(contentVisibility.create());
 			
 			//-Question-Content
 			var questionContentElement = document.createElement("div");
@@ -431,7 +402,8 @@ var datastructure_teacher = function(){
 			solutionElement.appendChild(solutionHeaderElement);
 			
 			solutionHeaderElement.appendChild(helpers.special.attributeContainer({"value":document.createTextNode("Solution")}));
-			solutionHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"create Formatting Container","onclick":"datastructure_teacher.formattingContainer.insert(this.parentNode.parentNode.parentNode)"})}));
+			solutionHeaderElement.appendChild(element.createInsert("Formatting Container"));
+			solutionHeaderElement.appendChild(contentVisibility.create());
 			
 			//-Solution-Content
 			var solutionContentElement = document.createElement("div");
@@ -480,24 +452,10 @@ var datastructure_teacher = function(){
 			return exerciseObject;
 		}
 		
-		function insertExerciseElement(element){
-			
-			var contentElement = element.childNodes[1];
-			contentElement.appendChild(createExerciseElement());
-		}
-
-		function removeExerciseElement(exerciseElement){
-			
-			var parentElement = exerciseElement.parentNode;
-			parentElement.removeChild(exerciseElement);
-		}
-		
 		return {
 			"create":createExerciseElement
 			,"toDOM":dom_getExerciseElement
 			,"toJSON":json_getExerciseObject
-			,"insert":insertExerciseElement
-			,"remove":removeExerciseElement
 		};
 	}();
 	
@@ -511,6 +469,11 @@ var datastructure_teacher = function(){
 			
 			var chapterElement = document.createElement("div");
 			chapterElement.setAttribute("class","chapter");
+			chapterElement.setAttribute("draggable","true");
+			chapterElement.setAttribute("ondragstart","datastructure_teacher.dragAndDrop.dragStart(event)");
+			chapterElement.setAttribute("ondragend","datastructure_teacher.dragAndDrop.dragEnd(event)");
+			// chapterElement.setAttribute("ondragover","datastructure_teacher.dragAndDrop.allowDrop(event,this)");
+			// chapterElement.setAttribute("ondrop","datastructure_teacher.dragAndDrop.drop(event,this)");
 			
 			var chapterHeaderElement = document.createElement("div");
 			
@@ -530,16 +493,19 @@ var datastructure_teacher = function(){
 			chapterHeaderElement.appendChild(helpers.special.attributeContainer({"className":"chapterWorkTime","name":"Work-Time: ","value":helpers.elements.input({"type":"text","value":attributeValues.workTime || "Work-Time"})}));
 			
 			// create sub-chapter
-			chapterHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"create Sub-Chapter","onclick":"datastructure_teacher.chapter.insert(this.parentNode.parentNode.parentNode)"})}));
+			chapterHeaderElement.appendChild(element.createInsert("Chapter"));
 			
 			// create formatting-container
-			chapterHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"create Formatting Container","onclick":"datastructure_teacher.formattingContainer.insert(this.parentNode.parentNode.parentNode)"})}));
+			chapterHeaderElement.appendChild(element.createInsert("Formatting Container"));
 			
 			// remove chapter
-			chapterHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"X","onclick":"datastructure_teacher.chapter.remove(this.parentNode.parentNode.parentNode)"})}));
+			chapterHeaderElement.appendChild(element.createRemove());
 			
 			// upload files
 			chapterHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"file","value":"upload file","onchange":"serverCommunication.uploadFile(this)","multiple":true})}));
+			
+			// content visibility
+			chapterHeaderElement.appendChild(contentVisibility.create());
 			
 			chapterElement.appendChild(chapterHeaderElement);
 			
@@ -603,25 +569,11 @@ var datastructure_teacher = function(){
 			
 			return chapterObject;
 		}
-
-		function insertChapterElement(element){
-			
-			var contentElement = element.childNodes[1];
-			contentElement.appendChild(createChapterElement());
-		}
-
-		function removeChapterElement(chapterElement){
-			
-			var parentElement = chapterElement.parentNode;
-			parentElement.removeChild(chapterElement);
-		}
 		
 		return {
 			"create":createChapterElement
 			,"toDOM":dom_getChapterElement
 			,"toJSON":json_getChapterObject
-			,"insert":insertChapterElement
-			,"remove":removeChapterElement
 		};
 	}();
 
@@ -638,6 +590,8 @@ var datastructure_teacher = function(){
 		
 		function createFormattingContainerElement(properties){
 			
+			properties = properties || {"callbackCreate":callbackCreate,"callbackSave":callbackSave};
+			
 			var id = idValue++;
 			
 			var formattingContainerElement = document.createElement("div");
@@ -646,7 +600,8 @@ var datastructure_teacher = function(){
 			// head
 			var containerHead = document.createElement("div");
 			containerHead.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"to edit","onclick":"texteditor.create({'viewId':'formattingContainerView_" + id + "','editorId':'editableTextArea_" + id + "','callbackCreate':" + properties.callbackCreate + ",'callbackSave':" + (properties.callbackSave || function(){}) + "})"})}));
-			containerHead.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"X","onclick":"datastructure_teacher.formattingContainer.remove(this.parentNode.parentNode.parentNode)"})}));
+			containerHead.appendChild(element.createRemove());
+			containerHead.appendChild(contentVisibility.create());
 			formattingContainerElement.appendChild(containerHead);
 			
 			// content
@@ -675,20 +630,7 @@ var datastructure_teacher = function(){
 			
 			return formattingContainerObject;
 		}
-
-		function insertFormattingContainerElement(element){
-			
-			var contentElement = element.childNodes[1];
-			contentElement.appendChild(createFormattingContainerElement({"callbackCreate":callbackCreate,"callbackSave":callbackSave}));
-		}
-
-		function removeFormattingContainerElement(formattingContainerElement){
-			
-			var parentElement = formattingContainerElement.parentNode;
-			parentElement.removeChild(formattingContainerElement);
-		}
-
-
+		
 		function callbackCreate(editableTextAreaElement){
 			
 			var containerElement = document.getElementById("container");
@@ -712,8 +654,6 @@ var datastructure_teacher = function(){
 			"create":createFormattingContainerElement
 			,"toDOM":dom_getFormattingContainerElement
 			,"toJSON":json_getFormattingContainerObject
-			,"insert":insertFormattingContainerElement
-			,"remove":removeFormattingContainerElement
 		};
 	}();
 	
@@ -764,6 +704,141 @@ var datastructure_teacher = function(){
 		};
 	}();
 	
+	var element = function(){
+		
+		function getInsertInput(elementName){
+			
+			return helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"create " + elementName,"onclick":"datastructure_teacher.element.insert(this.parentNode.parentNode.parentNode,'" + elementName.replace(/\s/g,'').toLowerCase() + "')"})});
+		}
+		
+		function getRemoveInput(){
+			
+			return helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"X","onclick":"datastructure_teacher.element.remove(this.parentNode.parentNode.parentNode)"})});
+		}
+		
+		function insertElement(element,childName){
+			
+			var childElement = null;
+			switch(childName){
+				case "exam" : childElement = exam.create(); break;
+				case "topic" : childElement = topic.create(); break;
+				case "chapter" : childElement = chapter.create(); break;
+				case "exercise" : childElement = exercise.create(); break;
+				case "formattingcontainer" : childElement = formattingContainer.create(); break;
+				default : return;
+			}
+			element.childNodes[1].appendChild(childElement);
+			
+			// test
+			
+			element.childNodes[1].appendChild(dragAndDrop.createDropableSpace());
+		}
+		
+		function removeElement(element){
+			
+			element.parentNode.removeChild(element);
+		}
+		
+		return {
+			"createInsert":getInsertInput
+			,"createRemove":getRemoveInput
+			,"insert":insertElement
+			,"remove":removeElement
+		};
+	}();
+	
+	var contentVisibility = function(){
+		
+		function createContentVisibilityInputElement(){
+			return helpers.special.attributeContainer({"name":"Visibility: ","value":helpers.elements.input({"type":"button","value":"-","onclick":"datastructure_teacher.contentVisibility.change(this)"})});
+		}
+		
+		function changeContentVisibility(inputElement){
+			
+			if(inputElement.value === "-"){
+				inputElement.parentNode.parentNode.parentNode.nextSibling.setAttribute("class","unvisible");
+				inputElement.value = "+";
+			}else{
+				inputElement.parentNode.parentNode.parentNode.nextSibling.removeAttribute("class");
+				inputElement.value = "-";
+			}
+		}
+		
+		return {
+			"create":createContentVisibilityInputElement
+			,"change":changeContentVisibility
+		};
+	}();
+	
+	var dragAndDrop = function(){
+		
+		function createDropableSpaceElement(){
+			
+			var draggableDiv = document.createElement("div");
+			draggableDiv.setAttribute("class","dropableSpace");
+			draggableDiv.setAttribute("ondragover","datastructure_teacher.dragAndDrop.allowDrop(event,this)");
+			draggableDiv.setAttribute("ondragleave","datastructure_teacher.dragAndDrop.leaveDrop(event,this)");
+			draggableDiv.setAttribute("ondrop","datastructure_teacher.dragAndDrop.drop(event,this)");
+			
+			return draggableDiv;
+		}
+		
+		function dragStart(event){
+			
+			event.target.setAttribute("id","draggedElement");
+			event.dataTransfer.setData("text/plain",event.target.id);
+		}
+		
+		function dragEnd(event){
+			
+			event.target.removeAttribute("id");
+			/*if(event.dataTransfer.getData("text/plain")){
+				event.dataTransfer.clearData("text/plain");
+			}*/
+		}
+		
+		function allowDrop(event,element){
+			
+			if(!element.getAttribute("id")){
+				element.setAttribute("id","active");
+			}
+			
+			var id = event.dataTransfer.getData("text/plain");
+			if(!(id === element.getAttribute("id")) && !document.getElementById(id).contains(element)){
+				event.preventDefault();
+			}
+		}
+		
+		function leaveDrop(event,element){
+			element.removeAttribute("id");
+		}
+		
+		function drop(event,element){
+			event.preventDefault();
+			
+			var dragElement = document.getElementById(event.dataTransfer.getData("text/plain"));
+			
+			element.parentNode.insertBefore(createDropableSpaceElement(),element);
+			element.parentNode.insertBefore(dragElement,element);
+			
+			dragElement.parentNode.removeChild(dragElement.nextSibling);
+			// element.childNodes[1].appendChild(document.getElementById(event.dataTransfer.getData("text/plain")));
+			element.removeAttribute("id");
+			/*if(event.dataTransfer.getData("text/plain")){
+				event.dataTransfer.clearData("text/plain");
+			}*/
+		}
+		
+		return {
+			"createDropableSpace":createDropableSpaceElement
+			,"dragStart":dragStart
+			,"dragEnd":dragEnd
+			,"allowDrop":allowDrop
+			,"leaveDrop":leaveDrop
+			,"drop":drop
+		};
+	}();
+	
 	return {
 		"toDOM":jsonToDom
 		,"toJSON":domToJson
@@ -773,5 +848,8 @@ var datastructure_teacher = function(){
 		,"chapter":chapter
 		,"exercise":exercise
 		,"formattingContainer":formattingContainer
+		,"element":element
+		,"contentVisibility":contentVisibility
+		,"dragAndDrop":dragAndDrop
 	};
 }();

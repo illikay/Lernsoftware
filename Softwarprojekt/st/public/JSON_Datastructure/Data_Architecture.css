@@ -43,7 +43,7 @@ body{
 
 .topicContentPart > div:first-child,.topicExercisesPart > div:first-child,.topicSolutionsPart > div:first-child,.exerciseQuestion > div:first-child,.exerciseSolution > div:first-child{
     
-    width:250px;
+    width:350px;
 }
 
 .exercise > div:first-child,.exerciseQuestion > div:first-child,.exerciseSolution > div:first-child{
@@ -87,4 +87,16 @@ body{
 
 input[type="text"]{
     width:100px;
+}
+
+.unvisible{
+    display:none;
+}
+
+.dropableSpace{
+    height:3px;
+}
+
+.dropableSpace#active{
+    height:21px;
 }
