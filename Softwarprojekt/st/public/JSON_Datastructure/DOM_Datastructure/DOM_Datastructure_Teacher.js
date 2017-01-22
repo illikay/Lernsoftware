@@ -126,11 +126,12 @@ var datastructure_teacher = function(){
 			return examClassName;
 		}
 		
+		var idCounter = 0;
 		function createExamElement(attributeValues){
 			
 			var examElement = document.createElement("div");
 			examElement.setAttribute("class",examClassName);
-			examElement.setAttribute("id","activeExamElement");
+			examElement.setAttribute("id","exam_" + idCounter++);
 			
 			// exam head
 			var examHeaderElement = document.createElement("div");
@@ -160,6 +161,9 @@ var datastructure_teacher = function(){
 			// exam date
 			examHeaderElement.appendChild(helpers.special.attributeContainer({"className":"examDate","name":"Exam-Date: ","value":helpers.elements.input({"type":"text","value":attributeValues.examDate || ""})}));
 			
+			// properties
+			examHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"properties","onclick":"datastructure_teacher.element.createPropertiesView(this.parentNode.parentNode)"})}));
+			
 			// create Topic
 			examHeaderElement.appendChild(element.createInsert(topic.getClass()));
 			
@@ -167,10 +171,11 @@ var datastructure_teacher = function(){
 			examHeaderElement.appendChild(contentVisibility.create());
 			
 			// delete Exam
-			examHeaderElement.appendChild(element.createRemove());
+			// examHeaderElement.appendChild(element.createRemove());
 			
 			examElement.appendChild(examHeaderElement);
 			
+			element.setPropertiesVisibility(examHeaderElement);
 			
 			// lecture content #################################################################################
 			
@@ -179,8 +184,6 @@ var datastructure_teacher = function(){
 			
 			return examElement;
 		}
-
-
 
 		function dom_getExamElement(object){
 			
@@ -660,7 +663,7 @@ var datastructure_teacher = function(){
 		
 		function createFormattingContainerElement(properties){
 			
-			properties = properties || {"callbackCreate":callbackCreate,"callbackSave":callbackSave};
+			properties = properties || {"callbackCreate":currentCallbackCreate,"callbackSave":currentCallbackSave};
 			
 			var id = idValue++;
 			
@@ -688,8 +691,8 @@ var datastructure_teacher = function(){
 			
 			return createFormattingContainerElement({
 				"content":object.content
-				,"callbackCreate":callbackCreate
-				,"callbackSave":callbackSave
+				,"callbackCreate":currentCallbackCreate
+				,"callbackSave":currentCallbackSave
 				});
 		}
 
@@ -701,6 +704,9 @@ var datastructure_teacher = function(){
 			
 			return formattingContainerObject;
 		}
+		
+		var currentCallbackCreate = callbackCreate;
+		var currentCallbackSave = callbackSave;
 		
 		function callbackCreate(editableTextAreaElement){
 			
@@ -721,11 +727,21 @@ var datastructure_teacher = function(){
 			document.body.removeChild(document.getElementById("editorContainer"));
 		}
 		
+		function setCallbackCreate(callback){
+			currentCallbackCreate = callback;
+		}
+		
+		function setCallbackSave(callback){
+			currentCallbackSave = callback;
+		}
+		
 		return {
 			"getClass":getFormattingContainerClassName
 			,"create":createFormattingContainerElement
 			,"toDOM":dom_getFormattingContainerElement
 			,"toJSON":json_getFormattingContainerObject
+			,"setCallbackCreate":setCallbackCreate
+			,"setCallbackSave":setCallbackSave
 		};
 	}();
 	
@@ -843,11 +859,96 @@ var datastructure_teacher = function(){
 			parent.removeChild(element);
 		}
 		
+		function setPropertyElementsVisibility(headerElement){
+			
+			var propertyElements = xPath.getNodes({"node":headerElement,"expression":"*[@class]"});
+			for(var i = 0; i < propertyElements.length; i++){
+				propertyElements[i].style.display = "none";
+			}
+		}
+		
+		var headerId = 0;
+		
+		function createPropertiesView(headerElement){
+			
+			if(!headerElement.getAttribute("id")){
+				headerElement.setAttribute("id","currentHeader_" + headerId++);
+			}
+			
+			var divElement = document.createElement("div");
+			divElement.setAttribute("id","propertiesView");
+			var tableElement = document.createElement("table");
+			
+			var propertyElements = xPath.getNodes({"node":headerElement,"expression":"*[@class]"});
+			for(var i = 0; i < propertyElements.length; i++){
+				
+				var trElement = document.createElement("tr");
+				
+				var tdElement1 = document.createElement("td");
+				tdElement1.appendChild(propertyElements[i].childNodes[0].childNodes[0]);
+				trElement.appendChild(tdElement1);
+				
+				var tdElement2 = document.createElement("td");
+				tdElement2.appendChild(propertyElements[i].childNodes[1].childNodes[0]);
+				trElement.appendChild(tdElement2);
+				
+				tableElement.appendChild(trElement);
+			}
+			
+			divElement.appendChild(tableElement);
+			divElement.appendChild(helpers.elements.input({"type":"button","value":"save","onclick":"datastructure_teacher.element.closePropertiesView('" + headerElement.getAttribute("id") + "', this.parentNode)"}));
+			
+			currentCallbackCreate(divElement);
+		}
+		
+		var currentCallbackCreate = callbackCreate;
+		var currentCallbackClose = callbackClose;
+		
+		function callbackCreate(divElement){}
+		
+		function setCallbackCreate(callback){
+			currentCallbackCreate = callback;
+		}
+		
+		function callbackClose(){}
+		
+		function setCallbackClose(callback){
+			currentCallbackClose = callback;
+		}
+		
+		function closePropertiesView(headerId,viewElement){
+			
+			var headerElement = document.getElementById(headerId);
+			
+			var propertyElements = xPath.getNodes({"node":headerElement,"expression":"*[@class]"});
+			var trElements = viewElement.childNodes[0].childNodes;
+			
+			for(var i = 0; i < trElements.length; i++){
+				
+				var nameField = propertyElements[i].childNodes[0];
+				var valueField = propertyElements[i].childNodes[1];
+				
+				nameField.appendChild(trElements[i].childNodes[0].childNodes[0]);
+				valueField.appendChild(trElements[i].childNodes[1].childNodes[0]);
+			}
+			
+			viewElement.parentNode.removeChild(viewElement);
+			
+			headerElement.removeAttribute("id");
+			
+			currentCallbackClose();
+		}
+		
 		return {
 			"createInsert":getInsertInput
 			,"createRemove":getRemoveInput
 			,"insert":insertElement
 			,"remove":removeElement
+			,"setPropertiesVisibility":setPropertyElementsVisibility
+			,"createPropertiesView":createPropertiesView
+			,"closePropertiesView":closePropertiesView
+			,"setCallbackCreate":setCallbackCreate
+			,"setCallbackClose":setCallbackClose
 		};
 	}();
 	

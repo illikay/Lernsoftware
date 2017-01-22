@@ -113,6 +113,7 @@ var helpers = function(){
 			}
 			
 			if(properties.name && properties.value){
+				
 				var nameElement = document.createElement("span");
 				nameElement.appendChild(document.createTextNode(properties.name));
 				containerElement.appendChild(nameElement);

@@ -15,9 +15,13 @@ var teacherPage = function(){
 		var examHeaderInfos = examElement.childNodes[0].childNodes;
 		for(var i = 0; i < examHeaderInfos.length; i++){
 			if(examHeaderInfos[i].getAttribute("class") === "examName"){
+				
+				var examNameInputElement = examHeaderInfos[i].childNodes[1].childNodes[0];
+				examNameInputElement.setAttribute("onchange","teacherPage.changeExamName(this.value)");
+				
 				var listElement = document.createElement("li");
 				listElement.setAttribute("onclick","teacherPage.showExam(this)");
-				listElement.appendChild(document.createTextNode(examHeaderInfos[i].childNodes[1].childNodes[0].value));
+				listElement.appendChild(document.createTextNode(examNameInputElement.value));
 				document.getElementById("examList").appendChild(listElement);
 				
 				exam.list = listElement;
@@ -63,10 +67,24 @@ var teacherPage = function(){
 	
 	function saveExam(){
 		
+		if(selectedListElement != null){
+			
+			var examsIndex = getExamsIndex({"key":"list","value":selectedListElement});
+			var examElement = exams[examsIndex].element;
+			
+			var examJSONString = JSON.stringify(datastructure_teacher.toJSON(examElement));
+			
+			serverCommunication.uploadExam(examJSONString,examElement.getAttribute("id"));
+		}
 	}
 	
 	function loadExam(){
 		
+	}
+	
+	function changeExamName(name){
+		
+		selectedListElement.childNodes[0].nodeValue = name;
 	}
 	
 	function getExamsIndex(parameter){
@@ -82,11 +100,49 @@ var teacherPage = function(){
 		}
 	}
 	
+	function propertiesViewCallbackCreate(propertiesView){
+		
+		document.getElementById("middle").appendChild(propertiesView);
+	}
+	
+	// FormattingContainer Properties
+	
+	function textEditorCallbackCreate(editableTextAreaElement){
+		
+		// var containerElement = document.getElementById("container");
+		// containerElement.style.opacity = 0.03;
+		
+		var editorContainerElement = document.createElement("div");
+		editorContainerElement.setAttribute("id","editorContainer");
+		editorContainerElement.appendChild(editableTextAreaElement);
+		document.getElementById("middle").appendChild(editorContainerElement);
+	}
+
+	function textEditorCallbackSave(){
+		
+		// var containerElement = document.getElementById("container");
+		// containerElement.style.opacity = 1;
+		
+		document.getElementById("middle").removeChild(document.getElementById("editorContainer"));
+	}
+	
+	function onload(){
+		
+		datastructure_teacher.element.setCallbackCreate(propertiesViewCallbackCreate);
+		
+		datastructure_teacher.formattingContainer.setCallbackCreate(textEditorCallbackCreate);
+		datastructure_teacher.formattingContainer.setCallbackSave(textEditorCallbackSave);
+	}
+	
 	return {
 		"createExam":createExam
 		,"showExam":showExamElement
 		,"removeExam":removeExam
 		,"saveExam":saveExam
 		,"loadExam":loadExam
+		,"changeExamName":changeExamName
+		,"onload":onload
 	};
 }();
+
+window.onload = teacherPage.onload;

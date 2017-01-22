@@ -4,6 +4,16 @@
 
 var serverCommunication = function(){
 	
+	function uploadExam(examJSONString,examId){
+		
+		alert("Exam-JSON-Object: " + examJSONString);
+	}
+	
+	function getExam(){
+		
+		return "";
+	}
+	
 	/*
 	 * File Uploading
 	 */
@@ -98,5 +108,6 @@ var serverCommunication = function(){
 	
 	return {
 		"uploadFile":uploadFile
+		,"uploadExam":uploadExam
 	};
 }();

@@ -200,7 +200,9 @@ html,body{
     height:100%;
     width:calc(100% - 200px);
     
-    scroll:auto;
+    overflow:auto;
+    
+    background-color:#dfffff;
 }
 
 
@@ -235,4 +237,139 @@ html,body{
 
 #selectedElement{
     background-color:#cccccc;
+}
+
+#propertiesView{
+    position:absolute;
+    top:0px;
+    left:0px;
+    height:100%;
+    width:100%;
+    z-index:11;
+    
+    background-color:#dddddd;
+}
+
+#editorContainer{
+    position:absolute;
+    top:0px;
+    left:0px;
+    height:100%;
+    width:100%;
+    z-index:11;
+    
+    background-color:#dddddd;
+}
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* datastructure */
+
+.schoolmaterial,.exam,.topic,.topicContentPart,.topicExercisesPart,.topicSolutionsPart,.exercise,.exerciseQuestion,.exerciseSolution,.chapter,.formattingContainer{
+    
+    position:relative;
+    left:40px;
+}
+
+.schoolmaterial > div:first-child,.exam > div:first-child,.topic > div:first-child,.topicContentPart > div:first-child,.topicExercisesPart > div:first-child,.topicSolutionsPart > div:first-child,.exercise > div:first-child,.exerciseQuestion > div:first-child,.exerciseSolution > div:first-child,.chapter > div:first-child,.formattingContainer > div:first-child{
+    
+    height:30px;
+    
+    border-width:2px;
+    border-style:solid;
+}
+
+.schoolmaterial > div:first-child,.exam > div:first-child,.topic > div:first-child,.exercise > div:first-child,.chapter > div:first-child,.formattingContainer > div:first-child{
+    
+    width:1500px;
+}
+
+.schoolmaterial > div:first-child{
+    
+    background-color:#ffffff;
+    border-color:#000000;
+}
+
+.exam > div:first-child{
+    
+    background-color:#ff0000;
+    border-color:#770000;
+}
+
+.topic > div:first-child,.topicContentPart > div:first-child,.topicExercisesPart > div:first-child,.topicSolutionsPart > div:first-child{
+    
+    background-color:#00ff00;
+    border-color:#007700;
+}
+
+.topicContentPart > div:first-child,.topicExercisesPart > div:first-child,.topicSolutionsPart > div:first-child,.exerciseQuestion > div:first-child,.exerciseSolution > div:first-child{
+    
+    width:350px;
+}
+
+.exercise > div:first-child,.exerciseQuestion > div:first-child,.exerciseSolution > div:first-child{
+    
+    background-color:#ffbf00;
+    border-color:#ff8800;
+}
+
+.chapter > div:first-child{
+    
+    background-color:#0000ff;
+    border-color:#000077;
+}
+
+.formattingContainer{
+    border:1px solid #770077;
+}
+
+.formattingContainer > div:first-child{
+    background-color:#ff00ff;
+}
+
+div[id*='formattingContainerView']{
+    background-color:#ffffff;
+}
+
+.link > div:first-child{
+    
+    background-color:#00ffff;
+    border-color:#007777;
+}
+
+.schoolmaterial > div:first-child > span,.exam > div:first-child > span,.topic > div:first-child > span,.topicContentPart > div:first-child > span,.topicExercisesPart > div:first-child > span,.topicSolutionsPart > div:first-child > span,.exercise > div:first-child > span,.exerciseQuestion > div:first-child > span,.exerciseSolution > div:first-child > span,.chapter > div:first-child > span,.formattingContainer > div:first-child > span{
+    padding-left:5px;
+}
+
+input[type="text"]{
+    width:100px;
+}
+
+.unvisible{
+    display:none;
+}
+
+.dropableSpaceElementInactive{
+    display:none;
+}
+
+.dropableSpaceElementActive{
+    height:7px;
+}
+
+#dropableSpaceElementReady{
+    height:21px;
+    background-color:#cccccc;
+}
+
+#dropableSpaceHeaderReady{
+    background-color:#cccccc;
+}
+
+*[draggable='true']{
+    cursor:grab;
+}
+
+#draggedElement{
+    cursor:grabbing;
 }
