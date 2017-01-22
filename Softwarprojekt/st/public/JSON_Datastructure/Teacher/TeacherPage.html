@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<link type="text/css" rel="stylesheet" href="TeacherPage.css"/>
+
+<script type="text/javascript" src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
+<script type="text/javascript" src="../Helpers.js"></script>
+<script type="text/javascript" src="../XPath/XPath.js"></script>
+<script type="text/javascript" src="../Texteditor/Texteditor.js"></script>
+<script type="text/javascript" src="../Schoolmaterial.js"></script>
+<script type="text/javascript" src="../TestData.js"></script>
+<script type="text/javascript" src="../DOM_Datastructure/DOM_Datastructure_Teacher.js"></script>
+<script type="text/javascript" src="../DOM_Datastructure/DOM_Datastructure_Student.js"></script>
+<script type="text/javascript" src="TeacherPage.js"></script>
+<script type="text/javascript" src="../ServerCommunication.js"></script>
+
+<title>Examino-Teacher</title>
+</head>
+<body>
+
+<div id="pageContainer">
+
+	<div id="header">
+		<span id="headerContent">
+			<span id="title">Examino</span>
+			<span id="logoImage"><img alt="Examino-Logo" src="../ExtraMaterial/LogoExamino.jpg"></span>
+		</span>
+	</div>
+	
+	<div id="center">
+		<div id="left">
+			<div id="profileFiew">
+				
+			</div>
+			
+			<div id="examChoice">
+				<div>
+					<div id="examChoiceHeader"><span>Exam-Choice</span></div>
+					<div id="examChoiceFunctions">
+						<span>
+							<input type="button" value="new" onclick="teacherPage.createExam()"/>
+						</span>
+						<span>
+							<input type="button" value="remove" onclick="teacherPage.removeExam()"/>
+						</span>
+					</div>
+					<div id="examChoiceContent">
+						<ul id="examList"></ul>
+					</div>
+					<div id="examChoiceServerFunctions">
+						<span>
+							<input type="button" value="save" onclick="teacherPage.saveExam()"/>
+						</span>
+						<span>
+							<input type="button" value="load" onclick="teacherPage.loadExam()"/>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="middle"></div>
+		
+		<div id="right"></div>
+	</div>
+	
+	<div id="bottom">
+		<span id="copyright">&#169; Softwareprojekt-Team Lernsoftware</span>
+	</div>
+
+</div>
+
+</body>
+</html>

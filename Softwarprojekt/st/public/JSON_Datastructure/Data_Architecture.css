@@ -93,10 +93,27 @@ input[type="text"]{
     display:none;
 }
 
-.dropableSpace{
-    height:3px;
+.dropableSpaceElementInactive{
+    display:none;
 }
 
-.dropableSpace#active{
+.dropableSpaceElementActive{
+    height:7px;
+}
+
+#dropableSpaceElementReady{
     height:21px;
+    background-color:#cccccc;
+}
+
+#dropableSpaceHeaderReady{
+    background-color:#cccccc;
+}
+
+*[draggable='true']{
+    cursor:grab;
+}
+
+#draggedElement{
+    cursor:grabbing;
 }
