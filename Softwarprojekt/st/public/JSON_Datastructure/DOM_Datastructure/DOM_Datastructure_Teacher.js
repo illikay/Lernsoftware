@@ -129,9 +129,14 @@ var datastructure_teacher = function(){
 		var idCounter = 0;
 		function createExamElement(attributeValues){
 			
+			if(!attributeValues){
+				attributeValues = {};
+			}
+			
 			var examElement = document.createElement("div");
 			examElement.setAttribute("class",examClassName);
-			examElement.setAttribute("id","exam_" + idCounter++);
+			
+			examElement.setAttribute("id",attributeValues.id || ("exam_" + idCounter++));
 			
 			// exam head
 			var examHeaderElement = document.createElement("div");
@@ -139,12 +144,12 @@ var datastructure_teacher = function(){
 			
 			// exam attribute elements ###############################################################################
 			
-			if(!attributeValues){
-				attributeValues = {};
-			}
+			examHeaderElement.appendChild(helpers.special.attributeContainer({"value":document.createTextNode("Exam")})); // attributeValues.name || "Exam-Name"
 			
 			// name
-			examHeaderElement.appendChild(helpers.special.attributeContainer({"className":"examName","name":"Exam-Name: ","value":helpers.elements.input({"type":"text","value":attributeValues.name || "Exam-Name"})}));
+			var nameInputElement = helpers.elements.input({"type":"text","value":attributeValues.name || "Exam-Name"});
+			element.setNameConnectionFunctionality(nameInputElement,true);
+			examHeaderElement.appendChild(helpers.special.attributeContainer({"className":"examName","name":"Exam-Name: ","value":nameInputElement}));
 			
 			// lecture notifier
 			examHeaderElement.appendChild(helpers.special.attributeContainer({"className":"examLectureNotifier","name":"Lecture: ","value":helpers.elements.input({"type":"text","value":attributeValues.lecture || "Lecture"})}));
@@ -260,6 +265,10 @@ var datastructure_teacher = function(){
 			
 			// topic attribute elements ###############################################################################
 			
+			topicHeaderElement.appendChild(helpers.special.attributeContainer({"value":document.createTextNode("Topic")}));
+			
+			topicHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"properties","onclick":"datastructure_teacher.element.createPropertiesView(this.parentNode.parentNode)"})}));
+			
 			// topic name
 			topicHeaderElement.appendChild(helpers.special.attributeContainer({"className":"topicName","name":"Topic-Name: ","value":helpers.elements.input({"type":"text","value":topicName || "Topic-Name"})}));
 			
@@ -267,6 +276,7 @@ var datastructure_teacher = function(){
 			topicHeaderElement.appendChild(element.createRemove());
 			
 			topicElement.appendChild(topicHeaderElement);
+			element.setPropertiesVisibility(topicHeaderElement);
 			
 			// topic content #################################################################################
 			
@@ -361,7 +371,7 @@ var datastructure_teacher = function(){
 
 		function json_getTopicObject(element){
 			
-			var topicObject = jsonObjectFactory.create("topic",element.childNodes[0].childNodes[0].childNodes[1].childNodes[0].value);
+			var topicObject = jsonObjectFactory.create("topic",element.childNodes[0].childNodes[2].childNodes[1].childNodes[0].value);
 			
 			var contentPartChildElements = element.childNodes[1].childNodes[0].childNodes[1].childNodes;
 			for(var i = 1; i < contentPartChildElements.length; i+=2){
@@ -411,8 +421,12 @@ var datastructure_teacher = function(){
 			dragAndDrop.createDragableFunctionality(headerElement);
 			exerciseElement.appendChild(headerElement);
 			
+			headerElement.appendChild(helpers.special.attributeContainer({"value":document.createTextNode("Exercise")}));
+			headerElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"properties","onclick":"datastructure_teacher.element.createPropertiesView(this.parentNode.parentNode)"})}));
 			headerElement.appendChild(helpers.special.attributeContainer({"className":"exerciseName","name":"Exercise-Name: ","value":helpers.elements.input({"type":"text","value":exerciseName || "Exercise-Name"})}));
 			headerElement.appendChild(element.createRemove());
+			
+			element.setPropertiesVisibility(headerElement);
 			
 			// content
 			var contentElement = document.createElement("div");
@@ -492,7 +506,7 @@ var datastructure_teacher = function(){
 		function json_getExerciseObject(element){
 			
 			var exerciseObject = jsonObjectFactory.create("exercise");
-			exerciseObject.name = element.childNodes[0].childNodes[0].childNodes[1].childNodes[0].value;
+			exerciseObject.name = element.childNodes[0].childNodes[2].childNodes[1].childNodes[0].value;
 			
 			var questionContentChildElements = element.childNodes[1].childNodes[0].childNodes[1].childNodes;
 			var questionObjects = exerciseObject.question;
@@ -546,6 +560,10 @@ var datastructure_teacher = function(){
 				attributeValues = {};
 			}
 			
+			chapterHeaderElement.appendChild(helpers.special.attributeContainer({"value":document.createTextNode("Chapter")}));
+			
+			chapterHeaderElement.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"properties","onclick":"datastructure_teacher.element.createPropertiesView(this.parentNode.parentNode)"})}));
+			
 			// chapter name
 			chapterHeaderElement.appendChild(helpers.special.attributeContainer({"className":"chapterName","name":"Chapter-Name: ","value":helpers.elements.input({"type":"text","value":attributeValues.name || "Chapter-Name"})}));
 			
@@ -571,6 +589,7 @@ var datastructure_teacher = function(){
 			chapterHeaderElement.appendChild(contentVisibility.create());
 			
 			chapterElement.appendChild(chapterHeaderElement);
+			element.setPropertiesVisibility(chapterHeaderElement);
 			
 			// chapter content #################################################################################
 			
@@ -673,6 +692,7 @@ var datastructure_teacher = function(){
 			// head
 			var containerHead = document.createElement("div");
 			dragAndDrop.createDragableFunctionality(containerHead);
+			containerHead.appendChild(helpers.special.attributeContainer({"value":document.createTextNode("Formatting Container")}));
 			containerHead.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"to edit","onclick":"texteditor.create({'viewId':'formattingContainerView_" + id + "','editorId':'editableTextArea_" + id + "','callbackCreate':" + properties.callbackCreate + ",'callbackSave':" + (properties.callbackSave || function(){}) + "})"})}));
 			containerHead.appendChild(element.createRemove());
 			containerHead.appendChild(contentVisibility.create());
@@ -939,6 +959,30 @@ var datastructure_teacher = function(){
 			currentCallbackClose();
 		}
 		
+		// name connection
+		
+		function setNameConnectionFunctionality(inputElement,withCallback){
+			
+			inputElement.setAttribute("onchange","datastructure_teacher.element.nameConnection(this,this.value," + withCallback + ")");
+		}
+		
+		function nameConnection(element,name,withCallback){
+			// alert(element.parentNode.parentNode.parentNode.firstChild.firstChild);
+			// element.parentNode.parentNode.parentNode.firstChild.firstChild.nodeValue = name;
+			
+			if(withCallback){
+				currentNameConnectionCallback(name);
+			}
+		}
+		
+		var currentNameConnectionCallback = nameConnectionCallback;
+		
+		function nameConnectionCallback(name){}
+		
+		function setNameConnectionCallback(callback){
+			currentNameConnectionCallback = callback;
+		}
+		
 		return {
 			"createInsert":getInsertInput
 			,"createRemove":getRemoveInput
@@ -949,6 +993,9 @@ var datastructure_teacher = function(){
 			,"closePropertiesView":closePropertiesView
 			,"setCallbackCreate":setCallbackCreate
 			,"setCallbackClose":setCallbackClose
+			,"setNameConnectionFunctionality":setNameConnectionFunctionality
+			,"nameConnection":nameConnection
+			,"setNameConnectionCallback":setNameConnectionCallback
 		};
 	}();
 	

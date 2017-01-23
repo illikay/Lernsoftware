@@ -17,7 +17,6 @@ var teacherPage = function(){
 			if(examHeaderInfos[i].getAttribute("class") === "examName"){
 				
 				var examNameInputElement = examHeaderInfos[i].childNodes[1].childNodes[0];
-				examNameInputElement.setAttribute("onchange","teacherPage.changeExamName(this.value)");
 				
 				var listElement = document.createElement("li");
 				listElement.setAttribute("onclick","teacherPage.showExam(this)");
@@ -34,6 +33,8 @@ var teacherPage = function(){
 	}
 	
 	var selectedListElement = null;
+	var currentExamId;
+	
 	function removeExam(){
 		
 		if(selectedListElement != null){
@@ -53,6 +54,8 @@ var teacherPage = function(){
 		
 		if(selectedListElement != null){
 			selectedListElement.removeAttribute("id");
+			var examElementOld = exams[getExamsIndex({"key":"list","value":selectedListElement})].element;
+			examElementOld.setAttribute("id",currentExamId);
 		}
 		listElement.setAttribute("id","selectedElement");
 		selectedListElement = listElement;
@@ -62,7 +65,10 @@ var teacherPage = function(){
 			middleElement.removeChild(middleElement.firstChild);
 		}
 		
-		middleElement.appendChild(exams[getExamsIndex({"key":"list","value":listElement})].element);
+		var examElement = exams[getExamsIndex({"key":"list","value":listElement})].element;
+		currentExamId = examElement.getAttribute("id");
+		examElement.setAttribute("id","activeExamElement");
+		middleElement.appendChild(examElement);
 	}
 	
 	function saveExam(){
@@ -72,19 +78,12 @@ var teacherPage = function(){
 			var examsIndex = getExamsIndex({"key":"list","value":selectedListElement});
 			var examElement = exams[examsIndex].element;
 			
-			var examJSONString = JSON.stringify(datastructure_teacher.toJSON(examElement));
-			
-			serverCommunication.uploadExam(examJSONString,examElement.getAttribute("id"));
+			serverCommunication.uploadExam(JSON.stringify(datastructure_teacher.toJSON(examElement)), currentExamId);
 		}
 	}
 	
 	function loadExam(){
 		
-	}
-	
-	function changeExamName(name){
-		
-		selectedListElement.childNodes[0].nodeValue = name;
 	}
 	
 	function getExamsIndex(parameter){
@@ -106,6 +105,11 @@ var teacherPage = function(){
 	}
 	
 	// FormattingContainer Properties
+	
+	function nameConnectionCallback(name){
+		// alert(name);
+		selectedListElement.childNodes[0].nodeValue = name;
+	}
 	
 	function textEditorCallbackCreate(editableTextAreaElement){
 		
@@ -130,6 +134,8 @@ var teacherPage = function(){
 		
 		datastructure_teacher.element.setCallbackCreate(propertiesViewCallbackCreate);
 		
+		datastructure_teacher.element.setNameConnectionCallback(nameConnectionCallback);
+		
 		datastructure_teacher.formattingContainer.setCallbackCreate(textEditorCallbackCreate);
 		datastructure_teacher.formattingContainer.setCallbackSave(textEditorCallbackSave);
 	}
@@ -140,7 +146,6 @@ var teacherPage = function(){
 		,"removeExam":removeExam
 		,"saveExam":saveExam
 		,"loadExam":loadExam
-		,"changeExamName":changeExamName
 		,"onload":onload
 	};
 }();

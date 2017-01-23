@@ -196,9 +196,9 @@ html,body{
     position:absolute;
     
     left:200px;
-    
-    height:100%;
-    width:calc(100% - 200px);
+    padding:7px;
+    height:calc(100% - 14px);
+    width:calc(100% - 214px);
     
     overflow:auto;
     
@@ -265,10 +265,31 @@ html,body{
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* datastructure */
 
-.schoolmaterial,.exam,.topic,.topicContentPart,.topicExercisesPart,.topicSolutionsPart,.exercise,.exerciseQuestion,.exerciseSolution,.chapter,.formattingContainer{
+.exam{
+    position:relative;
+}
+
+.schoolmaterial,.topic,.topicContentPart,.topicExercisesPart,.topicSolutionsPart,.exercise,.exerciseQuestion,.exerciseSolution,.chapter,.formattingContainer{
     
     position:relative;
     left:40px;
+    height:auto;
+}
+
+.exam{
+    border:2px solid #770000;
+}
+
+.topic{
+    border:2px solid #007700;
+}
+
+.exercise{
+    border:2px solid #ff8800;
+}
+
+.chapter{
+    border:2px solid #000077;
 }
 
 .schoolmaterial > div:first-child,.exam > div:first-child,.topic > div:first-child,.topicContentPart > div:first-child,.topicExercisesPart > div:first-child,.topicSolutionsPart > div:first-child,.exercise > div:first-child,.exerciseQuestion > div:first-child,.exerciseSolution > div:first-child,.chapter > div:first-child,.formattingContainer > div:first-child{
@@ -281,7 +302,7 @@ html,body{
 
 .schoolmaterial > div:first-child,.exam > div:first-child,.topic > div:first-child,.exercise > div:first-child,.chapter > div:first-child,.formattingContainer > div:first-child{
     
-    width:1500px;
+    width:900px;
 }
 
 .schoolmaterial > div:first-child{
@@ -304,7 +325,7 @@ html,body{
 
 .topicContentPart > div:first-child,.topicExercisesPart > div:first-child,.topicSolutionsPart > div:first-child,.exerciseQuestion > div:first-child,.exerciseSolution > div:first-child{
     
-    width:350px;
+    width:360px;
 }
 
 .exercise > div:first-child,.exerciseQuestion > div:first-child,.exerciseSolution > div:first-child{
@@ -314,6 +335,8 @@ html,body{
 }
 
 .chapter > div:first-child{
+    
+    color:#ffffff;
     
     background-color:#0000ff;
     border-color:#000077;
@@ -343,6 +366,10 @@ div[id*='formattingContainerView']{
 
 input[type="text"]{
     width:100px;
+}
+
+input[type="button"]{
+    color:#000000;
 }
 
 .unvisible{

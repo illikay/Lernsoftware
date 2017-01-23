@@ -6,7 +6,7 @@ var serverCommunication = function(){
 	
 	function uploadExam(examJSONString,examId){
 		
-		alert("Exam-JSON-Object: " + examJSONString);
+		alert("Exam-JSON-String:\n\n" + examJSONString + "\n\n\n\nExam-Id:\n\n" + examId);
 	}
 	
 	function getExam(){
