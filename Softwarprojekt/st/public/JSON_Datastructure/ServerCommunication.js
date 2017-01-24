@@ -6,13 +6,25 @@ var serverCommunication = function(){
 	
 	function uploadExam(examJSONString,examId){
 		
+		var dataObject = {"ExamId" : examId , "JsonText" : examJSONString};
+		var data = JSON.stringify(dataObject);
+		
+		let request = new XMLHttpRequest();
+		request.onload = () => {
+			if (request.status === 200){
+				console.log('Daten erfolgreich gesendet');				
+			}		
+		};
+		request.open('POST' , '/exam');
+		request.setRequestHeader('Content-Type' , 'application/json');
+		request.send(data);		
+
 		alert("Exam-JSON-String:\n\n" + examJSONString + "\n\n\n\nExam-Id:\n\n" + examId);
+		
+		
+		
 	}
 	
-	function getExam(){
-		
-		return "";
-	}
 	
 	/*
 	 * File Uploading
@@ -81,6 +93,26 @@ var serverCommunication = function(){
 	    xmlhttp.open(method,url,true);
 	    // xmlhttp.setRequestHeader(enctype);
 	    xmlhttp.send({"files":files});
+	}
+	
+function doRequest(method,url,data, callback, appendix){
+		
+		var xmlhttp;
+	    if(window.XMLHttpRequest){
+	    	// code for modern browsers
+	        xmlhttp = new XMLHttpRequest();
+	     }else{
+	    	// code for old IE browsers
+	    	 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	    }
+	    xmlhttp.onreadystatechange = function(){
+	    	if(this.readyState == 4 && this.status == 200){
+	            callback(this,appendix);
+	        }
+	    };
+	    xmlhttp.open(method,url,true);
+	    // xmlhttp.setRequestHeader(enctype);
+	    xmlhttp.send(data);
 	}
 
 	/* 

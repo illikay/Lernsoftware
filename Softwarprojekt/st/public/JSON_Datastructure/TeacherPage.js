@@ -78,6 +78,10 @@ var teacherPage = function(){
 			var examsIndex = getExamsIndex({"key":"list","value":selectedListElement});
 			var examElement = exams[examsIndex].element;
 			
+			
+						
+			
+			
 			serverCommunication.uploadExam(JSON.stringify(datastructure_teacher.toJSON(examElement)), currentExamId);
 		}
 	}

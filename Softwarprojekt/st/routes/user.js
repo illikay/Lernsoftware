@@ -34,7 +34,7 @@ exports.authenticateNewUser = function(req, res){
 	
 exports.authenticate =  function(req, res) {
 	 User.findOne({
-		    name: req.body.username
+		    username: req.body.username
 		  }, function(err, user) {
 		    if (err) throw err;
 		 

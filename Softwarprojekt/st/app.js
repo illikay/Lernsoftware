@@ -32,6 +32,7 @@ app.use(bodyParser.json());
 var index  = require('./routes/index.js');
 var user = require('./routes/user.js');
 var benutzer = require('./routes/benutzer.js');
+var examRoute = require('./routes/examRoute.js');
 
 
 require('./config/passport.js')(passport);
@@ -42,7 +43,7 @@ var apiRoutes = express.Router();
 
 //Datenbank Integration mit Mongoose
 
-mongoose.connect('mongodb://localhost/benutzerdatenbank');
+mongoose.connect('mongodb://localhost/examino');
 var db = mongoose.connection;
 
 db.on('error', function callback(){	
@@ -56,7 +57,7 @@ db.once('open', function callback(){
 
 // all environments und Einbinden der Middleware 
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 8000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
 
@@ -68,11 +69,11 @@ app.use(passport.initialize());
 
 //einbinden der statischen Ordner in das Backend
 
-app.use(express.static(path.join(__dirname, 'shop')));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'static'))); 
-app.use(express.static(path.join(__dirname, 'uploader')));
-app.use(express.static(path.join(__dirname, 'public' , 'JSON_Datastructure')));
+//app.use(express.static(path.join(__dirname, 'shop')));
+app.use(express.static(path.join(__dirname, 'public', 'JSON_Datastructure')));
+//app.use(express.static(path.join(__dirname, 'static'))); 
+//app.use(express.static(path.join(__dirname, 'uploader')));
+//app.use(express.static(path.join(__dirname, 'public' , 'JSON_Datastructure' , 'Teacher')));
 
 
 //Error Handler für uncaught Exceptions
@@ -84,17 +85,19 @@ app.use(express.static(path.join(__dirname, 'public' , 'JSON_Datastructure')));
 //route für benutzer.js 
 
 app.post('/benutzer' , benutzer.create); // fügt neuen Benutzer ein
-
 app.get('/benutzer/:benutzerId' , benutzer.show); //listet nur einen Benutzer auf
-
 app.delete('/benutzer' , benutzer.deleteByName); // löscht einen Benutzer anhand seines Namens
-
 app.delete('/benutzer/:benutzerId' , benutzer.deleteById); // löscht einen Benutzer anhand seiner Id 
-
-app.put('/benutzer/:benutzerId', benutzer.update);
-
+app.put('/benutzer/:benutzerId', benutzer.update); //ändert einen Benutzer
 
 
+//route für exam.js 
+
+app.post('/exam' , examRoute.create); //fügt neue Klausur ein
+app.get('/exam' , examRoute.showAll); //zeigt alle Klausuren an
+app.get('/exam/:examId', examRoute.showOne); //zeigt eine Klausur an
+app.delete('/exam/:examId', examRoute.deleteById); //löscht eine Klausur
+app.put('/exam/:examId', examRoute.update); //ändert eine Klausur 
 
 
 //route für user authentification!
@@ -161,6 +164,18 @@ app.get('/uploadWebsite', function(req, res) {
 app.get('/uploadLaurin', function(req, res) {
     res.sendfile(path.join(__dirname, 'public', 'JSON_Datastructure' , 'Data_Architecture.html')); 
 });
+
+
+app.get('/startProject', function(req, res) {
+    res.sendfile(path.join(__dirname, 'public', 'JSON_Datastructure' , 'index.html')); 
+});
+
+app.get('/teacher', function(req, res) {
+    res.sendfile(path.join(__dirname, 'public', 'JSON_Datastructure' ,  'TeacherPage.html')); 
+});
+
+
+
 
 
 

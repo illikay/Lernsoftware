@@ -1,0 +1,64 @@
+ <!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Insert title here</title>
+<script src="lib/jquery-3.1.1.min.js"></script>
+<script src="lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script src="lib/angular.js"></script>
+<script src="lib/angular-route.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-cookies.js"></script>
+  
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="scripts/style.css">
+
+
+
+<script src="app.js"></script>
+
+<script src="app-services/authentication.service.js"></script>
+<script src="app-services/flash.service.js"></script>
+<script src="app-services/user.service.local-storage.js"></script>
+
+    
+    <script src="login.controller.js"></script>
+    <script src="register/register.controller.js"></script>
+    <!-- Stripe
+    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.32/jquery.form.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.61.0-2013.06.06/jquery.blockUI.min.js"></script>
+  
+     -->
+    
+  <!-- AngularStore app -->
+  
+   
+  
+</head>
+
+<body >
+
+<div class="col-md-6 col-md-offset-3">
+    <h2>Login</h2>
+    <form name="form" ng-submit="vm.login()" role="form">
+        <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" class="form-control" ng-model="vm.username" required />
+            <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control" ng-model="vm.password" required />
+            <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
+        </div>
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid " class="btn btn-primary">Login</button>
+           <a href="#/register" class="btn btn-link">Register</a>
+        </div>
+    </form>
+    <div style="color: #ff0000" ng-show="showERR" >{{loginmessageERR}}</div>
+</div>
+
+</body>
+ 
+</html>
