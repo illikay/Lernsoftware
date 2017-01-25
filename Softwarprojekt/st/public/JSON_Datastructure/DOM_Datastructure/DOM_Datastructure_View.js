@@ -1,10 +1,10 @@
 /**
  * Functions for supporting functionality of DOM_Datastructure_View.html file:
+ * 
+ * Shows html syntax in a better readable view. Specifically for the datastructure elements.
+ * Not directly part of the projects real functionality.
+ * Only there to help the developers during their development process.
  */
-
-window.onload = function(){
-	datastructureView.onload();
-}
 
 var datastructureView = function(){
 	
@@ -168,3 +168,5 @@ var datastructureView = function(){
 		,"refresh":refreshDomRepresentation
 	};
 }();
+
+window.onload = datastructureView.onload;

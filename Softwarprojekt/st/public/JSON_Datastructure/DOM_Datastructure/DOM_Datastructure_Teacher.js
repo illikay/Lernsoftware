@@ -1,12 +1,14 @@
 /**
- * Teacher - DOM-Structure:
+ * Teacher - Data-Structure:
  * 
  * Provides methods for
  * 	-> converting
- * 			- HTML-Structure to JSON-Objects
- * 			- JSON-Objects to HTML-Structure
+ * 			- DOM-Structure to JSON-Object Structure
+ * 			- JSON-Object Structure to DOM-Structure
  * 
- * 	-> creating single Element-Types
+ * 	-> creating, deleting, and inserting single Element-Types
+ *  -> Drag and Drop functionality
+ *  -> Texteditor functionality
  * 
  * Access-Syntax: datastructure_teacher.<option>
  */
@@ -175,9 +177,6 @@ var datastructure_teacher = function(){
 			// content visibility
 			examHeaderElement.appendChild(contentVisibility.create());
 			
-			// delete Exam
-			// examHeaderElement.appendChild(element.createRemove());
-			
 			examElement.appendChild(examHeaderElement);
 			
 			element.setPropertiesVisibility(examHeaderElement);
@@ -203,7 +202,6 @@ var datastructure_teacher = function(){
 				contentElement.appendChild(topic.toDOM(childObjects[i]));
 				contentElement.appendChild(dragAndDrop.createDropableSpace(topic.getClass()));
 			}
-			// examElement.appendChild(contentElement);
 			
 			return examElement;
 		}
@@ -317,20 +315,6 @@ var datastructure_teacher = function(){
 			
 			topicContentElement.appendChild(exercisesPartElement);
 			
-			// solutions part
-			/*var solutionsPartElement = document.createElement("div");
-			solutionsPartElement.setAttribute("class","topicSolutionsPart");
-			
-			var solutionsPartHeader = document.createElement("div");
-			solutionsPartHeader.appendChild(helpers.special.attributeContainer({"value":document.createTextNode("Solutions")}));
-			solutionsPartHeader.appendChild(helpers.special.attributeContainer({"value":helpers.elements.input({"type":"button","value":"create Chapter","onclick":"datastructure_teacher.chapter.insert(this.parentNode.parentNode.parentNode)"})}));
-			solutionsPartElement.appendChild(solutionsPartHeader);
-			
-			var solutionsPartContent = document.createElement("div");
-			solutionsPartElement.appendChild(solutionsPartContent);
-			
-			topicContentElement.appendChild(solutionsPartElement);*/
-			
 			topicElement.appendChild(topicContentElement);
 			
 			return topicElement;
@@ -360,12 +344,6 @@ var datastructure_teacher = function(){
 				exercisesContentElement.appendChild(dragAndDrop.createDropableSpace(exercise.getClass()));
 			}
 			
-			/*var solutionsContentElement = topicElement.childNodes[1].childNodes[2].childNodes[1];
-			var solutionsChildObjects = object.solutions;
-			for(var i = 0; i < solutionsChildObjects.length; i++){
-				solutionsContentElement.appendChild(chapter.toDOM(solutionsChildObjects[i]));
-			}*/
-			
 			return topicElement;
 		}
 
@@ -382,11 +360,6 @@ var datastructure_teacher = function(){
 			for(var i = 1; i < exercisesPartChildElements.length; i+=2){
 				topicObject.exercises.push(exercise.toJSON(exercisesPartChildElements[i]));
 			}
-			
-			/*var solutionsPartChildElements = element.childNodes[1].childNodes[2].childNodes[1].childNodes;
-			for(var i = 0; i < solutionsPartChildElements.length; i++){
-				topicObject.solutions.push(chapter.toJSON(solutionsPartChildElements[i]));
-			}*/
 			
 			return topicObject;
 		}
@@ -547,9 +520,6 @@ var datastructure_teacher = function(){
 			var chapterElement = document.createElement("div");
 			chapterElement.setAttribute("class",chapterClassName);
 			
-			// chapterElement.setAttribute("ondragover","datastructure_teacher.dragAndDrop.allowDrop(event,this)");
-			// chapterElement.setAttribute("ondrop","datastructure_teacher.dragAndDrop.drop(event,this)");
-			
 			var chapterHeaderElement = document.createElement("div");
 			chapterHeaderElement.setAttribute("class","chapterHeader");
 			dragAndDrop.createDragableFunctionality(chapterHeaderElement);
@@ -619,7 +589,6 @@ var datastructure_teacher = function(){
 				contentElement.appendChild(childElement);
 				contentElement.appendChild(dragAndDrop.createDropableSpace(chapterClassName + " " + formattingContainer.getClass()));
 			}
-			// chapterElement.appendChild(contentElement);
 			
 			return chapterElement;
 		}
@@ -627,8 +596,6 @@ var datastructure_teacher = function(){
 		function json_getChapterObject(element){
 			
 			var chapterObject = jsonObjectFactory.create("chapter");
-			
-			// element.childNodes[0].childNodes[0].value
 			
 			var chapterHeaderElements = element.childNodes[0].childNodes;
 			
@@ -812,6 +779,13 @@ var datastructure_teacher = function(){
 		};
 	}();
 	
+	/**
+	 * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 * element:
+	 * 
+	 * Functions for element-operations
+	 */
+	
 	var element = function(){
 		
 		function getInsertInput(elementClassName,otherClassNames){
@@ -859,10 +833,6 @@ var datastructure_teacher = function(){
 			}
 			
 			contentElement.appendChild(childElement);
-			
-			// test
-			// alert(childClassName + "  " + otherClassNames);
-			// alert(otherClassNames ? (childClassName + " " + otherClassNames.join(" ")) : childClassName);
 			
 			contentElement.appendChild(dragAndDrop.createDropableSpace(childElementClassNames));
 		}
@@ -967,8 +937,6 @@ var datastructure_teacher = function(){
 		}
 		
 		function nameConnection(element,name,withCallback){
-			// alert(element.parentNode.parentNode.parentNode.firstChild.firstChild);
-			// element.parentNode.parentNode.parentNode.firstChild.firstChild.nodeValue = name;
 			
 			if(withCallback){
 				currentNameConnectionCallback(name);
@@ -999,6 +967,13 @@ var datastructure_teacher = function(){
 		};
 	}();
 	
+	/**
+	 * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 * contentVisibility:
+	 * 
+	 * Functions for adding content visibility functionality to arbitrary element, specifically for datastructure elements
+	 */
+	
 	var contentVisibility = function(){
 		
 		function createContentVisibilityInputElement(){
@@ -1022,6 +997,13 @@ var datastructure_teacher = function(){
 		};
 	}();
 	
+	/**
+	 * +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	 * dragAndDrop:
+	 * 
+	 * Functions for adding dragAndDrop functionality to datastructure elements
+	 */
+	
 	var dragAndDrop = function(){
 		
 		function createDragableFunctionality(element){
@@ -1043,7 +1025,7 @@ var datastructure_teacher = function(){
 			for(var i = 0; i < elementClasses.length; i++){
 				dropableSpaceElementClasses += (" " + dropableSpaceElementClass + elementClasses[i]);
 			}
-			//alert(dropableSpaceElementClasses);
+			
 			return dropableSpaceElementClasses;
 		}
 		
@@ -1052,7 +1034,6 @@ var datastructure_teacher = function(){
 			if(type === "start"){
 				for(var i = 0; i < elements.length; i++){
 					elements[i].setAttribute("class","dropableSpaceElementActive");
-					//alert(element.getAttribute("class"));
 				}
 			}else if(type === "end"){
 				for(var i = 0; i < elements.length; i++){
@@ -1065,10 +1046,8 @@ var datastructure_teacher = function(){
 			
 			if(dropableSpaceElement){
 				element.setAttribute("class",getDropableSpaceElementClasses(className,true));
-			}else{
-				// element.setAttribute("class",getDropableSpaceElementClasses(className,false));
-				
 			}
+			
 			element.setAttribute("ondragover","datastructure_teacher.dragAndDrop.allowDrop(event,this)");
 			element.setAttribute("ondragleave","datastructure_teacher.dragAndDrop.leaveDrop(event,this)");
 			element.setAttribute("ondrop","datastructure_teacher.dragAndDrop.drop(event,this)");
@@ -1079,7 +1058,7 @@ var datastructure_teacher = function(){
 			var draggableDiv = document.createElement("div");
 			
 			createDropableSpaceFunctionality(draggableDiv,elementClassName,true);
-			// draggableDiv.setAttribute("class",elementName || "chapter");
+			
 			return draggableDiv;
 		}
 		
@@ -1098,17 +1077,12 @@ var datastructure_teacher = function(){
 			
 			var elementGroupClass = getDropableSpaceElementClasses(dragElementClass,false);
 			dropableSpaceElementGroup = xPath.getNodes({"node":document.getElementById("activeExamElement"),"expression":"//*[contains(@class,'" + elementGroupClass + "') and not(ancestor::*[contains(@id,'" + dragElementId + "')])]"});
-			//  and not(next-sibling::*[contains(@id,'" + dragElementId + "')]) and not(previous-sibling::*[contains(@id,'" + dragElementId + "')])
 			
 			dropableSpaceElementGroupClass = [];
 			for(var i = 0; i < dropableSpaceElementGroup.length; i++){
 				dropableSpaceElementGroupClass.push(dropableSpaceElementGroup[i].getAttribute("class"));
 			}
 			changeDropableSpaceElementStyle(dropableSpaceElementGroup,"start");
-			
-			// alert(dropableSpaceElementGroupClass);
-			// alert(dropableSpaceElementGroup.length);
-			// alert(querySelectorAll("." + dropableSpaceElementGroupClass).length);
 		}
 		
 		function dragEnd(event){
@@ -1118,16 +1092,11 @@ var datastructure_teacher = function(){
 				changeDropableSpaceElementStyle(dropableSpaceElementGroup,"end");
 				dragElement.removeAttribute("id");
 				dragElement = null;
-				/*if(event.dataTransfer.getData("text/plain")){
-					event.dataTransfer.clearData("text/plain");
-				}*/
 			}
 		}
 		
 		function allowDrop(event,element){
 			
-			// var id = event.dataTransfer.getData("text/plain");
-			// document.getElementById(id)
 			if(!(dragElement === element) && !dragElement.contains(element)){
 				
 				if(element.getAttribute("class") === "dropableSpaceElementActive"){
@@ -1137,7 +1106,7 @@ var datastructure_teacher = function(){
 					event.preventDefault();
 				}else{
 					var dragElementClass = dragElement.getAttribute("class");
-					// alert(element.getAttribute("class"));
+					
 					switch(element.getAttribute("class")){
 						case "topicContentHeader" :
 							if(dragElementClass === "chapter"){
@@ -1181,12 +1150,11 @@ var datastructure_teacher = function(){
 			event.preventDefault();
 			
 			var parent = dragElement.parentNode;
-			// var dragElement = document.getElementById(event.dataTransfer.getData("text/plain"));
+			
 			changeDropableSpaceElementStyle(dropableSpaceElementGroup,"end");
 			element.removeAttribute("id");
-			// element.parentNode.insertBefore(createDropableSpaceElement(),element);
+			
 			if(dragElement.previousSibling != element){
-				// if(dragElement.previousSibling.parentNode.parentNode.getAttribute("class") === "")
 				
 				if(element.getAttribute("class").includes("dropableSpaceElementInactive")){
 					
@@ -1230,11 +1198,6 @@ var datastructure_teacher = function(){
 			if(parent.childNodes.length === 1){
 				parent.removeChild(parent.firstChild);
 			}
-			// dragElement.parentNode.removeChild(dragElement.nextSibling);
-			// element.childNodes[1].appendChild(document.getElementById(event.dataTransfer.getData("text/plain")));
-			/*if(event.dataTransfer.getData("text/plain")){
-				event.dataTransfer.clearData("text/plain");
-			}*/
 		}
 		
 		return {

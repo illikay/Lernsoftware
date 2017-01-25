@@ -11,5 +11,7 @@
 
 var datastructure_student = function(){
 	
-	
+	/*
+	 * Not yet implemented cause of time trouble.
+	 */
 }();

@@ -1,21 +1,7 @@
 /**
- * Represents the data structure of 'schoolmaterial'
+ * Represents the JSON data structure:
  * 
- * possible layout elements:
- * 
- * 		- caption
- * 		- sub-caption ...
- * 		- chapter
- * 		- sub-chapter ...
- * 		- list (circle, square, number)
- * 		- table
- * 		- formatting-element (like div)
- * 		- horizontal rule
- * 		- link
- * 		- picture
- * 		- video
- * 		- formula
- * 
+ * - Factory for creating different object types.
  * 
  * Objects haven't some functionality, cause of JSON-String.
  * But it is possible to transfer the data of the parsed JSON-Object

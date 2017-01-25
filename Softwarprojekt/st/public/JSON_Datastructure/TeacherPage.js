@@ -1,5 +1,7 @@
 /**
+ * Teacher Page - Javascript:
  * 
+ * - Provides functionality for TeacherPage.html.
  */
 
 var teacherPage = function(){
@@ -78,10 +80,6 @@ var teacherPage = function(){
 			var examsIndex = getExamsIndex({"key":"list","value":selectedListElement});
 			var examElement = exams[examsIndex].element;
 			
-			
-						
-			
-			
 			serverCommunication.uploadExam(JSON.stringify(datastructure_teacher.toJSON(examElement)), currentExamId);
 		}
 	}
@@ -111,14 +109,11 @@ var teacherPage = function(){
 	// FormattingContainer Properties
 	
 	function nameConnectionCallback(name){
-		// alert(name);
+		
 		selectedListElement.childNodes[0].nodeValue = name;
 	}
 	
 	function textEditorCallbackCreate(editableTextAreaElement){
-		
-		// var containerElement = document.getElementById("container");
-		// containerElement.style.opacity = 0.03;
 		
 		var editorContainerElement = document.createElement("div");
 		editorContainerElement.setAttribute("id","editorContainer");
@@ -127,9 +122,6 @@ var teacherPage = function(){
 	}
 
 	function textEditorCallbackSave(){
-		
-		// var containerElement = document.getElementById("container");
-		// containerElement.style.opacity = 1;
 		
 		document.getElementById("middle").removeChild(document.getElementById("editorContainer"));
 	}

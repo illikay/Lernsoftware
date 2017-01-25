@@ -1,5 +1,7 @@
 /**
+ * Functions for making circumstantially iterative code.
  * 
+ * Helps for better readable code, less expendable writing and less possibility to make failures.
  */
 
 var helpers = function(){
