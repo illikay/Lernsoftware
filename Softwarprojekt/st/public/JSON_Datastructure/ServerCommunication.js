@@ -30,6 +30,27 @@ var serverCommunication = function(){
 	 * File Uploading
 	 */
 	function uploadFile(element){
+		
+		
+		
+		var data = element.files[0];
+		console.log(data);		
+		
+		let request = new XMLHttpRequest();
+		request.onload = () => {
+			if (request.status === 200){
+				console.log('Datei erfolgreich gesendet');				
+			}		
+		};
+		request.open('POST' , '/api/upload');
+		var formData = new FormData();
+    	formData.append("myFile",element.files[0], element.files[0].filename);
+		request.send(formData);		
+		alert('Anhang auf Server hochgeladen');
+	   
+	}
+	
+function uploadFile2(element){
 	    
 	    if('files' in element){
 	        if(element.files.length == 0){

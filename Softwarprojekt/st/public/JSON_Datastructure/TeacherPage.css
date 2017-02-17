@@ -276,22 +276,7 @@ html,body{
     height:auto;
 }
 
-.exam{
-    display:inline-block;
-    border:2px solid #770000;
-}
 
-.topic{
-    border:2px solid #007700;
-}
-
-.exercise{
-    border:2px solid #ff8800;
-}
-
-.chapter{
-    border:2px solid #000077;
-}
 
 .schoolmaterial > div:first-child,.exam > div:first-child,.topic > div:first-child,.topicContentPart > div:first-child,.topicExercisesPart > div:first-child,.topicSolutionsPart > div:first-child,.exercise > div:first-child,.exerciseQuestion > div:first-child,.exerciseSolution > div:first-child,.chapter > div:first-child,.formattingContainer > div:first-child{
     

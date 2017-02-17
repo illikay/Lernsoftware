@@ -31,7 +31,6 @@ app.use(bodyParser.json());
 
 var index  = require('./routes/index.js');
 var user = require('./routes/user.js');
-var benutzer = require('./routes/benutzer.js');
 var examRoute = require('./routes/examRoute.js');
 
 
@@ -69,26 +68,15 @@ app.use(passport.initialize());
 
 //einbinden der statischen Ordner in das Backend
 
-//app.use(express.static(path.join(__dirname, 'shop')));
+
 app.use(express.static(path.join(__dirname, 'public', 'JSON_Datastructure')));
-//app.use(express.static(path.join(__dirname, 'static'))); 
-//app.use(express.static(path.join(__dirname, 'uploader')));
-//app.use(express.static(path.join(__dirname, 'public' , 'JSON_Datastructure' , 'Teacher')));
+app.use(express.static(path.join(__dirname, 'uploader')));
+
 
 
 //Error Handler für uncaught Exceptions
 
-//process.on('uncaughtException', (err) => { console.error(`Caught exception: ${err}`); });
-
-
-
-//route für benutzer.js 
-
-app.post('/benutzer' , benutzer.create); // fügt neuen Benutzer ein
-app.get('/benutzer/:benutzerId' , benutzer.show); //listet nur einen Benutzer auf
-app.delete('/benutzer' , benutzer.deleteByName); // löscht einen Benutzer anhand seines Namens
-app.delete('/benutzer/:benutzerId' , benutzer.deleteById); // löscht einen Benutzer anhand seiner Id 
-app.put('/benutzer/:benutzerId', benutzer.update); //ändert einen Benutzer
+process.on('uncaughtException', (err) => { console.error(`Caught exception: ${err}`); });
 
 
 //route für exam.js 
@@ -143,46 +131,15 @@ getToken = function (headers) {
 };
 
 
-
-
-
-
-//laden der Angular.js Dateien
-
-app.get('/', function(req, res) {
-    res.sendfile(path.join(__dirname, 'static' , 'index.html')); 
-});
-
-app.get('/webshop', function(req, res) {
-    res.sendfile(path.join(__dirname, 'shop' , 'index.html')); 
-});
+//laden der Basis-Dateien
 
 app.get('/uploadWebsite', function(req, res) {
     res.sendfile(path.join(__dirname, 'uploader' , 'index.html')); 
 });
 
-app.get('/uploadLaurin', function(req, res) {
-    res.sendfile(path.join(__dirname, 'public', 'JSON_Datastructure' , 'Data_Architecture.html')); 
-});
-
-
-app.get('/startProject', function(req, res) {
-    res.sendfile(path.join(__dirname, 'public', 'JSON_Datastructure' , 'index.html')); 
-});
-
 app.get('/teacher', function(req, res) {
     res.sendfile(path.join(__dirname, 'public', 'JSON_Datastructure' ,  'TeacherPage.html')); 
 });
-
-
-
-
-
-
-
-
-
-
 
 //erzeugt den Server, wird immer dann ausgeführt, wenn der Server einen Request empfängt 
 
